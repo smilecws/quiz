@@ -462,116 +462,124 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
     final scope = AppSettingsScope.of(context);
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (sheetContext) {
+        final maxSheetHeight =
+            MediaQuery.sizeOf(sheetContext).height * 0.88;
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.languageSheetTitle,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxSheetHeight),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 12, 8, 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.languageSheetTitle,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            l10n.languageSheetTranslationNote,
+                            style: TextStyle(
+                              fontSize: 13,
+                              height: 1.4,
+                              color: context.appColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      title: Text(l10n.languageKo),
+                      onTap: () {
+                        scope.setLocale(const Locale('ko'));
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(l10n.languageEn),
+                      onTap: () {
+                        scope.setLocale(const Locale('en'));
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(l10n.languageZh),
+                      onTap: () {
+                        scope.setLocale(const Locale('zh'));
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(l10n.languageVi),
+                      onTap: () {
+                        scope.setLocale(const Locale('vi'));
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                    const Divider(height: 28),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        l10n.themeModeSheetTitle,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        l10n.languageSheetTranslationNote,
-                        style: TextStyle(
-                          fontSize: 13,
-                          height: 1.4,
-                          color: context.appColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ListTile(
-                  title: Text(l10n.languageKo),
-                  onTap: () {
-                    scope.setLocale(const Locale('ko'));
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.languageEn),
-                  onTap: () {
-                    scope.setLocale(const Locale('en'));
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.languageZh),
-                  onTap: () {
-                    scope.setLocale(const Locale('zh'));
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.languageVi),
-                  onTap: () {
-                    scope.setLocale(const Locale('vi'));
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-                const Divider(height: 28),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    l10n.themeModeSheetTitle,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
                     ),
-                  ),
+                    const SizedBox(height: 4),
+                    ListTile(
+                      title: Text(l10n.themeModeSystem),
+                      trailing: scope.themeMode == ThemeMode.system
+                          ? Icon(Icons.check_rounded,
+                              color: context.appColors.primaryDark)
+                          : null,
+                      onTap: () {
+                        scope.setThemeMode(ThemeMode.system);
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(l10n.themeModeLight),
+                      trailing: scope.themeMode == ThemeMode.light
+                          ? Icon(Icons.check_rounded,
+                              color: context.appColors.primaryDark)
+                          : null,
+                      onTap: () {
+                        scope.setThemeMode(ThemeMode.light);
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(l10n.themeModeDark),
+                      trailing: scope.themeMode == ThemeMode.dark
+                          ? Icon(Icons.check_rounded,
+                              color: context.appColors.primaryDark)
+                          : null,
+                      onTap: () {
+                        scope.setThemeMode(ThemeMode.dark);
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                ListTile(
-                  title: Text(l10n.themeModeSystem),
-                  trailing: scope.themeMode == ThemeMode.system
-                      ? Icon(Icons.check_rounded,
-                          color: context.appColors.primaryDark)
-                      : null,
-                  onTap: () {
-                    scope.setThemeMode(ThemeMode.system);
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.themeModeLight),
-                  trailing: scope.themeMode == ThemeMode.light
-                      ? Icon(Icons.check_rounded,
-                          color: context.appColors.primaryDark)
-                      : null,
-                  onTap: () {
-                    scope.setThemeMode(ThemeMode.light);
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.themeModeDark),
-                  trailing: scope.themeMode == ThemeMode.dark
-                      ? Icon(Icons.check_rounded,
-                          color: context.appColors.primaryDark)
-                      : null,
-                  onTap: () {
-                    scope.setThemeMode(ThemeMode.dark);
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         );

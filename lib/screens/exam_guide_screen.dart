@@ -10,9 +10,11 @@ class ExamGuideScreen extends StatelessWidget {
 
   static const String _officialGuideUrl =
       'https://www.safedriving.or.kr/guide/rerGuide01View.do?menuCode=MN-PO-1111';
+
   /// 면허시험 일정·접수 (모바일 웹)
   static const String _officialScheduleUrl =
       'https://www.safedriving.or.kr/rerrest/rerrestScheduleViewM.do?menuCode=MN-PO-1131';
+
   /// 특별교통안전교육 교육장·날짜 선택 (모바일 웹)
   static const String _officialEducationScheduleUrl =
       'https://www.safedriving.or.kr/eduSeSpecial/eduSeSpecialExmDayLocalNoneM.do';
@@ -267,7 +269,7 @@ const List<_GuideStep> _steps = [
   _GuideStep(
     title: '1. 응시 전 교통안전교육',
     lines: [
-      '학과시험 전까지 이수 완료(특별교통안전교육 이수자 이수 불필요)',
+      '학과시험 전까지 이수 완료\n(특별교통안전교육 이수자는 응시 전 교통안전교육 이수 불필요)',
       '준비물: 신분증',
     ],
   ),
