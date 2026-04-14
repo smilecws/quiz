@@ -4,7 +4,7 @@ import '../l10n/app_localizations.dart';
 import '../models/mock_exam_history_entry.dart';
 import '../models/mock_exam_license_kind.dart';
 import '../services/mock_exam_history_service.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 
 class MockExamHistoryScreen extends StatefulWidget {
   const MockExamHistoryScreen({super.key});
@@ -46,7 +46,7 @@ class _MockExamHistoryScreenState extends State<MockExamHistoryScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       appBar: AppBar(
         title: Text(l10n.mockExamHistoryTitle),
       ),
@@ -73,7 +73,7 @@ class _MockExamHistoryScreenState extends State<MockExamHistoryScreen> {
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.45,
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                   ),
                 ),
               ),
@@ -92,9 +92,9 @@ class _MockExamHistoryScreenState extends State<MockExamHistoryScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceWhite,
+                    color: context.appColors.surfaceWhite,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.borderLight),
+                    border: Border.all(color: context.appColors.borderLight),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,10 +104,10 @@ class _MockExamHistoryScreenState extends State<MockExamHistoryScreen> {
                           Expanded(
                             child: Text(
                               l10n.mockLicenseLabel(e.licenseKind),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.textPrimary,
+                                color: context.appColors.textPrimary,
                               ),
                             ),
                           ),
@@ -138,18 +138,18 @@ class _MockExamHistoryScreenState extends State<MockExamHistoryScreen> {
                       const SizedBox(height: 10),
                       Text(
                         '${l10n.mockExamHistoryWhen}: ${_formatWhen(context, e.at)}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
-                          color: AppColors.textSecondary,
+                          color: context.appColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         '${l10n.mockExamHistoryScoreLine}: ${e.score} / ${e.total} · ${l10n.mockResultScaledScore(e.scaledScoreOutOf100)}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           height: 1.4,
-                          color: AppColors.textPrimary,
+                          color: context.appColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -157,9 +157,9 @@ class _MockExamHistoryScreenState extends State<MockExamHistoryScreen> {
                         l10n.mockResultPassBar(
                           e.licenseKind.passScoreMinOutOf100,
                         ),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.textSecondary,
+                          color: context.appColors.textSecondary,
                         ),
                       ),
                     ],

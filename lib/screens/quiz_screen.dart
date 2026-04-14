@@ -14,7 +14,7 @@ import '../services/favorite_questions_service.dart';
 import '../services/question_service.dart';
 import '../services/user_answer_stats_service.dart';
 import '../services/wrong_note_service.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -434,8 +434,8 @@ class _QuizScreenState extends State<QuizScreen> {
     if (mounted) setState(() => _favoriteIds = next);
   }
 
-  Color _optionColor(int index) {
-    if (widget.showTimerAndScore || !_answered) return AppColors.surfaceCard;
+  Color _optionColor(AppThemeColors ac, int index) {
+    if (widget.showTimerAndScore || !_answered) return ac.surfaceCard;
     final q = _q;
     final isCorrect = q.correctIndexSet.contains(index);
     if (isCorrect) return const Color(0xFFDCFCE7);
@@ -444,18 +444,18 @@ class _QuizScreenState extends State<QuizScreen> {
     } else {
       if (index == _selectedSingle) return const Color(0xFFFEE2E2);
     }
-    return AppColors.surfaceCard;
+    return ac.surfaceCard;
   }
 
-  Color _optionBorderColor(int index) {
+  Color _optionBorderColor(AppThemeColors ac, int index) {
     if (widget.showTimerAndScore || !_answered) {
       if (_q.isMultipleChoice && _selectedMultiple.contains(index)) {
-        return AppColors.primary;
+        return ac.primary;
       }
       if (!_q.isMultipleChoice && _selectedSingle == index) {
-        return AppColors.primary;
+        return ac.primary;
       }
-      return AppColors.borderLight;
+      return ac.borderLight;
     }
     final q = _q;
     if (q.correctIndexSet.contains(index)) return Colors.green;
@@ -463,17 +463,18 @@ class _QuizScreenState extends State<QuizScreen> {
       return Colors.red;
     }
     if (!q.isMultipleChoice && index == _selectedSingle) return Colors.red;
-    return AppColors.borderLight;
+    return ac.borderLight;
   }
 
   @override
   Widget build(BuildContext context) {
+    final ac = context.appColors;
     if (_loading) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: ac.background,
         body: Center(
           child: CircularProgressIndicator(
-            color: AppColors.primary,
+            color: ac.primary,
             strokeWidth: 3,
           ),
         ),
@@ -498,11 +499,11 @@ class _QuizScreenState extends State<QuizScreen> {
         }));
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: ac.background,
         appBar: AppBar(
           title: Text(
             widget.title ?? '${_currentIndex + 1} / ${_questions.length}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           actions: [
           IconButton(
@@ -516,7 +517,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   : Icons.star_outline_rounded,
               color: _favoriteIds.contains(question.id)
                   ? Colors.amber.shade700
-                  : AppColors.textSecondary,
+                  : ac.textSecondary,
             ),
           ),
           if (widget.showTimerAndScore) ...[
@@ -529,12 +530,12 @@ class _QuizScreenState extends State<QuizScreen> {
                   decoration: BoxDecoration(
                     color: (_remainingSeconds <= 60)
                         ? const Color(0xFFFEE2E2)
-                        : AppColors.surfaceCard,
+                        : ac.surfaceCard,
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(
                       color: (_remainingSeconds <= 60)
                           ? Colors.red.shade200
-                          : AppColors.borderLight,
+                          : ac.borderLight,
                     ),
                   ),
                   child: Text(
@@ -543,7 +544,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       fontWeight: FontWeight.w700,
                       color: (_remainingSeconds <= 60)
                           ? Colors.red.shade700
-                          : AppColors.textPrimary,
+                          : ac.textPrimary,
                     ),
                   ),
                 ),
@@ -554,10 +555,10 @@ class _QuizScreenState extends State<QuizScreen> {
               child: Center(
                 child: Text(
                   '채점 전',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
+                    color: ac.textSecondary,
                   ),
                 ),
               ),
@@ -570,16 +571,16 @@ class _QuizScreenState extends State<QuizScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceCard,
+                    color: ac.surfaceCard,
                     borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: AppColors.borderLight),
+                    border: Border.all(color: ac.borderLight),
                   ),
                   child: Text(
                     '총 ${_questions.length}문제',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                      color: ac.textPrimary,
                     ),
                   ),
                 ),
@@ -591,8 +592,8 @@ class _QuizScreenState extends State<QuizScreen> {
         children: [
           LinearProgressIndicator(
             value: progress,
-            backgroundColor: AppColors.borderLight,
-            color: AppColors.primary,
+            backgroundColor: ac.borderLight,
+            color: ac.primary,
             minHeight: 6,
           ),
           Expanded(
@@ -608,12 +609,12 @@ class _QuizScreenState extends State<QuizScreen> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Chip(
-                        avatar: Icon(Icons.checklist, size: 18, color: AppColors.primaryDark),
+                        avatar: Icon(Icons.checklist, size: 18, color: ac.primaryDark),
                         label: const Text('복수 선택 — 해당하는 보기를 모두 고르세요'),
-                        backgroundColor: AppColors.chipBg,
-                        side: BorderSide(color: AppColors.primary.withValues(alpha: 0.25)),
-                        labelStyle: const TextStyle(
-                          color: AppColors.textPrimary,
+                        backgroundColor: ac.chipBg,
+                        side: BorderSide(color: ac.primary.withValues(alpha: 0.25)),
+                        labelStyle: TextStyle(
+                          color: ac.textPrimary,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -622,12 +623,12 @@ class _QuizScreenState extends State<QuizScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceWhite,
+                      color: ac.surfaceWhite,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.borderLight),
+                      border: Border.all(color: ac.borderLight),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.textPrimary.withValues(alpha: 0.04),
+                          color: ac.textPrimary.withValues(alpha: 0.04),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -635,11 +636,11 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     child: Text(
                       'Q${_currentIndex + 1}. ${question.question}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         height: 1.5,
-                        color: AppColors.textPrimary,
+                        color: ac.textPrimary,
                       ),
                     ),
                   ),
@@ -669,7 +670,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             final imageCaptionStyle = GoogleFonts.jua(
                               fontSize: 14,
                               height: 1.3,
-                              color: AppColors.textSecondary,
+                              color: ac.textSecondary,
                               fontWeight: FontWeight.w600,
                             );
                             final baseW = constraints.maxWidth * 0.5;
@@ -682,7 +683,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 borderRadius: BorderRadius.circular(12),
                                 child: Container(
                                   width: width,
-                                  color: AppColors.surfaceWhite,
+                                  color: ac.surfaceWhite,
                                   child: bytes != null
                                       ? Image.memory(
                                           bytes,
@@ -699,7 +700,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                             child: Icon(
                                               Icons.broken_image_outlined,
                                               size: 40,
-                                              color: AppColors.textSecondary
+                                              color: ac.textSecondary
                                                   .withValues(alpha: 0.5),
                                             ),
                                           ),
@@ -772,10 +773,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           duration: const Duration(milliseconds: 200),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: _optionColor(i),
+                            color: _optionColor(ac, i),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: _optionBorderColor(i),
+                              color: _optionBorderColor(ac, i),
                               width: 2,
                             ),
                           ),
@@ -788,14 +789,14 @@ class _QuizScreenState extends State<QuizScreen> {
                                     _selectedMultiple.contains(i)
                                         ? Icons.check_box
                                         : Icons.check_box_outline_blank,
-                                    color: AppColors.primary,
+                                    color: ac.primary,
                                   ),
                                 ),
                               Container(
                                 width: 32,
                                 height: 32,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(alpha: 0.12),
+                                  color: ac.primary.withValues(alpha: 0.12),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
@@ -803,7 +804,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     '${i + 1}',
                                     style: GoogleFonts.jua(
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryDark,
+                                      color: ac.primaryDark,
                                     ),
                                   ),
                                 ),
@@ -814,7 +815,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   question.options[i],
                                   style: GoogleFonts.jua(
                                     fontSize: 16,
-                                    color: AppColors.textPrimary,
+                                    color: ac.textPrimary,
                                   ),
                                 ),
                               ),
@@ -841,24 +842,24 @@ class _QuizScreenState extends State<QuizScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.chipBg,
+                        color: ac.chipBg,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.2),
+                          color: ac.primary.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(Icons.lightbulb_outline_rounded,
-                              color: AppColors.primaryDark),
+                              color: ac.primaryDark),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               question.explanation,
                               style: GoogleFonts.jua(
                                 fontSize: 14,
-                                color: AppColors.textPrimary,
+                                color: ac.textPrimary,
                                 height: 1.4,
                               ),
                             ),
@@ -885,9 +886,9 @@ class _QuizScreenState extends State<QuizScreen> {
                     child: ElevatedButton(
                       onPressed: _canSubmitMultiple ? _submitMultiple : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryDark,
-                        foregroundColor: AppColors.onPrimary,
-                        disabledBackgroundColor: AppColors.borderLight,
+                        backgroundColor: ac.primaryDark,
+                        foregroundColor: ac.onPrimary,
+                        disabledBackgroundColor: ac.borderLight,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -913,9 +914,9 @@ class _QuizScreenState extends State<QuizScreen> {
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.onPrimary,
-                      disabledBackgroundColor: AppColors.borderLight,
+                      backgroundColor: ac.primary,
+                      foregroundColor: ac.onPrimary,
+                      disabledBackgroundColor: ac.borderLight,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -924,7 +925,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       _currentIndex + 1 < _questions.length
                           ? '다음 문제'
                           : '결과 보기',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -960,6 +961,7 @@ class _VideoCard extends StatefulWidget {
 class _VideoCardState extends State<_VideoCard> {
   @override
   Widget build(BuildContext context) {
+    final ac = context.appColors;
     final init = widget.init;
     final controller = widget.controller;
     if (init == null || controller == null) {
@@ -968,18 +970,18 @@ class _VideoCardState extends State<_VideoCard> {
         width: double.infinity,
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.surfaceWhite,
+          color: ac.surfaceWhite,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.borderLight),
+          border: Border.all(color: ac.borderLight),
         ),
         child: Text(
           isWmvOnWeb
               ? '이 동영상은 웹에서 재생할 수 없습니다. (WMV 미지원)\nWindows 앱으로 실행해 주세요.\n(${widget.videoUri})'
               : '동영상을 재생할 수 없습니다.\n(${widget.videoUri})',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
             height: 1.35,
-            color: AppColors.textSecondary,
+            color: ac.textSecondary,
           ),
         ),
       );
@@ -993,23 +995,23 @@ class _VideoCardState extends State<_VideoCard> {
             width: double.infinity,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.surfaceWhite,
+              color: ac.surfaceWhite,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.borderLight),
+              border: Border.all(color: ac.borderLight),
             ),
             child: Row(
-              children: const [
-                SizedBox(
+              children: [
+                const SizedBox(
                   width: 18,
                   height: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   '동영상 로딩 중…',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textSecondary,
+                    color: ac.textSecondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -1026,9 +1028,9 @@ class _VideoCardState extends State<_VideoCard> {
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppColors.surfaceWhite,
+            color: ac.surfaceWhite,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.borderLight),
+            border: Border.all(color: ac.borderLight),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1068,15 +1070,15 @@ class _VideoCardState extends State<_VideoCard> {
                           ? Icons.pause_circle_outline
                           : Icons.play_circle_outline,
                       size: 30,
-                      color: AppColors.primaryDark,
+                      color: ac.primaryDark,
                     ),
                   ),
                   Expanded(
                     child: Text(
                       '동영상 문제',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textSecondary,
+                        color: ac.textSecondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

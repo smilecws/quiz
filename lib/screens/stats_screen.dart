@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/mock_exam_history_entry.dart';
 import '../services/attempted_questions_service.dart';
 import '../services/mock_exam_history_service.dart';
 import '../services/user_answer_stats_service.dart';
 import '../services/wrong_note_service.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -51,11 +52,12 @@ class _StatsScreenState extends State<StatsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       appBar: AppBar(
-        title: const Text(
-          '나의 통계',
+        title: Text(
+          l10n.statsTitle,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -72,22 +74,28 @@ class _StatsScreenState extends State<StatsScreen> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                 children: [
-                  _SectionHeader(title: '전체 현황'),
+                  _SectionHeader(title: l10n.statsSectionOverall),
                   const SizedBox(height: 8),
                   _OverallStatsCard(
+                    l10n: l10n,
                     overall: _overall!,
                     wrongCount: _wrongCount,
                     attemptedCount: _attemptedCount,
                   ),
                   const SizedBox(height: 20),
-                  _SectionHeader(title: '모의고사 점수 추이'),
+                  _SectionHeader(title: l10n.statsMockExamTrend),
                   const SizedBox(height: 8),
-                  _MockExamChart(history: _mockHistory),
+                  _MockExamChart(l10n: l10n, history: _mockHistory),
                   if (_hardestQuestions.isNotEmpty) ...[
                     const SizedBox(height: 20),
-                    _SectionHeader(title: '자주 틀리는 문제 Top ${_hardestQuestions.length}'),
+                    _SectionHeader(
+                      title: l10n.statsHardestTopN(_hardestQuestions.length),
+                    ),
                     const SizedBox(height: 8),
-                    _HardestQuestionsList(questions: _hardestQuestions),
+                    _HardestQuestionsList(
+                      l10n: l10n,
+                      questions: _hardestQuestions,
+                    ),
                   ],
                 ],
               ),
@@ -108,10 +116,10 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w800,
-        color: AppColors.textPrimary,
+        color: context.appColors.textPrimary,
       ),
     );
   }
@@ -123,11 +131,13 @@ class _SectionHeader extends StatelessWidget {
 
 class _OverallStatsCard extends StatelessWidget {
   const _OverallStatsCard({
+    required this.l10n,
     required this.overall,
     required this.wrongCount,
     required this.attemptedCount,
   });
 
+  final AppLocalizations l10n;
   final OverallStats overall;
   final int wrongCount;
   final int attemptedCount;
@@ -141,26 +151,26 @@ class _OverallStatsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
+        color: context.appColors.surfaceWhite,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: context.appColors.borderLight),
       ),
       child: Row(
         children: [
           Expanded(
             child: _StatChip(
               icon: Icons.quiz_outlined,
-              label: '풀어본 문제',
-              value: '$attemptedCount문제',
-              iconColor: AppColors.primaryDark,
-              iconBg: AppColors.chipBg,
+              label: l10n.statsLabelAttempted,
+              value: l10n.statsQuestionsUnit(attemptedCount),
+              iconColor: context.appColors.primaryDark,
+              iconBg: context.appColors.chipBg,
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: _StatChip(
               icon: Icons.check_circle_outline,
-              label: '전체 정답률',
+              label: l10n.statsLabelAccuracy,
               value: '$accuracy%',
               iconColor: const Color(0xFF15803D),
               iconBg: const Color(0xFFDCFCE7),
@@ -170,8 +180,8 @@ class _OverallStatsCard extends StatelessWidget {
           Expanded(
             child: _StatChip(
               icon: Icons.close_rounded,
-              label: '현재 오답',
-              value: '$wrongCount문제',
+              label: l10n.statsLabelWrongNow,
+              value: l10n.statsQuestionsUnit(wrongCount),
               iconColor: Colors.red.shade700,
               iconBg: const Color(0xFFFEE2E2),
             ),
@@ -213,19 +223,19 @@ class _StatChip extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: context.appColors.textPrimary,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 11,
-            color: AppColors.textSecondary,
+            color: context.appColors.textSecondary,
           ),
         ),
       ],
@@ -238,7 +248,9 @@ class _StatChip extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────────────────────
 
 class _MockExamChart extends StatelessWidget {
-  const _MockExamChart({required this.history});
+  const _MockExamChart({required this.l10n, required this.history});
+
+  final AppLocalizations l10n;
   final List<MockExamHistoryEntry> history;
 
   @override
@@ -247,18 +259,18 @@ class _MockExamChart extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 28),
         decoration: BoxDecoration(
-          color: AppColors.surfaceWhite,
+          color: context.appColors.surfaceWhite,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.borderLight),
+          border: Border.all(color: context.appColors.borderLight),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
-            '모의고사 기록이 없습니다.\n모의고사를 완료하면 여기에 추이가 표시됩니다.',
+            l10n.statsMockExamChartEmpty,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
               height: 1.5,
-              color: AppColors.textSecondary,
+              color: context.appColors.textSecondary,
             ),
           ),
         ),
@@ -276,9 +288,9 @@ class _MockExamChart extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
+        color: context.appColors.surfaceWhite,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: context.appColors.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,9 +306,12 @@ class _MockExamChart extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              const Text(
-                '합격',
-                style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+              Text(
+                l10n.mockResultPass,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: context.appColors.textSecondary,
+                ),
               ),
               const SizedBox(width: 10),
               Container(
@@ -308,9 +323,12 @@ class _MockExamChart extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              const Text(
-                '불합격',
-                style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+              Text(
+                l10n.mockResultFail,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: context.appColors.textSecondary,
+                ),
               ),
             ],
           ),
@@ -360,15 +378,18 @@ class _MockExamChart extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '오래된 순',
-                style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+              Text(
+                l10n.statsChartOldestFirst,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: context.appColors.textSecondary,
+                ),
               ),
               Text(
-                '최근 ${recent.length}회',
-                style: const TextStyle(
+                l10n.statsChartRecentAttempts(recent.length),
+                style: TextStyle(
                   fontSize: 10,
-                  color: AppColors.textSecondary,
+                  color: context.appColors.textSecondary,
                 ),
               ),
             ],
@@ -384,16 +405,18 @@ class _MockExamChart extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────────────────────
 
 class _HardestQuestionsList extends StatelessWidget {
-  const _HardestQuestionsList({required this.questions});
+  const _HardestQuestionsList({required this.l10n, required this.questions});
+
+  final AppLocalizations l10n;
   final List<AnswerQuestionStat> questions;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
+        color: context.appColors.surfaceWhite,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: context.appColors.borderLight),
       ),
       child: ListView.separated(
         shrinkWrap: true,
@@ -401,7 +424,7 @@ class _HardestQuestionsList extends StatelessWidget {
         itemCount: questions.length,
         separatorBuilder: (_, __) => Divider(
           height: 1,
-          color: AppColors.borderLight,
+          color: context.appColors.borderLight,
           indent: 16,
           endIndent: 16,
         ),
@@ -437,19 +460,19 @@ class _HardestQuestionsList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '문제 ID: ${s.questionId}',
-                        style: const TextStyle(
+                        l10n.statsQuestionIdLine(s.questionId),
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: context.appColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '${s.attempts}번 시도 · ${s.wrongCount}번 틀림',
-                        style: const TextStyle(
+                        l10n.statsAttemptsWrongLine(s.attempts, s.wrongCount),
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.textSecondary,
+                          color: context.appColors.textSecondary,
                         ),
                       ),
                     ],
@@ -459,7 +482,7 @@ class _HardestQuestionsList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '오답률 $wrongRate%',
+                      l10n.statsWrongRatePercent(wrongRate),
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -493,7 +516,7 @@ class _AccuracyBar extends StatelessWidget {
         child: LinearProgressIndicator(
           value: rate,
           backgroundColor: Colors.red.shade100,
-          color: rate >= 0.6 ? AppColors.primary : Colors.red.shade400,
+          color: rate >= 0.6 ? context.appColors.primary : Colors.red.shade400,
           minHeight: 6,
         ),
       ),

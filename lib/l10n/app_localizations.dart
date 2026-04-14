@@ -140,7 +140,7 @@ class AppLocalizations {
 
   String get mockLicenseSheetTitle => _t({
         'ko': '모의고사 면허 종류',
-        'en': 'License type (mock exam)',
+        'en': 'License type (exam)',
         'zh': '模拟考试 驾照类型',
         'vi': 'Loại bằng (thi thử)',
       });
@@ -226,14 +226,14 @@ class AppLocalizations {
 
   String get mockExamHistoryTitle => _t({
         'ko': '모의고사 기록',
-        'en': 'Mock exam history',
+        'en': 'Exam history',
         'zh': '模拟考试记录',
         'vi': 'Lịch sử thi thử',
       });
 
   String get mockExamHistoryEmpty => _t({
         'ko': '아직 모의고사 응시 기록이 없어요.',
-        'en': 'No mock exam attempts yet.',
+        'en': 'No exam attempts yet.',
         'zh': '暂无模拟考试记录。',
         'vi': 'Chưa có lần thi thử nào.',
       });
@@ -408,6 +408,34 @@ class AppLocalizations {
         'vi': 'Chọn ngôn ngữ',
       });
 
+  String get themeModeSheetTitle => _t({
+        'ko': '화면 테마',
+        'en': 'Appearance',
+        'zh': '外观主题',
+        'vi': 'Giao diện',
+      });
+
+  String get themeModeSystem => _t({
+        'ko': '시스템 설정과 같이',
+        'en': 'Same as device',
+        'zh': '跟随系统',
+        'vi': 'Theo thiết bị',
+      });
+
+  String get themeModeLight => _t({
+        'ko': '라이트',
+        'en': 'Light',
+        'zh': '浅色',
+        'vi': 'Sáng',
+      });
+
+  String get themeModeDark => _t({
+        'ko': '다크',
+        'en': 'Dark',
+        'zh': '深色',
+        'vi': 'Tối',
+      });
+
   String get practiceSheetTitle => _t({
         'ko': '어떤 문제를 풀까요?',
         'en': 'Which type to practice?',
@@ -533,6 +561,131 @@ class AppLocalizations {
         'zh': '随机练习',
         'vi': 'Luyện ngẫu nhiên',
       });
+
+  // ——— 나의 통계 ———
+  String get statsTitle => _t({
+        'ko': '나의 통계',
+        'en': 'My statistics',
+        'zh': '我的统计',
+        'vi': 'Thống kê của tôi',
+      });
+
+  String get statsMenuSubtitle => _t({
+        'ko': '정답률, 모의고사 추이, 자주 틀리는 문제',
+        'en': 'Accuracy, exam trend, challenging questions',
+        'zh': '正确率、模拟考趋势、易错题',
+        'vi': 'Tỷ lệ đúng, xu hướng thi thử, câu hay sai',
+      });
+
+  String get statsSectionOverall => _t({
+        'ko': '전체 현황',
+        'en': 'Overview',
+        'zh': '总体情况',
+        'vi': 'Tổng quan',
+      });
+
+  String get statsLabelAttempted => _t({
+        'ko': '풀어본 문제',
+        'en': 'Attempted',
+        'zh': '已做题',
+        'vi': 'Đã làm',
+      });
+
+  String get statsLabelAccuracy => _t({
+        'ko': '전체 정답률',
+        'en': 'Accuracy',
+        'zh': '总正确率',
+        'vi': 'Tỷ lệ đúng',
+      });
+
+  String get statsLabelWrongNow => _t({
+        'ko': '현재 오답',
+        'en': 'Wrong now',
+        'zh': '当前错题',
+        'vi': 'Câu sai hiện tại',
+      });
+
+  String statsQuestionsUnit(int n) {
+    switch (locale.languageCode) {
+      case 'en':
+        return '$n questions';
+      case 'zh':
+        return '$n 题';
+      case 'vi':
+        return '$n câu';
+      case 'ko':
+      default:
+        return '$n문제';
+    }
+  }
+
+  String get statsMockExamTrend => _t({
+        'ko': '모의고사 점수 추이',
+        'en': 'Exam score trend',
+        'zh': '模拟考分数趋势',
+        'vi': 'Xu hướng điểm thi thử',
+      });
+
+  String get statsMockExamChartEmpty => _t({
+        'ko': '모의고사 기록이 없습니다.\n모의고사를 완료하면 여기에 추이가 표시됩니다.',
+        'en': 'No exam records yet.\nFinish an exam to see the trend here.',
+        'zh': '暂无模拟考试记录。\n完成一次模拟考试后，将在此显示趋势。',
+        'vi': 'Chưa có lịch sử thi thử.\nHoàn thành một bài thi thử để xem xu hướng tại đây.',
+      });
+
+  String get statsChartOldestFirst => _t({
+        'ko': '오래된 순',
+        'en': 'Oldest →',
+        'zh': '从旧到新',
+        'vi': 'Cũ → mới',
+      });
+
+  String statsChartRecentAttempts(int n) {
+    return _t({
+      'ko': '최근 {n}회',
+      'en': 'Last {n} attempts',
+      'zh': '最近 {n} 次',
+      'vi': '{n} lần gần nhất',
+    }).replaceAll('{n}', '$n');
+  }
+
+  String statsHardestTopN(int n) {
+    return _t({
+      'ko': '자주 틀리는 문제 Top {n}',
+      'en': 'Top {n} challenging questions',
+      'zh': '易错题 Top {n}',
+      'vi': 'Top {n} câu hay sai',
+    }).replaceAll('{n}', '$n');
+  }
+
+  String statsQuestionIdLine(int id) {
+    return _t({
+      'ko': '문제 ID: {id}',
+      'en': 'Question ID: {id}',
+      'zh': '题目 ID：{id}',
+      'vi': 'ID câu: {id}',
+    }).replaceAll('{id}', '$id');
+  }
+
+  String statsAttemptsWrongLine(int attempts, int wrong) {
+    return _t({
+      'ko': '{a}번 시도 · {w}번 틀림',
+      'en': '{a} tries · {w} wrong',
+      'zh': '尝试 {a} 次 · 错 {w} 次',
+      'vi': '{a} lần làm · sai {w} lần',
+    })
+        .replaceAll('{a}', '$attempts')
+        .replaceAll('{w}', '$wrong');
+  }
+
+  String statsWrongRatePercent(String rate) {
+    return _t({
+      'ko': '오답률 {r}%',
+      'en': 'Wrong {r}%',
+      'zh': '错误率 {r}%',
+      'vi': 'Sai {r}%',
+    }).replaceAll('{r}', rate);
+  }
 }
 
 class _AppLocalizationsDelegate

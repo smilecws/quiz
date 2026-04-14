@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/mock_exam_license_kind.dart';
 import '../models/session_result.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 import 'home_screen.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -35,7 +35,7 @@ class ResultScreen extends StatelessWidget {
     return '💪 분발';
   }
 
-  Color get _scoreColor {
+  Color _scoreColor(AppThemeColors ac) {
     if (mockExamLicenseKind != null) {
       final passed = _scaledScoreOutOf100 >=
           mockExamLicenseKind!.passScoreMinOutOf100;
@@ -43,7 +43,7 @@ class ResultScreen extends StatelessWidget {
     }
     final ratio = total <= 0 ? 0.0 : score / total;
     if (ratio >= 0.9) return const Color(0xFF15803D);
-    if (ratio >= 0.7) return AppColors.primaryDark;
+    if (ratio >= 0.7) return ac.primaryDark;
     if (ratio >= 0.5) return Colors.orange;
     return Colors.red;
   }
@@ -56,15 +56,16 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ac = context.appColors;
     final l10n = AppLocalizations.of(context);
     final gradeLabel = _gradeLabel(l10n);
-    final scoreColor = _scoreColor;
+    final scoreColor = _scoreColor(ac);
     final kind = mockExamLicenseKind;
     final incorrectResults =
         results.where((r) => !r.isCorrect).toList();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: ac.background,
       appBar: AppBar(
         title: const Text('시험 결과'),
         automaticallyImplyLeading: false,
@@ -76,12 +77,12 @@ class ResultScreen extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
             padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 14),
             decoration: BoxDecoration(
-              color: AppColors.surfaceWhite,
+              color: ac.surfaceWhite,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.borderLight),
+              border: Border.all(color: ac.borderLight),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.textPrimary.withValues(alpha: 0.04),
+                  color: ac.textPrimary.withValues(alpha: 0.04),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -92,9 +93,9 @@ class ResultScreen extends StatelessWidget {
                     children: [
                       Text(
                         gradeLabel,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
-                          color: AppColors.textPrimary,
+                          color: ac.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -111,9 +112,9 @@ class ResultScreen extends StatelessWidget {
                         total <= 0
                             ? '—'
                             : '정답률 ${(score / total * 100).toStringAsFixed(1)}%',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
-                          color: AppColors.textSecondary,
+                          color: ac.textSecondary,
                         ),
                       ),
                     ],
@@ -129,10 +130,10 @@ class ResultScreen extends StatelessWidget {
                             Text(
                               gradeLabel,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.textPrimary,
+                                color: ac.textPrimary,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -151,9 +152,9 @@ class ResultScreen extends StatelessWidget {
                                   ? '—'
                                   : '정답률 ${(score / total * 100).toStringAsFixed(1)}%',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: AppColors.textSecondary,
+                                color: ac.textSecondary,
                               ),
                             ),
                           ],
@@ -168,30 +169,30 @@ class ResultScreen extends StatelessWidget {
                             Text(
                               l10n.mockResultScaledScore(_scaledScoreOutOf100),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
+                                color: ac.textPrimary,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               '${l10n.mockResultLicenseKindLine}: ${l10n.mockLicenseLabel(kind)}',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
                                 height: 1.25,
-                                color: AppColors.textSecondary,
+                                color: ac.textSecondary,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               l10n.mockResultPassBar(kind.passScoreMinOutOf100),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
                                 height: 1.25,
-                                color: AppColors.textSecondary,
+                                color: ac.textSecondary,
                               ),
                             ),
                           ],
@@ -200,8 +201,8 @@ class ResultScreen extends StatelessWidget {
                     ],
                   ),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -209,7 +210,7 @@ class ResultScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+                  color: ac.textPrimary,
                 ),
               ),
             ),
@@ -227,7 +228,7 @@ class ResultScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceCard,
+                    color: ac.surfaceCard,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.red.shade200),
                   ),
@@ -236,10 +237,10 @@ class ResultScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Q${results.indexOf(r) + 1}. ${question.question}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
-                          color: AppColors.textPrimary,
+                          color: ac.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -253,7 +254,7 @@ class ResultScreen extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 '내 답: ${selected.isNotEmpty ? _indicesToLabels(r, selected) : "(선택 없음)"}',
-                                style: const TextStyle(color: Colors.red),
+                                style: TextStyle(color: Colors.red),
                               ),
                             ),
                           ],
@@ -268,7 +269,7 @@ class ResultScreen extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 '정답: ${_indicesToLabels(r, question.correctIndices)}',
-                                style: const TextStyle(color: Colors.green),
+                                style: TextStyle(color: Colors.green),
                               ),
                             ),
                           ],
@@ -283,7 +284,7 @@ class ResultScreen extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   '내 답: ${question.options[selected.first]}',
-                                  style: const TextStyle(color: Colors.red),
+                                  style: TextStyle(color: Colors.red),
                                 ),
                               ),
                             ],
@@ -297,7 +298,7 @@ class ResultScreen extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 '정답: ${question.options[question.correctIndices.first]}',
-                                style: const TextStyle(color: Colors.green),
+                                style: TextStyle(color: Colors.green),
                               ),
                             ),
                           ],
@@ -331,8 +332,8 @@ class ResultScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.onPrimary,
+                  backgroundColor: ac.primary,
+                  foregroundColor: ac.onPrimary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),

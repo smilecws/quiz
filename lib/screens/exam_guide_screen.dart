@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 
 /// 한국도로교통공단 안전운전 통합민원 「면허시험순서」 안내 요약.
 /// https://www.safedriving.or.kr/guide/rerGuide01View.do?menuCode=MN-PO-1111
@@ -10,10 +10,12 @@ class ExamGuideScreen extends StatelessWidget {
 
   static const String _officialGuideUrl =
       'https://www.safedriving.or.kr/guide/rerGuide01View.do?menuCode=MN-PO-1111';
+  /// 면허시험 일정·접수 (모바일 웹)
   static const String _officialScheduleUrl =
-      'https://www.safedriving.or.kr/rerrest/rerrestScheduleView.do?menuCode=MN-PO-1131';
+      'https://www.safedriving.or.kr/rerrest/rerrestScheduleViewM.do?menuCode=MN-PO-1131';
+  /// 특별교통안전교육 교육장·날짜 선택 (모바일 웹)
   static const String _officialEducationScheduleUrl =
-      'https://www.safedriving.or.kr/eduSeSpecial/eduSeSpecialExmDayLocalNone.do';
+      'https://www.safedriving.or.kr/eduSeSpecial/eduSeSpecialExmDayLocalNoneM.do';
   static const String _officialPreparationGuideUrl =
       'https://www.safedriving.or.kr/guide/rerGuide07View.do?menuCode=MN-PO-1117';
 
@@ -140,7 +142,7 @@ class ExamGuideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       appBar: AppBar(
         title: const Text('면허시험 순서'),
       ),
@@ -153,7 +155,7 @@ class ExamGuideScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 13,
               height: 1.45,
-              color: AppColors.textSecondary,
+              color: context.appColors.textSecondary,
             ),
           ),
           const SizedBox(height: 16),
@@ -166,9 +168,9 @@ class ExamGuideScreen extends StatelessWidget {
               icon: const Icon(Icons.open_in_new, size: 20),
               label: const Text('공식 안내 페이지에서 자세히 보기'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.primaryDark,
+                foregroundColor: context.appColors.primaryDark,
                 side: BorderSide(
-                  color: AppColors.primary.withValues(alpha: 0.45),
+                  color: context.appColors.primary.withValues(alpha: 0.45),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
@@ -182,7 +184,7 @@ class ExamGuideScreen extends StatelessWidget {
             '출처: 한국도로교통공단 안전운전 통합민원',
             style: TextStyle(
               fontSize: 11,
-              color: AppColors.textSecondary.withValues(alpha: 0.85),
+              color: context.appColors.textSecondary.withValues(alpha: 0.85),
             ),
           ),
         ],
@@ -199,7 +201,7 @@ class PreparationGuideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       appBar: AppBar(
         title: const Text('준비물 가이드'),
       ),
@@ -212,7 +214,7 @@ class PreparationGuideScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 13,
               height: 1.45,
-              color: AppColors.textSecondary,
+              color: context.appColors.textSecondary,
             ),
           ),
           const SizedBox(height: 16),
@@ -226,9 +228,9 @@ class PreparationGuideScreen extends StatelessWidget {
               icon: const Icon(Icons.open_in_new, size: 20),
               label: const Text('공식 안내 페이지에서 자세히 보기'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.primaryDark,
+                foregroundColor: context.appColors.primaryDark,
                 side: BorderSide(
-                  color: AppColors.primary.withValues(alpha: 0.45),
+                  color: context.appColors.primary.withValues(alpha: 0.45),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
@@ -242,7 +244,7 @@ class PreparationGuideScreen extends StatelessWidget {
             '출처: 한국도로교통공단 안전운전 통합민원',
             style: TextStyle(
               fontSize: 11,
-              color: AppColors.textSecondary.withValues(alpha: 0.85),
+              color: context.appColors.textSecondary.withValues(alpha: 0.85),
             ),
           ),
         ],
@@ -265,7 +267,7 @@ const List<_GuideStep> _steps = [
   _GuideStep(
     title: '1. 응시 전 교통안전교육',
     lines: [
-      '학과시험 전까지 이수 완료',
+      '학과시험 전까지 이수 완료(특별교통안전교육 이수자 이수 불필요)',
       '준비물: 신분증',
     ],
   ),
@@ -382,25 +384,26 @@ class _StepCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = context.appColors;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.surfaceWhite,
+          color: c.surfaceWhite,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.borderLight),
+          border: Border.all(color: c.borderLight),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               step.title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
+                color: c.textPrimary,
                 height: 1.3,
               ),
             ),
@@ -416,8 +419,8 @@ class _StepCard extends StatelessWidget {
                       child: Container(
                         width: 5,
                         height: 5,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
+                        decoration: BoxDecoration(
+                          color: c.primary,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -426,10 +429,10 @@ class _StepCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         line,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           height: 1.45,
-                          color: AppColors.textPrimary,
+                          color: c.textPrimary,
                         ),
                       ),
                     ),

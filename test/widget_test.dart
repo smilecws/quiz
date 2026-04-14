@@ -9,7 +9,8 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(const QuizApp());
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('운전면허 학과시험'), findsOneWidget);
     expect(find.text('모의고사 응시'), findsOneWidget);

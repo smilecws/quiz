@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 
 /// 기능시험·도로주행 등 아직 콘텐츠가 없는 구간용 화면
 class LicensePlaceholderScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class LicensePlaceholderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       appBar: AppBar(
         title: Text(title),
       ),
@@ -28,7 +28,7 @@ class LicensePlaceholderScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 height: 1.5,
-                color: AppColors.textSecondary,
+                color: context.appColors.textSecondary,
               ),
             ),
           ),

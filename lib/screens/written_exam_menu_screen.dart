@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../app_locale_scope.dart';
+import '../app_settings_scope.dart';
 import '../l10n/app_localizations.dart';
 import '../models/mock_exam_license_kind.dart';
 import '../models/question.dart';
@@ -15,7 +15,7 @@ import '../models/mock_exam_history_entry.dart';
 import '../services/disqualification_catalog_service.dart';
 import '../services/mock_exam_history_service.dart';
 import '../services/wrong_note_service.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 import 'disqualification_detail_screen.dart';
 import 'exam_guide_screen.dart';
 import 'mock_exam_history_screen.dart';
@@ -239,7 +239,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
               children: [
                 Text(
                   l10n.mockLicenseSheetTitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
@@ -250,7 +250,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                   style: TextStyle(
                     fontSize: 13,
                     height: 1.4,
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -260,7 +260,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                     MockExamLicenseKind.type1Large.passScoreMinOutOf100,
                   ),
                   icon: Icons.local_shipping_outlined,
-                  color: AppColors.chipBg,
+                  color: context.appColors.chipBg,
                   onTap: () => Navigator.pop(
                     sheetContext,
                     MockExamLicenseKind.type1Large,
@@ -354,7 +354,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
               children: [
                 Text(
                   l10n.practiceSheetTitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
@@ -364,7 +364,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                   title: l10n.practiceVerbalTitle,
                   subtitle: l10n.practiceVerbalSub,
                   icon: Icons.record_voice_over_outlined,
-                  color: AppColors.chipBg,
+                  color: context.appColors.chipBg,
                   onTap: () =>
                       Navigator.pop(sheetContext, _PracticeType.speaking),
                 ),
@@ -459,7 +459,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
 
   void _showLanguageSheet(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final scope = AppLocaleScope.of(context);
+    final scope = AppSettingsScope.of(context);
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -480,7 +480,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                     children: [
                       Text(
                         l10n.languageSheetTitle,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                         ),
@@ -488,10 +488,10 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                       const SizedBox(height: 6),
                       Text(
                         l10n.languageSheetTranslationNote,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           height: 1.4,
-                          color: AppColors.textSecondary,
+                          color: context.appColors.textSecondary,
                         ),
                       ),
                     ],
@@ -526,6 +526,51 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                     Navigator.pop(sheetContext);
                   },
                 ),
+                const Divider(height: 28),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    l10n.themeModeSheetTitle,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                ListTile(
+                  title: Text(l10n.themeModeSystem),
+                  trailing: scope.themeMode == ThemeMode.system
+                      ? Icon(Icons.check_rounded,
+                          color: context.appColors.primaryDark)
+                      : null,
+                  onTap: () {
+                    scope.setThemeMode(ThemeMode.system);
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                ListTile(
+                  title: Text(l10n.themeModeLight),
+                  trailing: scope.themeMode == ThemeMode.light
+                      ? Icon(Icons.check_rounded,
+                          color: context.appColors.primaryDark)
+                      : null,
+                  onTap: () {
+                    scope.setThemeMode(ThemeMode.light);
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                ListTile(
+                  title: Text(l10n.themeModeDark),
+                  trailing: scope.themeMode == ThemeMode.dark
+                      ? Icon(Icons.check_rounded,
+                          color: context.appColors.primaryDark)
+                      : null,
+                  onTap: () {
+                    scope.setThemeMode(ThemeMode.dark);
+                    Navigator.pop(sheetContext);
+                  },
+                ),
               ],
             ),
           ),
@@ -545,7 +590,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
         : l10n.mockExamCardPoints(_latestMockExam!.scaledScoreOutOf100);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
@@ -561,18 +606,18 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                       children: [
                         Text(
                           l10n.greetHello,
-                          style: const TextStyle(
-                            color: AppColors.textSecondary,
+                          style: TextStyle(
+                            color: context.appColors.textSecondary,
                             fontSize: 13,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           l10n.titleMain,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimary,
+                            color: context.appColors.textPrimary,
                           ),
                         ),
                       ],
@@ -612,7 +657,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _StatCard(
-                              iconBg: AppColors.chipBg,
+                              iconBg: context.appColors.chipBg,
                               icon: Icons.bar_chart_rounded,
                               title: l10n.mockExamScoreToday,
                               valueText: mockScoreLine,
@@ -625,16 +670,16 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
               const SizedBox(height: 18),
               Text(
                 l10n.problemTypes,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
+                  color: context.appColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
               _MenuTile(
                 icon: Icons.description_outlined,
-                iconBg: AppColors.chipBg,
+                iconBg: context.appColors.chipBg,
                 title: l10n.menuPracticeTitle,
                 subtitle: l10n.menuPracticeSubtitle,
                 onTap: () => _openPracticeMenu(context),
@@ -668,19 +713,19 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
               _MenuTile(
                 icon: Icons.analytics_outlined,
                 iconBg: const Color(0xFFEDE9FE),
-                title: '나의 통계',
-                subtitle: '정답률, 모의고사 추이, 자주 틀리는 문제',
+                title: l10n.statsTitle,
+                subtitle: l10n.statsMenuSubtitle,
                 onTap: () => _openStats(context),
               ),
               const SizedBox(height: 10),
               Material(
-                color: AppColors.surfaceWhite,
+                color: context.appColors.surfaceWhite,
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.borderLight),
+                    border: Border.all(color: context.appColors.borderLight),
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
@@ -694,9 +739,9 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                           color: const Color(0xFFFFE8E8),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.gpp_bad_outlined,
-                          color: AppColors.primaryDark,
+                          color: context.appColors.primaryDark,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -710,10 +755,10 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                                 Expanded(
                                   child: Text(
                                     l10n.tipTitle,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w800,
-                                      color: AppColors.textPrimary,
+                                      color: context.appColors.textPrimary,
                                     ),
                                   ),
                                 ),
@@ -735,7 +780,7 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                                   ),
                                   child: Text(
                                     l10n.disqualificationViewAll,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -751,10 +796,10 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
                                     ? l10n.disqualificationLoading
                                     : _disqualificationSnippet,
                                 key: ValueKey<String>(_disqualificationSnippet),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   height: 1.45,
-                                  color: AppColors.textSecondary,
+                                  color: context.appColors.textSecondary,
                                 ),
                               ),
                             ),
@@ -773,8 +818,8 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
       bottomNavigationBar: BottomNavigationBar(
         // 메인 화면은 탭과 1:1로 매칭되지 않으므로 선택 강조를 두지 않습니다.
         currentIndex: 0,
-        selectedItemColor: AppColors.textSecondary,
-        unselectedItemColor: AppColors.textSecondary,
+        selectedItemColor: context.appColors.textSecondary,
+        unselectedItemColor: context.appColors.textSecondary,
         selectedFontSize: 11.5,
         unselectedFontSize: 11.5,
         onTap: (i) {
@@ -854,9 +899,9 @@ class _PracticeTypeTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.surfaceWhite,
+          color: context.appColors.surfaceWhite,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.borderLight),
+          border: Border.all(color: context.appColors.borderLight),
         ),
         child: Row(
           children: [
@@ -867,7 +912,7 @@ class _PracticeTypeTile extends StatelessWidget {
                 color: color,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: AppColors.textPrimary),
+              child: Icon(icon, color: context.appColors.textPrimary),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -876,7 +921,7 @@ class _PracticeTypeTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,
                     ),
@@ -884,9 +929,9 @@ class _PracticeTypeTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12.5,
-                      color: AppColors.textSecondary,
+                      color: context.appColors.textSecondary,
                       height: 1.4,
                     ),
                   ),
@@ -922,7 +967,7 @@ class _RoundedIconBadge extends StatelessWidget {
       ),
       child: Icon(
         icon,
-        color: AppColors.primaryDark,
+        color: context.appColors.primaryDark,
         size: 20,
       ),
     );
@@ -946,9 +991,9 @@ class _LearningProgressCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
+        color: context.appColors.surfaceWhite,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: context.appColors.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -962,7 +1007,7 @@ class _LearningProgressCard extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: _RoundedIconBadge(
                     icon: Icons.menu_book_outlined,
-                    iconBg: AppColors.chipBg,
+                    iconBg: context.appColors.chipBg,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -970,10 +1015,10 @@ class _LearningProgressCard extends StatelessWidget {
                   progressText,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
-                    color: AppColors.textPrimary,
+                    color: context.appColors.textPrimary,
                     height: 1.05,
                   ),
                 ),
@@ -987,7 +1032,7 @@ class _LearningProgressCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: context.appColors.textSecondary,
                         height: 1.25,
                       ),
                     ),
@@ -1002,9 +1047,9 @@ class _LearningProgressCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 8,
-              backgroundColor: AppColors.borderLight,
+              backgroundColor: context.appColors.borderLight,
               valueColor:
-                  const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                  AlwaysStoppedAnimation<Color>(context.appColors.primary),
             ),
           ),
         ],
@@ -1041,10 +1086,10 @@ class _StatCard extends StatelessWidget {
             valueText,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: AppColors.textPrimary,
+              color: context.appColors.textPrimary,
               height: 1.05,
             ),
           ),
@@ -1053,9 +1098,9 @@ class _StatCard extends StatelessWidget {
             title,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: AppColors.textSecondary,
+              color: context.appColors.textSecondary,
               height: 1.25,
             ),
           ),
@@ -1067,16 +1112,16 @@ class _StatCard extends StatelessWidget {
       return Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.surfaceWhite,
+          color: context.appColors.surfaceWhite,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.borderLight),
+          border: Border.all(color: context.appColors.borderLight),
         ),
         child: content,
       );
     }
 
     return Material(
-      color: AppColors.surfaceWhite,
+      color: context.appColors.surfaceWhite,
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -1084,7 +1129,7 @@ class _StatCard extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.borderLight),
+            border: Border.all(color: context.appColors.borderLight),
           ),
           child: content,
         ),
@@ -1113,7 +1158,7 @@ class _MenuTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surfaceWhite,
+      color: context.appColors.surfaceWhite,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -1121,7 +1166,7 @@ class _MenuTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.borderLight),
+            border: Border.all(color: context.appColors.borderLight),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           child: Row(
@@ -1133,7 +1178,7 @@ class _MenuTile extends StatelessWidget {
                   color: iconBg,
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(icon, color: AppColors.primaryDark),
+                child: Icon(icon, color: context.appColors.primaryDark),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -1142,18 +1187,18 @@ class _MenuTile extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
+                        color: context.appColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: context.appColors.textSecondary,
                       ),
                     ),
                   ],
@@ -1169,7 +1214,7 @@ class _MenuTile extends StatelessWidget {
                   ),
                   child: Text(
                     badgeText!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
@@ -1178,8 +1223,8 @@ class _MenuTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
               ],
-              const Icon(Icons.chevron_right_rounded,
-                  color: AppColors.textSecondary),
+              Icon(Icons.chevron_right_rounded,
+                  color: context.appColors.textSecondary),
             ],
           ),
         ),

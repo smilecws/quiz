@@ -3,7 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/disqualification_catalog.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme_colors.dart';
 import '../utils/safe_external_url.dart';
 
 class DisqualificationDetailScreen extends StatelessWidget {
@@ -46,7 +46,7 @@ class DisqualificationDetailScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.appColors.background,
         appBar: AppBar(
           title: Text(l10n.disqualificationScreenTitle),
           bottom: TabBar(
@@ -100,10 +100,10 @@ class _DrivingTab extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               catalog.drivingTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
+                color: context.appColors.textPrimary,
               ),
             ),
           ),
@@ -113,7 +113,7 @@ class _DrivingTab extends StatelessWidget {
             icon: const Icon(Icons.open_in_new, size: 18),
             label: Text(sourceLabel),
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.primaryDark,
+              foregroundColor: context.appColors.primaryDark,
               alignment: Alignment.centerLeft,
             ),
           ),
@@ -124,10 +124,10 @@ class _DrivingTab extends StatelessWidget {
               padding: const EdgeInsets.only(top: 12, bottom: 8),
               child: Text(
                 cat.licenseType,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: context.appColors.textPrimary,
                 ),
               ),
             ),
@@ -141,9 +141,9 @@ class _DrivingTab extends StatelessWidget {
                       width: 28,
                       child: Text(
                         '${c.number}.',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primaryDark,
+                          color: context.appColors.primaryDark,
                           fontSize: 14,
                         ),
                       ),
@@ -151,10 +151,10 @@ class _DrivingTab extends StatelessWidget {
                     Expanded(
                       child: Text(
                         c.text,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           height: 1.45,
-                          color: AppColors.textPrimary,
+                          color: context.appColors.textPrimary,
                         ),
                       ),
                     ),
@@ -191,10 +191,10 @@ class _RoadTab extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               catalog.roadTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
+                color: context.appColors.textPrimary,
               ),
             ),
           ),
@@ -203,10 +203,10 @@ class _RoadTab extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               types.join(', '),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 height: 1.4,
-                color: AppColors.textSecondary,
+                color: context.appColors.textSecondary,
               ),
             ),
           ),
@@ -216,7 +216,7 @@ class _RoadTab extends StatelessWidget {
             icon: const Icon(Icons.open_in_new, size: 18),
             label: Text(sourceLabel),
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.primaryDark,
+              foregroundColor: context.appColors.primaryDark,
               alignment: Alignment.centerLeft,
             ),
           ),
@@ -231,9 +231,9 @@ class _RoadTab extends StatelessWidget {
                   width: 28,
                   child: Text(
                     '${c.number}.',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: AppColors.primaryDark,
+                      color: context.appColors.primaryDark,
                       fontSize: 14,
                     ),
                   ),
@@ -241,10 +241,10 @@ class _RoadTab extends StatelessWidget {
                 Expanded(
                   child: Text(
                     c.text,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       height: 1.45,
-                      color: AppColors.textPrimary,
+                      color: context.appColors.textPrimary,
                     ),
                   ),
                 ),
