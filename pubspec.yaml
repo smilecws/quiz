@@ -38,6 +38,7 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   assets:
+    - google_fonts/Jua-Regular.ttf
     - assets/questions_kor.json
     - assets/questions_eng.json
     - assets/questions_chi.json
@@ -46,5 +47,7 @@ flutter:
     - assets/quiz_icon.png
     - assets/license_icon.png
     - assets/driving_disqualification_merged.json
+    - assets/question_subcategory.json
+    - assets/study/
     - assets/questions_images/
     - assets/questions_videos/

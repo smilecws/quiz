@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_settings_scope.dart';
 import 'l10n/app_localizations.dart';
 import 'screens/home_screen.dart';
 import 'services/locale_service.dart';
 import 'services/question_service.dart';
 import 'services/theme_mode_service.dart';
-import 'theme/app_theme_colors.dart';
+import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,108 +54,6 @@ class _QuizAppState extends State<QuizApp> {
     if (mounted) setState(() => _themeMode = mode);
   }
 
-  static ThemeData _lightTheme() {
-    const ac = AppThemeColors.light;
-    final colorScheme = ColorScheme.light(
-      primary: ac.primary,
-      onPrimary: ac.onPrimary,
-      surface: ac.surfaceWhite,
-      onSurface: ac.textPrimary,
-      onSurfaceVariant: ac.textSecondary,
-      outline: ac.borderLight,
-    );
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.light,
-      colorScheme: colorScheme,
-      extensions: const [AppThemeColors.light],
-      scaffoldBackgroundColor: ac.background,
-      textTheme: GoogleFonts.juaTextTheme(
-        ThemeData(brightness: Brightness.light).textTheme,
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: ac.surfaceWhite,
-        selectedItemColor: ac.textSecondary,
-        unselectedItemColor: ac.textSecondary,
-        elevation: 8,
-      ),
-      appBarTheme: AppBarTheme(
-        backgroundColor: ac.surfaceWhite,
-        foregroundColor: ac.textPrimary,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        titleTextStyle: GoogleFonts.jua(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: ac.textPrimary,
-        ),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ac.primary,
-          foregroundColor: ac.onPrimary,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-      ),
-    );
-  }
-
-  static ThemeData _darkTheme() {
-    const ac = AppThemeColors.dark;
-    final colorScheme = ColorScheme.dark(
-      primary: ac.primary,
-      onPrimary: ac.onPrimary,
-      surface: ac.surfaceWhite,
-      onSurface: ac.textPrimary,
-      onSurfaceVariant: ac.textSecondary,
-      outline: ac.borderLight,
-    );
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: colorScheme,
-      extensions: const [AppThemeColors.dark],
-      scaffoldBackgroundColor: ac.background,
-      textTheme: GoogleFonts.juaTextTheme(
-        ThemeData(brightness: Brightness.dark).textTheme,
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: ac.surfaceWhite,
-        selectedItemColor: ac.textSecondary,
-        unselectedItemColor: ac.textSecondary,
-        elevation: 8,
-      ),
-      appBarTheme: AppBarTheme(
-        backgroundColor: ac.surfaceWhite,
-        foregroundColor: ac.textPrimary,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        titleTextStyle: GoogleFonts.jua(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: ac.textPrimary,
-        ),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ac.primary,
-          foregroundColor: ac.onPrimary,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppSettingsScope(
@@ -168,8 +65,8 @@ class _QuizAppState extends State<QuizApp> {
         debugShowCheckedModeBanner: false,
         locale: _locale,
         themeMode: _themeMode,
-        theme: _lightTheme(),
-        darkTheme: _darkTheme(),
+        theme: buildLightTheme(),
+        darkTheme: buildDarkTheme(),
         supportedLocales: LocaleService.supportedLocales,
         localizationsDelegates: const [
           AppLocalizations.delegate,

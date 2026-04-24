@@ -3,24 +3,27 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../app_settings_scope.dart';
 import '../l10n/app_localizations.dart';
 import '../models/mock_exam_license_kind.dart';
 import '../models/question.dart';
 import '../services/attempted_questions_service.dart';
 import '../services/favorite_questions_service.dart';
 import '../services/question_service.dart';
+import '../services/question_subcategory_service.dart';
+import '../services/subcategory_classifier.dart';
 import '../models/disqualification_catalog.dart';
 import '../models/mock_exam_history_entry.dart';
 import '../services/disqualification_catalog_service.dart';
 import '../services/mock_exam_history_service.dart';
 import '../services/wrong_note_service.dart';
 import '../theme/app_theme_colors.dart';
+import '../utils/subcategory_ui.dart';
 import 'disqualification_detail_screen.dart';
 import 'exam_guide_screen.dart';
 import 'mock_exam_history_screen.dart';
 import 'quiz_screen.dart';
 import 'stats_screen.dart';
+import 'study_card_screen.dart';
 
 /// 학습 진도 + 모의고사 점수 한 줄 기본 높이 (텍스트 스케일에 비례해 확장)
 const double _kHomeStatsRowHeight = 176 * 0.8;
@@ -408,11 +411,22 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
     String title;
     switch (choice) {
       case _PracticeType.speaking:
-        questions = await QuestionService.getRandomQuestionsByCategory(
-          category: QuestionCategory.verbal,
-          count: 40,
-        );
-        title = l10n.quizTitleVerbal;
+        if (!context.mounted) return;
+        final subcategoryId = await _openVerbalSubcategorySheet(context);
+        if (subcategoryId == null || !context.mounted) return;
+        if (subcategoryId == _kAllVerbalMarker) {
+          questions = await QuestionService.getRandomQuestionsByCategory(
+            category: QuestionCategory.verbal,
+            count: 40,
+          );
+          title = l10n.quizTitleVerbal;
+        } else {
+          questions = await QuestionService.getRandomQuestionsBySubcategory(
+            subcategoryId: subcategoryId,
+            count: 40,
+          );
+          title = l10n.quizTitleSubcategory(subcategoryId);
+        }
         break;
       case _PracticeType.signAndSituation:
         questions = await QuestionService.getRandomQuestionsByCategory(
@@ -457,10 +471,14 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
     await _loadCounts();
   }
 
-  void _showLanguageSheet(BuildContext context) {
+  /// "말문제" 선택 후 뜨는 2차 시트. 10개 소카테고리 + "전체" 옵션.
+  /// 선택된 태그 ID 또는 "전체" 마커 [_kAllVerbalMarker] 를 반환. 취소 시 null.
+  Future<String?> _openVerbalSubcategorySheet(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
-    final scope = AppSettingsScope.of(context);
-    showModalBottomSheet<void>(
+    final counts = await QuestionSubcategoryService.loadCounts();
+    if (!context.mounted) return null;
+
+    return showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -474,109 +492,56 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
             constraints: BoxConstraints(maxHeight: maxSheetHeight),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 12, 8, 20),
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.languageSheetTitle,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            l10n.languageSheetTranslationNote,
-                            style: TextStyle(
-                              fontSize: 13,
-                              height: 1.4,
-                              color: context.appColors.textSecondary,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      l10n.subcategorySheetTitle,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _PracticeTypeTile(
+                      title: l10n.subcategoryAllVerbalTitle,
+                      subtitle: l10n.subcategoryAllVerbalSub,
+                      icon: Icons.shuffle_rounded,
+                      color: context.appColors.chipBg,
+                      onTap: () => Navigator.pop(
+                        sheetContext,
+                        _kAllVerbalMarker,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ListTile(
-                      title: Text(l10n.languageKo),
-                      onTap: () {
-                        scope.setLocale(const Locale('ko'));
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
-                    ListTile(
-                      title: Text(l10n.languageEn),
-                      onTap: () {
-                        scope.setLocale(const Locale('en'));
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
-                    ListTile(
-                      title: Text(l10n.languageZh),
-                      onTap: () {
-                        scope.setLocale(const Locale('zh'));
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
-                    ListTile(
-                      title: Text(l10n.languageVi),
-                      onTap: () {
-                        scope.setLocale(const Locale('vi'));
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
-                    const Divider(height: 28),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        l10n.themeModeSheetTitle,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
+                    ...SubcategoryIds.verbalSubcategoryIds.map((id) {
+                      final count = counts[id] ?? 0;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _SubcategoryTileWithStudy(
+                          title: l10n.subcategoryLabel(id),
+                          subtitle: l10n.subcategorySubtitle(id, count),
+                          studyLabel: l10n.studyActionLabel,
+                          icon: iconForSubcategory(id),
+                          color: colorForSubcategory(context, id),
+                          onTapPractice: () =>
+                              Navigator.pop(sheetContext, id),
+                          onTapStudy: () {
+                            Navigator.pop(sheetContext);
+                            Navigator.push<void>(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (_) => StudyCardScreen(
+                                  subcategoryId: id,
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    ListTile(
-                      title: Text(l10n.themeModeSystem),
-                      trailing: scope.themeMode == ThemeMode.system
-                          ? Icon(Icons.check_rounded,
-                              color: context.appColors.primaryDark)
-                          : null,
-                      onTap: () {
-                        scope.setThemeMode(ThemeMode.system);
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
-                    ListTile(
-                      title: Text(l10n.themeModeLight),
-                      trailing: scope.themeMode == ThemeMode.light
-                          ? Icon(Icons.check_rounded,
-                              color: context.appColors.primaryDark)
-                          : null,
-                      onTap: () {
-                        scope.setThemeMode(ThemeMode.light);
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
-                    ListTile(
-                      title: Text(l10n.themeModeDark),
-                      trailing: scope.themeMode == ThemeMode.dark
-                          ? Icon(Icons.check_rounded,
-                              color: context.appColors.primaryDark)
-                          : null,
-                      onTap: () {
-                        scope.setThemeMode(ThemeMode.dark);
-                        Navigator.pop(sheetContext);
-                      },
-                    ),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -605,38 +570,34 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.greetHello,
-                          style: TextStyle(
-                            color: context.appColors.textSecondary,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.titleMain,
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                            color: context.appColors.textPrimary,
-                          ),
-                        ),
-                      ],
+              if (Navigator.of(context).canPop())
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
+                    icon: Icon(
+                      Icons.arrow_back_rounded,
+                      color: context.appColors.textPrimary,
                     ),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
-                  IconButton(
-                    tooltip: l10n.languageButtonTooltip,
-                    onPressed: () => _showLanguageSheet(context),
-                    icon: const Icon(Icons.language_rounded),
-                  ),
-                ],
+                ),
+              Text(
+                l10n.greetHello,
+                style: TextStyle(
+                  color: context.appColors.textSecondary,
+                  fontSize: 13,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.titleMain,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: context.appColors.textPrimary,
+                ),
               ),
               const SizedBox(height: 14),
               _loading
@@ -884,6 +845,10 @@ class _WrittenExamMenuScreenState extends State<WrittenExamMenuScreen> {
 
 enum _PracticeType { speaking, signAndSituation, videoQuestion, randomAll }
 
+/// 소카테고리 2차 시트에서 "말문제 전체" 를 나타내는 센티넬.
+/// 태그 ID 문자열과 충돌하지 않는 값이면 됨.
+const String _kAllVerbalMarker = '__all_verbal__';
+
 class _PracticeTypeTile extends StatelessWidget {
   const _PracticeTypeTile({
     required this.title,
@@ -944,6 +909,127 @@ class _PracticeTypeTile extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 소카테고리 시트 2차 타일. 큰 영역 탭 = 바로 풀기,
+/// 우측 "공부하기" 버튼 탭 = 학습 카드 화면 이동.
+class _SubcategoryTileWithStudy extends StatelessWidget {
+  const _SubcategoryTileWithStudy({
+    required this.title,
+    required this.subtitle,
+    required this.studyLabel,
+    required this.icon,
+    required this.color,
+    required this.onTapPractice,
+    required this.onTapStudy,
+  });
+
+  final String title;
+  final String subtitle;
+  final String studyLabel;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTapPractice;
+  final VoidCallback onTapStudy;
+
+  @override
+  Widget build(BuildContext context) {
+    final ac = context.appColors;
+    return InkWell(
+      onTap: onTapPractice,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: ac.surfaceWhite,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: ac.borderLight),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: ac.textPrimary),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: ac.textSecondary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            // "공부하기" 보조 버튼 — 부모 InkWell 탭 차단을 위해 Material 로 감싼다
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onTapStudy,
+                borderRadius: BorderRadius.circular(999),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ac.chipBg,
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(
+                      color: ac.primary.withValues(alpha: 0.35),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.menu_book_outlined,
+                        size: 14,
+                        color: ac.primaryDark,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        studyLabel,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: ac.primaryDark,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

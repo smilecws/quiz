@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/mock_exam_license_kind.dart';
+import '../services/subcategory_classifier.dart';
 
 /// 홈·하단 탭 등 주요 UI 문자열 (ko / en / zh / vi)
 class AppLocalizations {
@@ -560,6 +561,229 @@ class AppLocalizations {
         'en': 'Random practice',
         'zh': '随机练习',
         'vi': 'Luyện ngẫu nhiên',
+      });
+
+  // ——— 말문제 소카테고리 ———
+  String get subcategorySheetTitle => _t({
+        'ko': '어떤 주제로 풀까요?',
+        'en': 'Which topic?',
+        'zh': '练习哪个主题？',
+        'vi': 'Chủ đề nào?',
+      });
+
+  String get subcategoryAllVerbalTitle => _t({
+        'ko': '말문제 전체',
+        'en': 'All text questions',
+        'zh': '全部文字题',
+        'vi': 'Toàn bộ câu lý thuyết',
+      });
+
+  String get subcategoryAllVerbalSub => _t({
+        'ko': '주제 무관 말문제 랜덤 40문제',
+        'en': 'Random 40 from all text questions',
+        'zh': '全部文字题中随机 40 题',
+        'vi': '40 câu ngẫu nhiên từ toàn bộ câu lý thuyết',
+      });
+
+  String subcategoryLabel(String id) {
+    switch (id) {
+      case SubcategoryIds.alcohol:
+        return _t({
+          'ko': '음주·약물 운전',
+          'en': 'Alcohol & drugs',
+          'zh': '酒驾·药驾',
+          'vi': 'Rượu bia & ma túy',
+        });
+      case SubcategoryIds.childZone:
+        return _t({
+          'ko': '어린이·노인·장애인 보호',
+          'en': 'Child & elderly zones',
+          'zh': '儿童·老人·残障人保护',
+          'vi': 'Khu bảo vệ trẻ em & người già',
+        });
+      case SubcategoryIds.emergency:
+        return _t({
+          'ko': '응급처치·사고대응',
+          'en': 'First aid & accidents',
+          'zh': '应急处理·事故应对',
+          'vi': 'Sơ cứu & xử lý tai nạn',
+        });
+      case SubcategoryIds.license:
+        return _t({
+          'ko': '면허·행정처분',
+          'en': 'License & penalties',
+          'zh': '驾照·行政处罚',
+          'vi': 'Bằng lái & xử phạt',
+        });
+      case SubcategoryIds.signSignal:
+        return _t({
+          'ko': '신호·표지·노면표시',
+          'en': 'Signals, signs, road marks',
+          'zh': '信号·标志·路面标识',
+          'vi': 'Tín hiệu, biển báo, vạch đường',
+        });
+      case SubcategoryIds.speedLane:
+        return _t({
+          'ko': '속도·차로·앞지르기',
+          'en': 'Speed, lanes, overtaking',
+          'zh': '速度·车道·超车',
+          'vi': 'Tốc độ, làn, vượt xe',
+        });
+      case SubcategoryIds.parking:
+        return _t({
+          'ko': '주차·정차',
+          'en': 'Parking & stopping',
+          'zh': '停车·驻车',
+          'vi': 'Đỗ & dừng xe',
+        });
+      case SubcategoryIds.highway:
+        return _t({
+          'ko': '고속도로·긴급차량',
+          'en': 'Highways & emergency vehicles',
+          'zh': '高速公路·紧急车辆',
+          'vi': 'Cao tốc & xe ưu tiên',
+        });
+      case SubcategoryIds.vehicleEco:
+        return _t({
+          'ko': '친환경·차량장치',
+          'en': 'Eco driving & vehicle parts',
+          'zh': '环保·车辆装置',
+          'vi': 'Lái xanh & thiết bị xe',
+        });
+      case SubcategoryIds.general:
+      default:
+        return _t({
+          'ko': '일반 법규',
+          'en': 'General rules',
+          'zh': '一般法规',
+          'vi': 'Quy định chung',
+        });
+    }
+  }
+
+  String subcategorySubtitle(String id, int count) {
+    final unit = _t({
+      'ko': '$count문제',
+      'en': '$count questions',
+      'zh': '$count 题',
+      'vi': '$count câu',
+    });
+    final hint = () {
+      switch (id) {
+        case SubcategoryIds.alcohol:
+          return _t({
+            'ko': '음주·약물 운전 관련',
+            'en': 'About drunk/drug driving',
+            'zh': '酒驾·药驾相关',
+            'vi': 'Liên quan lái xe khi uống rượu/ma túy',
+          });
+        case SubcategoryIds.childZone:
+          return _t({
+            'ko': '어린이·노인·장애인 보호구역',
+            'en': 'Protected zones',
+            'zh': '保护区相关',
+            'vi': 'Khu vực bảo vệ',
+          });
+        case SubcategoryIds.emergency:
+          return _t({
+            'ko': '사고 현장 대응, 응급처치',
+            'en': 'Accident scene, first aid',
+            'zh': '事故现场处置、应急',
+            'vi': 'Hiện trường tai nạn, sơ cứu',
+          });
+        case SubcategoryIds.license:
+          return _t({
+            'ko': '면허·벌점·과태료·범칙금',
+            'en': 'License, points, fines',
+            'zh': '驾照·扣分·罚款',
+            'vi': 'Bằng, điểm trừ, tiền phạt',
+          });
+        case SubcategoryIds.signSignal:
+          return _t({
+            'ko': '신호등, 안전표지, 노면표시',
+            'en': 'Signals, traffic signs, road marks',
+            'zh': '信号灯、安全标志、路面标识',
+            'vi': 'Đèn tín hiệu, biển báo, vạch',
+          });
+        case SubcategoryIds.speedLane:
+          return _t({
+            'ko': '제한속도, 차로, 앞지르기',
+            'en': 'Speed limits, lane, overtaking',
+            'zh': '限速、车道、超车',
+            'vi': 'Giới hạn tốc độ, làn, vượt',
+          });
+        case SubcategoryIds.parking:
+          return _t({
+            'ko': '주차·정차, 견인',
+            'en': 'Parking, stopping, towing',
+            'zh': '停车、驻车、拖车',
+            'vi': 'Đỗ xe, dừng xe, kéo xe',
+          });
+        case SubcategoryIds.highway:
+          return _t({
+            'ko': '고속도로, 긴급자동차',
+            'en': 'Highways, emergency vehicles',
+            'zh': '高速公路、紧急车辆',
+            'vi': 'Đường cao tốc, xe ưu tiên',
+          });
+        case SubcategoryIds.vehicleEco:
+          return _t({
+            'ko': '친환경 운전·차량 점검',
+            'en': 'Eco driving, vehicle check',
+            'zh': '环保驾驶、车辆检查',
+            'vi': 'Lái xe xanh, kiểm tra xe',
+          });
+        case SubcategoryIds.general:
+        default:
+          return _t({
+            'ko': '기타 도로교통법 일반',
+            'en': 'Other traffic rules',
+            'zh': '其他交通法规',
+            'vi': 'Luật giao thông khác',
+          });
+      }
+    }();
+    return '$hint · $unit';
+  }
+
+  String quizTitleSubcategory(String id) {
+    return subcategoryLabel(id);
+  }
+
+  // ——— 학습 카드 ———
+  String get studyActionLabel => _t({
+        'ko': '공부하기',
+        'en': 'Study',
+        'zh': '学习',
+        'vi': 'Học',
+      });
+
+  String get studyScreenSectionKeyPoints => _t({
+        'ko': '핵심 포인트',
+        'en': 'Key points',
+        'zh': '核心要点',
+        'vi': 'Điểm chính',
+      });
+
+  String get studyScreenSectionNumbers => _t({
+        'ko': '핵심 수치',
+        'en': 'Key numbers',
+        'zh': '核心数值',
+        'vi': 'Số liệu chính',
+      });
+
+  String get studyScreenSectionExamples => _t({
+        'ko': '대표 기출',
+        'en': 'Representative questions',
+        'zh': '代表题目',
+        'vi': 'Câu hỏi tiêu biểu',
+      });
+
+  String get studyScreenQuizRelated => _t({
+        'ko': '관련 문제 풀기',
+        'en': 'Practice these questions',
+        'zh': '练习相关题目',
+        'vi': 'Luyện câu liên quan',
       });
 
   // ——— 나의 통계 ———

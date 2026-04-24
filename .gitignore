@@ -12,6 +12,12 @@
 .swiftpm/
 migrate_working_dir/
 
+# 학습 카드 초안 보조 데이터 (tool/extract_study_seeds.dart 산출물)
+assets/study/_seeds/
+
+# 골든 테스트 실패 시 생성되는 diff 이미지 (일시적)
+test/golden/failures/
+
 # IntelliJ related
 *.iml
 *.ipr

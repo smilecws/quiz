@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import '../models/question.dart';
 import 'locale_service.dart';
+import 'question_subcategory_service.dart';
 
 /// `questions_kor.json` 등 모든 언어 JSON의 `category` 값과 동일해야 합니다.
 class QuestionCategory {
@@ -146,6 +147,22 @@ class QuestionService {
     final all = await loadAllQuestions();
     final filtered =
         all.where((q) => (q.category ?? '').trim() == category).toList();
+    if (filtered.isEmpty) return const [];
+    filtered.shuffle(Random());
+    final n = count.clamp(1, filtered.length);
+    return filtered.take(n).toList();
+  }
+
+  /// 소카테고리 태그에 해당하는 문항을 최대 [count] 개 랜덤 반환합니다.
+  /// 매핑은 [QuestionSubcategoryService] 가 로드하는 id → 태그 맵을 사용합니다.
+  static Future<List<Question>> getRandomQuestionsBySubcategory({
+    required String subcategoryId,
+    int count = 40,
+  }) async {
+    final all = await loadAllQuestions();
+    final map = await QuestionSubcategoryService.loadMap();
+    final filtered =
+        all.where((q) => map[q.id] == subcategoryId).toList();
     if (filtered.isEmpty) return const [];
     filtered.shuffle(Random());
     final n = count.clamp(1, filtered.length);

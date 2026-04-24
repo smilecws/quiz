@@ -1,8 +1,54 @@
 {
   "permissions": {
     "allow": [
-      "Bash(flutter analyze:*)",
-      "Bash(flutter run:*)"
+      "Bash(git stash *)",
+      "Read(//c/Users/smile/.claude/projects/**)",
+      "Read(//c/flutter/**)",
+      "Bash(python3)",
+      "Bash(python \"c:\\\\Users\\\\smile\\\\AppData\\\\Local\\\\Temp\\\\scan_transcripts.py\")",
+      "Bash(flutter test *)",
+      "Bash(flutter analyze *)",
+      "Bash(python scripts/execute.py *)",
+      "Read(//c/Windows/Fonts/**)",
+      "Bash(git push *)",
+      "Bash(where gh *)",
+      "Read(//c/Program Files/**)",
+      "Bash(winget install *)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(grep -B1 \"-1:\")"
+    ],
+    "additionalDirectories": [
+      "\\tmp",
+      "c:\\Users\\smile\\AppData\\Local\\Temp"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "flutter analyze 2>&1 && flutter test 2>&1"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -qE 'rm\\s+-rf|git\\s+push\\s+--force|git\\s+reset\\s+--hard|DROP\\s+TABLE'; then echo 'BLOCKED: 위험한 명령어가 감지되었습니다.' >&2; exit 1; fi"
+          }
+        ]
+      }
     ]
   }
 }
