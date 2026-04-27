@@ -29,6 +29,13 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
+  <!--
+    Google Sign-In (웹) 클라이언트 ID. lib/config/access_log_config.dart 의
+    webClientId 와 동일한 값으로 채울 것. 미설정 시 ConsentScreen 의 Google 로그인은
+    동작하지 않으며, 데스크톱과 동일하게 게이트가 우회됨.
+  -->
+  <meta name="google-signin-client_id" content="YOUR_WEB_CLIENT_ID.apps.googleusercontent.com">
+
   <title>운전면허 학과시험</title>
   <link rel="manifest" href="manifest.json">
 </head>

@@ -910,6 +910,155 @@ class AppLocalizations {
       'vi': 'Sai {r}%',
     }).replaceAll('{r}', rate);
   }
+
+  // ——— 개인정보 수집 동의 (Google Sign-In 게이트) ———
+
+  String get consentTitle => _t({
+        'ko': '개인정보 수집 동의',
+        'en': 'Privacy Consent',
+        'zh': '个人信息收集同意',
+        'vi': 'Đồng ý thu thập thông tin',
+      });
+
+  String get consentPurpose => _t({
+        'ko': '수집 목적: 앱 사용자 통계',
+        'en': 'Purpose: App usage statistics',
+        'zh': '收集目的:应用使用统计',
+        'vi': 'Mục đích: Thống kê người dùng',
+      });
+
+  String get consentItems => _t({
+        'ko': '수집 항목: 이름(직접 입력), 이메일(Google 계정), Google 식별자(sub), 접속 일시, 플랫폼',
+        'en': 'Items: name (entered), email (Google), Google ID (sub), access time, platform',
+        'zh': '收集项目:姓名(自行输入)、邮箱(Google)、Google 标识(sub)、访问时间、平台',
+        'vi': 'Mục: tên (nhập tay), email (Google), Google ID (sub), thời gian truy cập, nền tảng',
+      });
+
+  String get consentRetention => _t({
+        'ko': '보유 기간: 앱 삭제 또는 본인 요청 시까지',
+        'en': 'Retention: until app deletion or your request',
+        'zh': '保留期限:卸载应用或本人请求时止',
+        'vi': 'Lưu trữ: đến khi gỡ ứng dụng hoặc theo yêu cầu',
+      });
+
+  String get consentRightToRefuse => _t({
+        'ko': '동의를 거부할 수 있으며, 거부 시 앱을 사용할 수 없습니다.',
+        'en': 'You may refuse; refusing means the app cannot be used.',
+        'zh': '您有权拒绝同意,拒绝后无法使用本应用。',
+        'vi': 'Bạn có thể từ chối; nếu từ chối, ứng dụng không khả dụng.',
+      });
+
+  String get consentGoogleSignInButton => _t({
+        'ko': 'Google 계정으로 로그인',
+        'en': 'Sign in with Google',
+        'zh': '使用 Google 账号登录',
+        'vi': 'Đăng nhập bằng Google',
+      });
+
+  String get consentGoogleSignInRequired => _t({
+        'ko': '먼저 Google 계정으로 로그인해 주세요.',
+        'en': 'Please sign in with Google first.',
+        'zh': '请先使用 Google 账号登录。',
+        'vi': 'Vui lòng đăng nhập Google trước.',
+      });
+
+  String consentSignedInAs(String email) => _t({
+        'ko': '로그인됨: {e}',
+        'en': 'Signed in as {e}',
+        'zh': '已登录:{e}',
+        'vi': 'Đã đăng nhập: {e}',
+      }).replaceAll('{e}', email);
+
+  String get consentNameLabel => _t({
+        'ko': '이름',
+        'en': 'Name',
+        'zh': '姓名',
+        'vi': 'Tên',
+      });
+
+  String get consentNameHint => _t({
+        'ko': '시트에 기록될 이름을 입력하세요',
+        'en': 'Enter the name to record',
+        'zh': '请输入要记录的姓名',
+        'vi': 'Nhập tên sẽ được ghi lại',
+      });
+
+  String get consentNameRequired => _t({
+        'ko': '이름을 입력해 주세요.',
+        'en': 'Please enter your name.',
+        'zh': '请输入姓名。',
+        'vi': 'Vui lòng nhập tên.',
+      });
+
+  String get consentNameTooLong => _t({
+        'ko': '이름은 30자 이내로 입력해 주세요.',
+        'en': 'Name must be 30 characters or less.',
+        'zh': '姓名不超过 30 个字符。',
+        'vi': 'Tên không quá 30 ký tự.',
+      });
+
+  String get consentAgreeCheckbox => _t({
+        'ko': '위 사항에 모두 동의합니다.',
+        'en': 'I agree to all of the above.',
+        'zh': '我同意以上所有事项。',
+        'vi': 'Tôi đồng ý với toàn bộ nội dung trên.',
+      });
+
+  String get consentAgreeButton => _t({
+        'ko': '동의하고 시작',
+        'en': 'Agree and start',
+        'zh': '同意并开始',
+        'vi': 'Đồng ý và bắt đầu',
+      });
+
+  String get consentDeclineButton => _t({
+        'ko': '동의하지 않음',
+        'en': 'Decline',
+        'zh': '不同意',
+        'vi': 'Không đồng ý',
+      });
+
+  String get consentExitDialogTitle => _t({
+        'ko': '동의가 필요합니다',
+        'en': 'Consent required',
+        'zh': '需要同意',
+        'vi': 'Cần sự đồng ý',
+      });
+
+  String get consentExitDialogBody => _t({
+        'ko': '동의하지 않으시면 앱을 사용할 수 없어 종료됩니다.',
+        'en': 'Without consent the app cannot be used and will close.',
+        'zh': '未同意将无法使用本应用,即将退出。',
+        'vi': 'Không đồng ý thì không thể dùng ứng dụng và sẽ đóng.',
+      });
+
+  String get consentExitConfirm => _t({
+        'ko': '종료',
+        'en': 'Exit',
+        'zh': '退出',
+        'vi': 'Thoát',
+      });
+
+  String get consentExitCancel => _t({
+        'ko': '돌아가기',
+        'en': 'Back',
+        'zh': '返回',
+        'vi': 'Quay lại',
+      });
+
+  String get consentSilentSignInFailed => _t({
+        'ko': '자동 로그인이 만료되어 다시 동의가 필요합니다.',
+        'en': 'Sign-in expired. Please consent again.',
+        'zh': '自动登录已过期,请重新同意。',
+        'vi': 'Phiên đăng nhập đã hết hạn. Vui lòng đồng ý lại.',
+      });
+
+  String get consentSignInFailed => _t({
+        'ko': 'Google 로그인에 실패했습니다. 다시 시도해 주세요.',
+        'en': 'Google sign-in failed. Please try again.',
+        'zh': 'Google 登录失败,请重试。',
+        'vi': 'Đăng nhập Google thất bại. Vui lòng thử lại.',
+      });
 }
 
 class _AppLocalizationsDelegate
