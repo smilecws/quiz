@@ -13,9 +13,12 @@ class GoogleAuthService {
   static GoogleSignIn? _instance;
 
   static GoogleSignIn _signIn() {
+    // 웹은 google_sign_in_web 의 initWithParams() 가 serverClientId 를 거부한다
+    // (assert: 'serverClientId is not supported on Web.'). 대신 clientId 로
+    // 동일한 Web Client ID 를 넘기면 audience 가 동일해진다.
     return _instance ??= GoogleSignIn(
       clientId: kIsWeb ? AccessLogConfig.webClientId : null,
-      serverClientId: AccessLogConfig.webClientId,
+      serverClientId: kIsWeb ? null : AccessLogConfig.webClientId,
       scopes: const ['email'],
     );
   }
