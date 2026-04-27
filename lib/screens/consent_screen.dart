@@ -30,6 +30,7 @@ class _ConsentScreenState extends State<ConsentScreen> {
   bool _agreed = false;
   bool _signingIn = false;
   bool _submitting = false;
+  bool _authReady = false;
   String? _signInError;
   StreamSubscription<GoogleSignInAccount?>? _authSub;
 
@@ -42,8 +43,20 @@ class _ConsentScreenState extends State<ConsentScreen> {
       if (!mounted) return;
       setState(() => _account = account);
     });
-    // ignore: discarded_futures
-    GoogleAuthService.signInSilently().catchError((_) => null);
+    _bootstrapAuth();
+  }
+
+  // signInSilently() 호출이 google_sign_in_web 의 GoogleSignInPlugin::init() 을
+  // 트리거한다. renderButton() 은 init 이 끝난 뒤에만 호출 가능하므로,
+  // 완료 전까지는 GIS 버튼 빌드를 막아야 한다.
+  Future<void> _bootstrapAuth() async {
+    try {
+      await GoogleAuthService.signInSilently();
+    } catch (_) {
+      // 캐시 미존재는 정상 — silent 실패해도 init 은 완료된 상태.
+    }
+    if (!mounted) return;
+    setState(() => _authReady = true);
   }
 
   @override
@@ -163,6 +176,7 @@ class _ConsentScreenState extends State<ConsentScreen> {
                   _GoogleSignInRow(
                     account: _account,
                     busy: _signingIn,
+                    authReady: _authReady,
                     error: _signInError,
                     onSignIn: _handleSignIn,
                     label: l10n.consentGoogleSignInButton,
@@ -319,6 +333,7 @@ class _GoogleSignInRow extends StatelessWidget {
   const _GoogleSignInRow({
     required this.account,
     required this.busy,
+    required this.authReady,
     required this.error,
     required this.onSignIn,
     required this.label,
@@ -328,6 +343,7 @@ class _GoogleSignInRow extends StatelessWidget {
 
   final GoogleSignInAccount? account;
   final bool busy;
+  final bool authReady;
   final String? error;
   final VoidCallback onSignIn;
   final String label;
@@ -371,10 +387,23 @@ class _GoogleSignInRow extends StatelessWidget {
         if (kIsWeb)
           // GIS 가 직접 렌더하는 공식 버튼. signIn() programmatic 호출이
           // 막혀 있어 웹에서는 이 경로만 동작한다.
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: GoogleSignInWebButton(),
-          )
+          // renderButton() 은 GoogleSignInPlugin::init() 이 끝난 뒤에만 호출
+          // 가능하므로 authReady 전에는 자리만 잡아둔다.
+          authReady
+              ? const Align(
+                  alignment: Alignment.centerLeft,
+                  child: GoogleSignInWebButton(),
+                )
+              : const SizedBox(
+                  height: 44,
+                  child: Center(
+                    child: SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                )
         else
           OutlinedButton.icon(
             onPressed: busy ? null : onSignIn,
