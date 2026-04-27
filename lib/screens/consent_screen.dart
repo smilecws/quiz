@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,6 +11,7 @@ import '../services/access_log_service.dart';
 import '../services/consent_service.dart';
 import '../services/google_auth_service.dart';
 import '../theme/app_theme_colors.dart';
+import '../widgets/google_sign_in_button.dart';
 
 /// 첫 실행 게이트. Google 로그인 + 이름 입력 + 동의 체크 셋 다 만족해야 통과.
 class ConsentScreen extends StatefulWidget {
@@ -27,9 +31,24 @@ class _ConsentScreenState extends State<ConsentScreen> {
   bool _signingIn = false;
   bool _submitting = false;
   String? _signInError;
+  StreamSubscription<GoogleSignInAccount?>? _authSub;
+
+  @override
+  void initState() {
+    super.initState();
+    // 웹은 GIS 버튼 클릭 결과가 stream 으로만 옴. 모바일/데스크톱도 silent 결과를
+    // 동일 경로로 받기 위해 둘 다 구독.
+    _authSub = GoogleAuthService.onCurrentUserChanged.listen((account) {
+      if (!mounted) return;
+      setState(() => _account = account);
+    });
+    // ignore: discarded_futures
+    GoogleAuthService.signInSilently().catchError((_) => null);
+  }
 
   @override
   void dispose() {
+    _authSub?.cancel();
     _nameController.dispose();
     super.dispose();
   }
@@ -349,29 +368,38 @@ class _GoogleSignInRow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        OutlinedButton.icon(
-          onPressed: busy ? null : onSignIn,
-          style: OutlinedButton.styleFrom(
-            foregroundColor: colors.textPrimary,
-            backgroundColor: colors.surfaceWhite,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            side: BorderSide(color: colors.borderLight),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
+        if (kIsWeb)
+          // GIS 가 직접 렌더하는 공식 버튼. signIn() programmatic 호출이
+          // 막혀 있어 웹에서는 이 경로만 동작한다.
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: GoogleSignInWebButton(),
+          )
+        else
+          OutlinedButton.icon(
+            onPressed: busy ? null : onSignIn,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: colors.textPrimary,
+              backgroundColor: colors.surfaceWhite,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              side: BorderSide(color: colors.borderLight),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
+            icon: busy
+                ? SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: colors.primary,
+                    ),
+                  )
+                : const Icon(Icons.login),
+            label:
+                Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
           ),
-          icon: busy
-              ? SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: colors.primary,
-                  ),
-                )
-              : const Icon(Icons.login),
-          label: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-        ),
         const SizedBox(height: 6),
         Text(
           error ?? requiredLabel,

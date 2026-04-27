@@ -29,6 +29,10 @@ class GoogleAuthService {
 
   static GoogleSignInAccount? get currentUser => _signIn().currentUser;
 
+  /// 웹의 GIS 버튼 클릭 결과는 programmatic 반환이 아니라 이 스트림으로만 전달된다.
+  static Stream<GoogleSignInAccount?> get onCurrentUserChanged =>
+      _signIn().onCurrentUserChanged;
+
   /// 캐시된 계정이 있으면 그 idToken, 없으면 silent sign-in 시도 후 idToken.
   static Future<String?> currentIdToken() async {
     final account = _signIn().currentUser ?? await _signIn().signInSilently();
