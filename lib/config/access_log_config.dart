@@ -10,12 +10,14 @@ class AccessLogConfig {
 
   /// Apps Script Web App 배포 URL.
   /// 빈 문자열이면 AccessLogService 가 호출을 스킵 (개발 중 fail-safe).
-  static const String endpoint = '';
+  static const String endpoint =
+      'https://script.google.com/macros/s/AKfycbwBhVqIWgpSNDDUi6isYOLf59PS5Rirq0p1SqfH092da8YzBUq3AnVKubnn3nmdy_tg/exec';
 
   /// Google Cloud Console 의 **Web** OAuth 2.0 Client ID.
   /// Android/iOS 도 이 ID 를 `serverClientId` 로 공유해 ID Token 의 `aud` 를
   /// 한 곳으로 통일 → Apps Script 검증이 단순해짐.
-  static const String webClientId = '';
+  static const String webClientId =
+      '235879380962-vsi45gcttfi270pqbgvem6n8fp27di8v.apps.googleusercontent.com';
 
   /// 동의 스키마 버전. PIPA 고지 문구 변경 시 +1 → 기존 동의 무효화 후 재동의.
   static const int consentVersion = 1;
