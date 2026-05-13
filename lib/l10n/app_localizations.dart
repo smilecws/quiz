@@ -1162,6 +1162,487 @@ class AppLocalizations {
         'zh': '取消',
         'vi': 'Huỷ',
       });
+
+  // ——— 친환경 운전 교육 인트로 (동의 직후 1회 노출) ———
+
+  String get ecoIntroBtnPrev => _t({
+        'ko': '이전',
+        'en': 'Previous',
+        'zh': '上一页',
+        'vi': 'Trước',
+      });
+
+  String get ecoIntroBtnNext => _t({
+        'ko': '다음',
+        'en': 'Next',
+        'zh': '下一页',
+        'vi': 'Tiếp',
+      });
+
+  String get ecoIntroBtnStart => _t({
+        'ko': '시작하기',
+        'en': 'Get started',
+        'zh': '开始',
+        'vi': 'Bắt đầu',
+      });
+
+  // 슬라이드 1 — DEFINITION
+  String get ecoIntroS1Badge => '01 · DEFINITION';
+
+  String get ecoIntroS1TopLabel => _t({
+        'ko': '친환경 운전',
+        'en': 'Eco-driving',
+        'zh': '环保驾驶',
+        'vi': 'Lái xe xanh',
+      });
+
+  String get ecoIntroS1Title => _t({
+        'ko': '친환경 운전이란?',
+        'en': 'What is eco-driving?',
+        'zh': '什么是环保驾驶？',
+        'vi': 'Lái xe xanh là gì?',
+      });
+
+  String get ecoIntroS1Subtitle => _t({
+        'ko': 'Eco-Driving · 친환경 경제 운전',
+        'en': 'Eco-Driving · economical & green',
+        'zh': 'Eco-Driving · 环保经济驾驶',
+        'vi': 'Eco-Driving · Lái xe xanh & tiết kiệm',
+      });
+
+  String get ecoIntroS1Body => _t({
+        'ko': '연료 소비와 온실가스 배출을 줄이기 위해 부드럽고 효율적으로 운전하는 습관으로, 환경과 경제를 동시에 살리는 운전법입니다.',
+        'en':
+            'A driving habit that smoothly and efficiently reduces fuel use and greenhouse gas emissions — saving both the environment and your wallet.',
+        'zh': '通过平稳高效的驾驶习惯，减少燃料消耗与温室气体排放，让环境与经济同时受益。',
+        'vi':
+            'Thói quen lái xe êm và hiệu quả nhằm giảm tiêu thụ nhiên liệu và khí nhà kính, vừa bảo vệ môi trường vừa tiết kiệm chi phí.',
+      });
+
+  String get ecoIntroS1PrincipleSectionTitle => _t({
+        'ko': '3대 핵심 원칙',
+        'en': '3 Core Principles',
+        'zh': '三大核心原则',
+        'vi': '3 Nguyên tắc cốt lõi',
+      });
+
+  String get ecoIntroS1Principle1Label => _t({
+        'ko': '친환경',
+        'en': 'Eco',
+        'zh': '环保',
+        'vi': 'Xanh',
+      });
+
+  String get ecoIntroS1Principle1Body => _t({
+        'ko': '온실가스·오염물질 배출 감소',
+        'en': 'Reduces greenhouse gases and pollutants',
+        'zh': '减少温室气体与污染物排放',
+        'vi': 'Giảm khí nhà kính và chất ô nhiễm',
+      });
+
+  String get ecoIntroS1Principle2Label => _t({
+        'ko': '경제성',
+        'en': 'Economy',
+        'zh': '经济',
+        'vi': 'Tiết kiệm',
+      });
+
+  String get ecoIntroS1Principle2Body => _t({
+        'ko': '연료비 절감, 차량 수명 연장',
+        'en': 'Lower fuel cost, longer vehicle life',
+        'zh': '节省燃油费，延长车辆寿命',
+        'vi': 'Giảm chi phí nhiên liệu, kéo dài tuổi thọ xe',
+      });
+
+  String get ecoIntroS1Principle3Label => _t({
+        'ko': '안전성',
+        'en': 'Safety',
+        'zh': '安全',
+        'vi': 'An toàn',
+      });
+
+  String get ecoIntroS1Principle3Body => _t({
+        'ko': '급조작 자제로 사고 위험 감소',
+        'en': 'Fewer abrupt actions, lower accident risk',
+        'zh': '避免急操作，降低事故风险',
+        'vi': 'Tránh thao tác đột ngột, giảm rủi ro tai nạn',
+      });
+
+  String get ecoIntroS1WhyTitle => _t({
+        'ko': '왜 필요할까요?',
+        'en': 'Why does it matter?',
+        'zh': '为什么重要？',
+        'vi': 'Vì sao quan trọng?',
+      });
+
+  String get ecoIntroS1WhyBody => _t({
+        'ko': '승용차 1대 연간 CO₂ 배출량 약 2톤. 운전 습관만 바꿔도 최대 30%까지 감축 가능합니다.',
+        'en':
+            'One passenger car emits ~2 tons of CO₂ per year. Changing habits alone can cut up to 30%.',
+        'zh': '一辆乘用车年均排放约 2 吨 CO₂。仅改变驾驶习惯就可减排最高 30%。',
+        'vi':
+            'Một xe con thải ~2 tấn CO₂ mỗi năm. Chỉ thay đổi thói quen lái xe có thể giảm tới 30%.',
+      });
+
+  String get ecoIntroS1Tag1 => _t({
+        'ko': '# 경제운전',
+        'en': '# Economy',
+        'zh': '# 经济驾驶',
+        'vi': '# Tiết kiệm',
+      });
+
+  String get ecoIntroS1Tag2 => _t({
+        'ko': '# 탄소절감',
+        'en': '# CarbonCut',
+        'zh': '# 减碳',
+        'vi': '# GiảmCarbon',
+      });
+
+  String get ecoIntroS1Tag3 => _t({
+        'ko': '# 안전운행',
+        'en': '# SafeDrive',
+        'zh': '# 安全驾驶',
+        'vi': '# LáiAnToàn',
+      });
+
+  String get ecoIntroS1Tag4 => _t({
+        'ko': '# 연비향상',
+        'en': '# MPGUp',
+        'zh': '# 节油',
+        'vi': '# TiếtKiệmXăng',
+      });
+
+  // 슬라이드 2 — EFFECT
+  String get ecoIntroS2Badge => '02 · EFFECT';
+
+  String get ecoIntroS2TopLabel => _t({
+        'ko': '실제 효과',
+        'en': 'Real impact',
+        'zh': '实际效果',
+        'vi': 'Hiệu quả thực tế',
+      });
+
+  String get ecoIntroS2Title => _t({
+        'ko': '숫자로 보는 변화',
+        'en': 'Change in numbers',
+        'zh': '用数字看变化',
+        'vi': 'Thay đổi qua những con số',
+      });
+
+  String get ecoIntroS2Source => _t({
+        'ko': '출처 : 환경부 친환경운전요령',
+        'en': 'Source: ME Eco-Driving Guide',
+        'zh': '来源：韩国环境部 环保驾驶要领',
+        'vi': 'Nguồn: Hướng dẫn lái xe xanh, Bộ Môi trường HQ',
+      });
+
+  String get ecoIntroS2CoreLabel => 'CORE IMPACT';
+
+  String get ecoIntroS2CoreValue => _t({
+        'ko': '최대 30%',
+        'en': 'Up to 30%',
+        'zh': '最高 30%',
+        'vi': 'Tối đa 30%',
+      });
+
+  String get ecoIntroS2CoreUnit => _t({
+        'ko': '연료 절감',
+        'en': 'fuel saved',
+        'zh': '节省燃油',
+        'vi': 'tiết kiệm xăng',
+      });
+
+  String get ecoIntroS2CoreBody => _t({
+        'ko': '급가·감속만 피해도 연비 30~40% 개선, 오염물질 40% 감소',
+        'en':
+            'Avoiding hard accel/decel alone boosts MPG by 30–40% and cuts pollutants 40%.',
+        'zh': '仅避免急加减速即可提升油耗 30~40%，污染物减少 40%。',
+        'vi':
+            'Chỉ cần tránh tăng/giảm tốc đột ngột giúp tiết kiệm 30–40% nhiên liệu và giảm 40% chất ô nhiễm.',
+      });
+
+  String get ecoIntroS2Kpi1Label => _t({
+        'ko': '연료비 절감',
+        'en': 'Fuel savings',
+        'zh': '节省油费',
+        'vi': 'Tiết kiệm xăng',
+      });
+
+  String get ecoIntroS2Kpi1Value => _t({
+        'ko': '연 386L · 약 50만원',
+        'en': '386 L/yr · ~500K KRW',
+        'zh': '年省 386 L · 约 50 万韩元',
+        'vi': '386 L/năm · ~500K KRW',
+      });
+
+  String get ecoIntroS2Kpi2Label => _t({
+        'ko': 'CO₂ 배출 감소',
+        'en': 'CO₂ reduction',
+        'zh': 'CO₂ 减排',
+        'vi': 'Giảm CO₂',
+      });
+
+  String get ecoIntroS2Kpi2Value => _t({
+        'ko': '연 348kg 감축',
+        'en': '348 kg/yr cut',
+        'zh': '年减 348 kg',
+        'vi': 'Giảm 348 kg/năm',
+      });
+
+  String get ecoIntroS2Kpi3Label => _t({
+        'ko': '오염물질 감축',
+        'en': 'Pollutant cut',
+        'zh': '污染物减少',
+        'vi': 'Giảm ô nhiễm',
+      });
+
+  String get ecoIntroS2Kpi3Value => _t({
+        'ko': '질소산화물 50% 감소',
+        'en': 'NOx down 50%',
+        'zh': '氮氧化物 减少 50%',
+        'vi': 'NOx giảm 50%',
+      });
+
+  String get ecoIntroS2Kpi4Label => _t({
+        'ko': '교통사고 위험',
+        'en': 'Accident risk',
+        'zh': '交通事故风险',
+        'vi': 'Rủi ro tai nạn',
+      });
+
+  String get ecoIntroS2Kpi4Value => _t({
+        'ko': '급조작 감소 · 안전 향상',
+        'en': 'Fewer abrupt acts · safer',
+        'zh': '减少急操作 · 更安全',
+        'vi': 'Ít thao tác đột ngột · an toàn hơn',
+      });
+
+  String get ecoIntroS2Kpi5Label => _t({
+        'ko': '차량 수명·정비',
+        'en': 'Life & service',
+        'zh': '寿命与保养',
+        'vi': 'Tuổi thọ & bảo dưỡng',
+      });
+
+  String get ecoIntroS2Kpi5Value => _t({
+        'ko': '엔진·타이어 부담 감소',
+        'en': 'Less stress on engine & tires',
+        'zh': '减轻发动机与轮胎负担',
+        'vi': 'Giảm tải động cơ & lốp',
+      });
+
+  String get ecoIntroS2TreeTitle => _t({
+        'ko': '나무로 환산하면',
+        'en': 'Translated to trees',
+        'zh': '换算成树木',
+        'vi': 'Quy đổi sang cây xanh',
+      });
+
+  String get ecoIntroS2TreeBody => _t({
+        'ko': '연 348kg CO₂ 감축 = 소나무 53그루가 1년간 흡수하는 양',
+        'en': 'Cutting 348 kg CO₂/yr ≈ what 53 pine trees absorb in a year',
+        'zh': '年减 348 kg CO₂ ≈ 53 棵松树一年吸收量',
+        'vi': 'Giảm 348 kg CO₂/năm ≈ lượng 53 cây thông hấp thụ trong một năm',
+      });
+
+  // 슬라이드 3 — ACTION
+  String get ecoIntroS3Badge => '03 · ACTION';
+
+  String get ecoIntroS3TopLabel => _t({
+        'ko': '실천 10계명',
+        'en': '10 Practices',
+        'zh': '实践十法',
+        'vi': '10 quy tắc',
+      });
+
+  String get ecoIntroS3Title => _t({
+        'ko': '오늘부터 실천하기',
+        'en': 'Start today',
+        'zh': '从今天开始实践',
+        'vi': 'Bắt đầu từ hôm nay',
+      });
+
+  String get ecoIntroS3Subtitle => _t({
+        'ko': '환경부·서울시 친환경 운전 10계명',
+        'en': '10 Eco-Driving Tips (ME · Seoul)',
+        'zh': '环境部·首尔市 环保驾驶十法',
+        'vi': '10 nguyên tắc lái xe xanh (Bộ MT · Seoul)',
+      });
+
+  String get ecoIntroS3Group1Title => _t({
+        'ko': '▸ 운전 습관',
+        'en': '▸ Driving habits',
+        'zh': '▸ 驾驶习惯',
+        'vi': '▸ Thói quen lái xe',
+      });
+
+  String get ecoIntroS3Group2Title => _t({
+        'ko': '▸ 차량 관리',
+        'en': '▸ Vehicle care',
+        'zh': '▸ 车辆保养',
+        'vi': '▸ Bảo dưỡng xe',
+      });
+
+  String get ecoIntroS3Group3Title => _t({
+        'ko': '▸ 주행 계획',
+        'en': '▸ Trip planning',
+        'zh': '▸ 行程规划',
+        'vi': '▸ Lập kế hoạch',
+      });
+
+  String get ecoIntroS3Item1Label => _t({
+        'ko': '부드러운 출발',
+        'en': 'Smooth start',
+        'zh': '缓慢起步',
+        'vi': 'Khởi hành êm',
+      });
+
+  String get ecoIntroS3Item1Body => _t({
+        'ko': '5초간 시속 20km까지 천천히',
+        'en': '5 sec to reach 20 km/h',
+        'zh': '5 秒达到 20 km/h',
+        'vi': '5 giây đạt 20 km/h',
+      });
+
+  String get ecoIntroS3Item2Label => _t({
+        'ko': '경제속도 유지',
+        'en': 'Economical speed',
+        'zh': '保持经济车速',
+        'vi': 'Giữ tốc độ kinh tế',
+      });
+
+  String get ecoIntroS3Item2Body => _t({
+        'ko': '시속 60~80km 정속 주행',
+        'en': 'Steady 60–80 km/h',
+        'zh': '60~80 km/h 匀速',
+        'vi': '60–80 km/h ổn định',
+      });
+
+  String get ecoIntroS3Item3Label => _t({
+        'ko': '예측 운전',
+        'en': 'Anticipatory driving',
+        'zh': '预测驾驶',
+        'vi': 'Lái xe dự đoán',
+      });
+
+  String get ecoIntroS3Item3Body => _t({
+        'ko': '차간거리 확보, 미리 감속',
+        'en': 'Keep distance, slow early',
+        'zh': '保持车距，提前减速',
+        'vi': 'Giữ khoảng cách, giảm tốc sớm',
+      });
+
+  String get ecoIntroS3Item4Label => _t({
+        'ko': '내리막길 가속 금지',
+        'en': 'No downhill accel',
+        'zh': '下坡勿加速',
+        'vi': 'Không tăng tốc xuống dốc',
+      });
+
+  String get ecoIntroS3Item4Body => _t({
+        'ko': '관성 활용, 페달에서 발 떼기',
+        'en': 'Use inertia, lift the pedal',
+        'zh': '利用惯性，松开油门',
+        'vi': 'Tận dụng quán tính, nhả chân ga',
+      });
+
+  String get ecoIntroS3Item5Label => _t({
+        'ko': '공회전 자제',
+        'en': 'Avoid idling',
+        'zh': '减少怠速',
+        'vi': 'Hạn chế nổ máy chờ',
+      });
+
+  String get ecoIntroS3Item5Body => _t({
+        'ko': '3분 이상 정차 시 시동 끄기',
+        'en': 'Turn off if idling >3 min',
+        'zh': '停车超过 3 分钟熄火',
+        'vi': 'Tắt máy khi đỗ trên 3 phút',
+      });
+
+  String get ecoIntroS3Item6Label => _t({
+        'ko': '타이어 공기압 점검',
+        'en': 'Tire pressure check',
+        'zh': '检查胎压',
+        'vi': 'Kiểm tra áp suất lốp',
+      });
+
+  String get ecoIntroS3Item6Body => _t({
+        'ko': '월 1회, 권장 30~34 psi',
+        'en': 'Monthly · 30–34 psi',
+        'zh': '每月一次，建议 30~34 psi',
+        'vi': '1 lần/tháng · 30–34 psi',
+      });
+
+  String get ecoIntroS3Item7Label => _t({
+        'ko': '불필요한 짐 빼기',
+        'en': 'Drop excess load',
+        'zh': '卸下多余物品',
+        'vi': 'Bỏ hành lý dư',
+      });
+
+  String get ecoIntroS3Item7Body => _t({
+        'ko': '10kg 감소 = 연비 1% 향상',
+        'en': '-10 kg = +1% MPG',
+        'zh': '减 10 kg = 油耗提升 1%',
+        'vi': '-10 kg = +1% tiết kiệm',
+      });
+
+  String get ecoIntroS3Item8Label => _t({
+        'ko': '정품 연료 사용',
+        'en': 'Use genuine fuel',
+        'zh': '使用正规燃油',
+        'vi': 'Dùng nhiên liệu chính hãng',
+      });
+
+  String get ecoIntroS3Item8Body => _t({
+        'ko': '유사연료 시 연비 7.4% 감소',
+        'en': 'Fake fuel cuts MPG 7.4%',
+        'zh': '假冒燃油 燃耗下降 7.4%',
+        'vi': 'Nhiên liệu giả giảm 7.4% tiết kiệm',
+      });
+
+  String get ecoIntroS3Item9Label => _t({
+        'ko': '경로 미리 확인',
+        'en': 'Plan the route',
+        'zh': '提前规划路线',
+        'vi': 'Lập sẵn lộ trình',
+      });
+
+  String get ecoIntroS3Item9Body => _t({
+        'ko': '내비 활용, 정체 구간 회피',
+        'en': 'Use navi, avoid jams',
+        'zh': '使用导航避开拥堵',
+        'vi': 'Dùng navi, tránh kẹt xe',
+      });
+
+  String get ecoIntroS3Item10Label => _t({
+        'ko': '에어컨 적정 사용',
+        'en': 'Use A/C wisely',
+        'zh': '合理使用空调',
+        'vi': 'Dùng điều hoà hợp lý',
+      });
+
+  String get ecoIntroS3Item10Body => _t({
+        'ko': '고속주행 시 창문 닫기',
+        'en': 'Close windows on highway',
+        'zh': '高速行驶时关窗',
+        'vi': 'Đóng cửa khi chạy cao tốc',
+      });
+
+  String get ecoIntroS3SloganTitle => _t({
+        'ko': '작은 습관, 큰 변화',
+        'en': 'Small habit, big change',
+        'zh': '小习惯，大改变',
+        'vi': 'Thói quen nhỏ, thay đổi lớn',
+      });
+
+  String get ecoIntroS3SloganBody => _t({
+        'ko': '오늘부터 한 가지씩 시작하세요',
+        'en': 'Start with one thing today',
+        'zh': '从今天开始，一项一项实践',
+        'vi': 'Bắt đầu mỗi ngày một điều',
+      });
 }
 
 class _AppLocalizationsDelegate

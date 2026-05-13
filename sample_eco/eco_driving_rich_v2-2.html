@@ -1,0 +1,197 @@
+<div style="padding: 1rem 0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px;">
+    <button id="prevBtn" style="background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;"><i class="ti ti-chevron-left" style="font-size: 18px;" aria-hidden="true"></i></button>
+    <div id="dots" style="display: flex; gap: 6px;">
+      <span class="dot" data-i="0" style="width: 24px; height: 6px; border-radius: 3px; background: #639922;"></span>
+      <span class="dot" data-i="1" style="width: 6px; height: 6px; border-radius: 3px; background: var(--color-border-secondary);"></span>
+      <span class="dot" data-i="2" style="width: 6px; height: 6px; border-radius: 3px; background: var(--color-border-secondary);"></span>
+    </div>
+    <button id="nextBtn" style="background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;"><i class="ti ti-chevron-right" style="font-size: 18px;" aria-hidden="true"></i></button>
+  </div>
+
+  <div style="background: #1a1a1a; border-radius: 32px; padding: 10px; margin: 0 auto; width: 290px; box-sizing: border-box;">
+    <div id="phoneScreen" style="background: #FFFFFF; border-radius: 24px; width: 270px; height: 560px; overflow: hidden; position: relative;">
+      <div style="position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 80px; height: 18px; background: #1a1a1a; border-radius: 999px; z-index: 10;"></div>
+
+      <div id="slider" style="display: flex; width: 810px; height: 100%; transition: transform 0.35s ease;">
+
+        <div style="width: 270px; height: 560px; background: #EAF3DE; padding: 40px 20px 20px; box-sizing: border-box; display: flex; flex-direction: column; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <span style="background: #639922; color: #FFF; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.5px;">01 · DEFINITION</span>
+            <span style="color: #3B6D11; font-size: 11px; font-weight: 500;">친환경 운전</span>
+          </div>
+          <div style="margin-bottom: 10px;"><i class="ti ti-leaf" style="font-size: 34px; color: #639922;" aria-hidden="true"></i></div>
+          <h2 style="font-size: 19px; font-weight: 500; color: #173404; margin: 0 0 4px;">친환경 운전이란?</h2>
+          <p style="font-size: 11px; color: #3B6D11; margin: 0 0 12px;">Eco-Driving · 친환경 경제 운전</p>
+          <p style="font-size: 12px; color: #27500A; line-height: 1.6; margin: 0 0 12px;">연료 소비와 온실가스 배출을 줄이기 위해 <span style="font-weight: 500;">부드럽고 효율적으로 운전하는 습관</span>으로, 환경과 경제를 동시에 살리는 운전법입니다.</p>
+
+          <div style="background: #FFF; border-radius: 10px; padding: 11px; margin-bottom: 8px;">
+            <p style="font-size: 11px; color: #3B6D11; margin: 0 0 8px; font-weight: 500;">3대 핵심 원칙</p>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; gap: 8px;"><span style="color: #639922; font-size: 11px; font-weight: 500; min-width: 36px;">친환경</span><span style="font-size: 11px; color: #27500A; line-height: 1.4;">온실가스·오염물질 배출 감소</span></div>
+              <div style="display: flex; gap: 8px;"><span style="color: #639922; font-size: 11px; font-weight: 500; min-width: 36px;">경제성</span><span style="font-size: 11px; color: #27500A; line-height: 1.4;">연료비 절감, 차량 수명 연장</span></div>
+              <div style="display: flex; gap: 8px;"><span style="color: #639922; font-size: 11px; font-weight: 500; min-width: 36px;">안전성</span><span style="font-size: 11px; color: #27500A; line-height: 1.4;">급조작 자제로 사고 위험 감소</span></div>
+            </div>
+          </div>
+
+          <div style="background: #FFF; border-radius: 10px; padding: 11px; margin-bottom: 8px;">
+            <p style="font-size: 11px; color: #3B6D11; margin: 0 0 6px; font-weight: 500;">왜 필요할까요?</p>
+            <p style="font-size: 11px; color: #27500A; line-height: 1.5; margin: 0;">승용차 1대 연간 CO₂ 배출량 약 <span style="font-weight: 500;">2톤</span>. 운전 습관만 바꿔도 <span style="font-weight: 500;">최대 30%까지 감축</span> 가능합니다.</p>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            <span style="background: #FFF; color: #27500A; font-size: 10px; padding: 3px 8px; border-radius: 999px;"># 경제운전</span>
+            <span style="background: #FFF; color: #27500A; font-size: 10px; padding: 3px 8px; border-radius: 999px;"># 탄소절감</span>
+            <span style="background: #FFF; color: #27500A; font-size: 10px; padding: 3px 8px; border-radius: 999px;"># 안전운행</span>
+            <span style="background: #FFF; color: #27500A; font-size: 10px; padding: 3px 8px; border-radius: 999px;"># 연비향상</span>
+          </div>
+        </div>
+
+        <div style="width: 270px; height: 560px; background: #E1F5EE; padding: 40px 20px 20px; box-sizing: border-box; display: flex; flex-direction: column; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <span style="background: #1D9E75; color: #FFF; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.5px;">02 · EFFECT</span>
+            <span style="color: #0F6E56; font-size: 11px; font-weight: 500;">실제 효과</span>
+          </div>
+          <div style="margin-bottom: 10px;"><i class="ti ti-chart-line" style="font-size: 34px; color: #1D9E75;" aria-hidden="true"></i></div>
+          <h2 style="font-size: 19px; font-weight: 500; color: #04342C; margin: 0 0 4px;">숫자로 보는 변화</h2>
+          <p style="font-size: 11px; color: #0F6E56; margin: 0 0 12px;">출처 : 환경부 친환경운전요령</p>
+
+          <div style="background: #1D9E75; border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+            <p style="font-size: 10px; color: #C0E8DA; margin: 0 0 2px; letter-spacing: 0.5px;">CORE IMPACT</p>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 24px; font-weight: 500; color: #FFF;">최대 30%</span>
+              <span style="font-size: 11px; color: #C0E8DA;">연료 절감</span>
+            </div>
+            <p style="font-size: 11px; color: #FFF; margin: 4px 0 0; line-height: 1.4;">급가·감속만 피해도 연비 30~40% 개선, 오염물질 40% 감소</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+            <div style="background: #FFF; border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 9px;">
+              <i class="ti ti-gas-station" style="font-size: 19px; color: #1D9E75;" aria-hidden="true"></i>
+              <div style="flex: 1;"><p style="font-size: 10px; color: #085041; margin: 0;">연료비 절감</p><p style="font-size: 12px; font-weight: 500; color: #04342C; margin: 0;">연 386L · 약 50만원</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 9px;">
+              <i class="ti ti-cloud" style="font-size: 19px; color: #1D9E75;" aria-hidden="true"></i>
+              <div style="flex: 1;"><p style="font-size: 10px; color: #085041; margin: 0;">CO₂ 배출 감소</p><p style="font-size: 12px; font-weight: 500; color: #04342C; margin: 0;">연 348kg 감축</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 9px;">
+              <i class="ti ti-wind" style="font-size: 19px; color: #1D9E75;" aria-hidden="true"></i>
+              <div style="flex: 1;"><p style="font-size: 10px; color: #085041; margin: 0;">오염물질 감축</p><p style="font-size: 12px; font-weight: 500; color: #04342C; margin: 0;">질소산화물 50% 감소</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 9px;">
+              <i class="ti ti-shield-check" style="font-size: 19px; color: #1D9E75;" aria-hidden="true"></i>
+              <div style="flex: 1;"><p style="font-size: 10px; color: #085041; margin: 0;">교통사고 위험</p><p style="font-size: 12px; font-weight: 500; color: #04342C; margin: 0;">급조작 감소 · 안전 향상</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 9px;">
+              <i class="ti ti-tools" style="font-size: 19px; color: #1D9E75;" aria-hidden="true"></i>
+              <div style="flex: 1;"><p style="font-size: 10px; color: #085041; margin: 0;">차량 수명·정비</p><p style="font-size: 12px; font-weight: 500; color: #04342C; margin: 0;">엔진·타이어 부담 감소</p></div>
+            </div>
+          </div>
+
+          <div style="background: #FFF; border-radius: 10px; padding: 11px;">
+            <p style="font-size: 11px; color: #0F6E56; margin: 0 0 4px; font-weight: 500;">나무로 환산하면</p>
+            <p style="font-size: 11px; color: #04342C; margin: 0; line-height: 1.5;">연 348kg CO₂ 감축 = <span style="font-weight: 500;">소나무 53그루</span>가 1년간 흡수하는 양</p>
+          </div>
+        </div>
+
+        <div style="width: 270px; height: 560px; background: #E6F1FB; padding: 40px 20px 20px; box-sizing: border-box; display: flex; flex-direction: column; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <span style="background: #378ADD; color: #FFF; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.5px;">03 · ACTION</span>
+            <span style="color: #185FA5; font-size: 11px; font-weight: 500;">실천 10계명</span>
+          </div>
+          <div style="margin-bottom: 10px;"><i class="ti ti-steering-wheel" style="font-size: 34px; color: #378ADD;" aria-hidden="true"></i></div>
+          <h2 style="font-size: 19px; font-weight: 500; color: #042C53; margin: 0 0 4px;">오늘부터 실천하기</h2>
+          <p style="font-size: 11px; color: #185FA5; margin: 0 0 12px;">환경부·서울시 친환경 운전 10계명</p>
+
+          <p style="font-size: 10px; color: #185FA5; margin: 0 0 5px; font-weight: 500; letter-spacing: 0.5px;">▸ 운전 습관</p>
+          <div style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;">
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">1</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">부드러운 출발</p><p style="font-size: 10px; color: #185FA5; margin: 0;">5초간 시속 20km까지 천천히</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">2</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">경제속도 유지</p><p style="font-size: 10px; color: #185FA5; margin: 0;">시속 60~80km 정속 주행</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">3</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">예측 운전</p><p style="font-size: 10px; color: #185FA5; margin: 0;">차간거리 확보, 미리 감속</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">4</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">내리막길 가속 금지</p><p style="font-size: 10px; color: #185FA5; margin: 0;">관성 활용, 페달에서 발 떼기</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">5</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">공회전 자제</p><p style="font-size: 10px; color: #185FA5; margin: 0;">3분 이상 정차 시 시동 끄기</p></div>
+            </div>
+          </div>
+
+          <p style="font-size: 10px; color: #185FA5; margin: 0 0 5px; font-weight: 500; letter-spacing: 0.5px;">▸ 차량 관리</p>
+          <div style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;">
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">6</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">타이어 공기압 점검</p><p style="font-size: 10px; color: #185FA5; margin: 0;">월 1회, 권장 30~34 psi</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">7</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">불필요한 짐 빼기</p><p style="font-size: 10px; color: #185FA5; margin: 0;">10kg 감소 = 연비 1% 향상</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">8</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">정품 연료 사용</p><p style="font-size: 10px; color: #185FA5; margin: 0;">유사연료 시 연비 7.4% 감소</p></div>
+            </div>
+          </div>
+
+          <p style="font-size: 10px; color: #185FA5; margin: 0 0 5px; font-weight: 500; letter-spacing: 0.5px;">▸ 주행 계획</p>
+          <div style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;">
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">9</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">경로 미리 확인</p><p style="font-size: 10px; color: #185FA5; margin: 0;">내비 활용, 정체 구간 회피</p></div>
+            </div>
+            <div style="background: #FFF; border-radius: 8px; padding: 8px 9px; display: flex; align-items: center; gap: 8px;">
+              <div style="background: #E6F1FB; color: #185FA5; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500;">10</div>
+              <div style="flex: 1;"><p style="font-size: 11px; font-weight: 500; color: #042C53; margin: 0;">에어컨 적정 사용</p><p style="font-size: 10px; color: #185FA5; margin: 0;">고속주행 시 창문 닫기</p></div>
+            </div>
+          </div>
+
+          <div style="background: #378ADD; border-radius: 10px; padding: 11px; margin-top: auto;">
+            <p style="font-size: 11px; color: #FFF; margin: 0; line-height: 1.5; text-align: center;"><span style="font-weight: 500;">작은 습관, 큰 변화</span><br><span style="color: #B5D4F4; font-size: 10px;">오늘부터 한 가지씩 시작하세요</span></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var idx = 0;
+  var slider = document.getElementById('slider');
+  var dots = document.querySelectorAll('.dot');
+  var prev = document.getElementById('prevBtn');
+  var next = document.getElementById('nextBtn');
+  var colors = ['#639922', '#1D9E75', '#378ADD'];
+  function update() {
+    slider.style.transform = 'translateX(-' + (idx * 270) + 'px)';
+    dots.forEach(function(d, i) {
+      if (i === idx) { d.style.width = '24px'; d.style.background = colors[idx]; }
+      else { d.style.width = '6px'; d.style.background = 'var(--color-border-secondary)'; }
+    });
+  }
+  prev.addEventListener('click', function() { idx = (idx - 1 + 3) % 3; update(); });
+  next.addEventListener('click', function() { idx = (idx + 1) % 3; update(); });
+  dots.forEach(function(d) {
+    d.addEventListener('click', function() { idx = parseInt(d.getAttribute('data-i')); update(); });
+  });
+  var startX = 0;
+  var screen = document.getElementById('phoneScreen');
+  screen.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; });
+  screen.addEventListener('touchend', function(e) {
+    var diff = e.changedTouches[0].clientX - startX;
+    if (diff > 40) { idx = (idx - 1 + 3) % 3; update(); }
+    else if (diff < -40) { idx = (idx + 1) % 3; update(); }
+  });
+})();
+</script>

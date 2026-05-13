@@ -14,6 +14,7 @@ import 'package:quiz_app/models/disqualification_catalog.dart';
 import 'package:quiz_app/models/mock_exam_license_kind.dart';
 import 'package:quiz_app/models/session_result.dart';
 import 'package:quiz_app/screens/disqualification_detail_screen.dart';
+import 'package:quiz_app/screens/eco_intro_screen.dart';
 import 'package:quiz_app/screens/exam_guide_screen.dart';
 import 'package:quiz_app/screens/home_screen.dart';
 import 'package:quiz_app/screens/mock_exam_history_screen.dart';
@@ -57,6 +58,23 @@ void main() {
       await expectLater(
         find.byType(MaterialApp),
         matchesGoldenFile('goldens/landing_ko_dark.png'),
+      );
+      await tester.pumpWidget(const SizedBox());
+    });
+  });
+
+  // ─── 친환경 운전 교육 인트로 (동의 직후 1회 노출) ────────────────────────
+  group('eco_intro', () {
+    testWidgets('definition_ko_light', (tester) async {
+      await setGoldenDefaults(tester);
+      seedPrefs();
+      await tester.pumpWidget(
+        wrapForGolden(EcoIntroScreen(onDone: () {})),
+      );
+      await settleAsync(tester);
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/eco_intro_definition_ko_light.png'),
       );
       await tester.pumpWidget(const SizedBox());
     });
