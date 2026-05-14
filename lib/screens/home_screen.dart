@@ -112,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.timer_outlined,
                 title: '문제 풀기',
                 subtitle: '모의고사 · 연습 · 오답 노트',
-                filled: true,
+                filled: false,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(

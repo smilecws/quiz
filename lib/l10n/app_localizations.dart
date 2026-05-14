@@ -958,13 +958,13 @@ class AppLocalizations {
         (
           label: _t({'ko': '수집 항목'}),
           value: _t({
-            'ko': '이름, 이메일(Google), Google 식별자(sub), 접속 일시, 플랫폼',
+            'ko': '이름(사용자 입력), 동의 일자, 플랫폼',
           }),
         ),
         (
           label: _t({'ko': '수집 목적'}),
           value: _t({
-            'ko': '앱 이용자 실적 집계 및 한국도로교통공단 제출 자료 작성',
+            'ko': '앱 이용자 실적 집계',
           }),
         ),
         (
@@ -973,7 +973,7 @@ class AppLocalizations {
         ),
         (
           label: _t({'ko': '보유기간'}),
-          value: _t({'ko': '수집일로부터 1년 후 삭제'}),
+          value: _t({'ko': '앱 삭제 또는 동의 철회 시까지'}),
         ),
       ];
 
@@ -984,17 +984,15 @@ class AppLocalizations {
   List<({String label, String value})> get consentThirdPartyRows => [
         (
           label: _t({'ko': '제공받는 기관'}),
-          value: _t({'ko': '한국도로교통공단'}),
+          value: _t({'ko': 'Google LLC (Google Forms / Google Sheets 호스팅)'}),
         ),
         (
           label: _t({'ko': '제공 목적'}),
-          value: _t({
-            'ko': '본 웹 애플리케이션 이용자 실적 근거 자료 제출',
-          }),
+          value: _t({'ko': '동의 기록 보관'}),
         ),
         (
           label: _t({'ko': '제공 항목'}),
-          value: _t({'ko': '이름'}),
+          value: _t({'ko': '이름, 동의 일자, 플랫폼'}),
         ),
         (
           label: _t({'ko': '제공 근거'}),
@@ -1002,7 +1000,7 @@ class AppLocalizations {
         ),
         (
           label: _t({'ko': '보유·이용기간'}),
-          value: _t({'ko': '공단 자체 정책에 따름'}),
+          value: _t({'ko': '앱 운영자가 시트에서 삭제하기 전까지'}),
         ),
       ];
 
@@ -1013,27 +1011,6 @@ class AppLocalizations {
         'zh': '您有权拒绝同意,拒绝后无法使用本应用。',
         'vi': 'Bạn có thể từ chối; nếu từ chối, ứng dụng không khả dụng.',
       });
-
-  String get consentGoogleSignInButton => _t({
-        'ko': 'Google 계정으로 로그인',
-        'en': 'Sign in with Google',
-        'zh': '使用 Google 账号登录',
-        'vi': 'Đăng nhập bằng Google',
-      });
-
-  String get consentGoogleSignInRequired => _t({
-        'ko': '먼저 Google 계정으로 로그인해 주세요.',
-        'en': 'Please sign in with Google first.',
-        'zh': '请先使用 Google 账号登录。',
-        'vi': 'Vui lòng đăng nhập Google trước.',
-      });
-
-  String consentSignedInAs(String email) => _t({
-        'ko': '로그인됨: {e}',
-        'en': 'Signed in as {e}',
-        'zh': '已登录:{e}',
-        'vi': 'Đã đăng nhập: {e}',
-      }).replaceAll('{e}', email);
 
   String get consentNameLabel => _t({
         'ko': '이름',
@@ -1113,20 +1090,6 @@ class AppLocalizations {
         'vi': 'Quay lại',
       });
 
-  String get consentSilentSignInFailed => _t({
-        'ko': '자동 로그인이 만료되어 다시 동의가 필요합니다.',
-        'en': 'Sign-in expired. Please consent again.',
-        'zh': '自动登录已过期,请重新同意。',
-        'vi': 'Phiên đăng nhập đã hết hạn. Vui lòng đồng ý lại.',
-      });
-
-  String get consentSignInFailed => _t({
-        'ko': 'Google 로그인에 실패했습니다. 다시 시도해 주세요.',
-        'en': 'Google sign-in failed. Please try again.',
-        'zh': 'Google 登录失败,请重试。',
-        'vi': 'Đăng nhập Google thất bại. Vui lòng thử lại.',
-      });
-
   String get menuRevokeConsent => _t({
         'ko': '개인정보 동의 철회',
         'en': 'Revoke privacy consent',
@@ -1142,11 +1105,11 @@ class AppLocalizations {
       });
 
   String get revokeConsentDialogBody => _t({
-        'ko': '저장된 동의 기록과 로그인이 삭제됩니다. 다시 사용하려면 동의 절차를 다시 거쳐야 합니다.',
+        'ko': '저장된 동의 기록이 삭제됩니다. 다시 사용하려면 동의 절차를 다시 거쳐야 합니다.',
         'en':
-            'Saved consent and sign-in will be removed. You will need to consent again to use the app.',
-        'zh': '将删除已保存的同意记录和登录信息,再次使用前需要重新同意。',
-        'vi': 'Sẽ xoá đồng ý đã lưu và phiên đăng nhập. Bạn sẽ phải đồng ý lại để dùng tiếp.',
+            'Saved consent will be removed. You will need to consent again to use the app.',
+        'zh': '将删除已保存的同意记录,再次使用前需要重新同意。',
+        'vi': 'Sẽ xoá đồng ý đã lưu. Bạn sẽ phải đồng ý lại để dùng tiếp.',
       });
 
   String get revokeConsentConfirm => _t({
