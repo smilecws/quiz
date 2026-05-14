@@ -1,9 +1,5 @@
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'app_settings_scope.dart';
 import 'l10n/app_localizations.dart';
@@ -11,10 +7,8 @@ import 'screens/auth_loading_screen.dart';
 import 'screens/consent_screen.dart';
 import 'screens/eco_intro_screen.dart';
 import 'screens/home_screen.dart';
-import 'services/access_log_service.dart';
 import 'services/consent_service.dart';
 import 'services/eco_intro_service.dart';
-import 'services/google_auth_service.dart';
 import 'services/locale_service.dart';
 import 'services/question_service.dart';
 import 'services/theme_mode_service.dart';
@@ -63,49 +57,13 @@ class _QuizAppState extends State<QuizApp> {
       _themeMode = themeMode;
     });
 
-    // 데스크톱(Windows/macOS/Linux)은 google_sign_in 미지원 → 게이트 우회.
-    // 동의·인트로 모두 스킵하고 바로 ready 로 진입.
-    if (!_isAuthGateSupported()) {
-      setState(() => _authState = _AuthState.ready);
-      return;
-    }
-
     if (consent == null) {
       setState(() => _authState = _AuthState.needConsent);
       return;
     }
 
-    // 동의 기록은 PIPA 동의의 증거 그 자체 — silent sign-in 결과와 무관하게
-    // 즉시 통과시킨다. 웹 GIS 는 third-party cookie 차단/세션 만료로 silent 가
-    // 자주 null 반환하는데, 그때마다 동의 화면을 다시 띄우면 UX 가 망가진다.
     setState(() => _authState =
         ecoIntroShown ? _AuthState.ready : _AuthState.needEcoIntro);
-    // ignore: discarded_futures
-    _attemptLaunchLog(consent);
-  }
-
-  /// 자동 로그인이 되면 app_launch 로깅 + 큐 flush. 실패해도 게이트는 막지 않는다.
-  Future<void> _attemptLaunchLog(ConsentRecord consent) async {
-    GoogleSignInAccount? account;
-    try {
-      account = await GoogleAuthService.signInSilently();
-    } catch (_) {
-      return;
-    }
-    if (account == null) return;
-    // ignore: discarded_futures
-    AccessLogService.flushPending();
-    // ignore: discarded_futures
-    AccessLogService.send(eventType: 'app_launch', name: consent.name);
-  }
-
-  bool _isAuthGateSupported() {
-    if (kIsWeb) return true;
-    try {
-      return Platform.isAndroid || Platform.isIOS;
-    } catch (_) {
-      return false;
-    }
   }
 
   void _handleConsentGranted(ConsentRecord _) {
@@ -136,11 +94,6 @@ class _QuizAppState extends State<QuizApp> {
     await ConsentService.clear();
     // 재동의 시 친환경 운전 교육을 다시 1회 노출해야 하므로 함께 초기화.
     await EcoIntroService.clear();
-    try {
-      await GoogleAuthService.signOut();
-    } catch (_) {
-      // signOut 실패는 무시 — 로컬 동의 기록 삭제만으로도 게이트는 다시 뜬다.
-    }
     if (!mounted) return;
     setState(() => _authState = _AuthState.needConsent);
   }
