@@ -119,7 +119,7 @@ class _QuizAppState extends State<QuizApp> {
       setThemeMode: _setThemeMode,
       revokeConsent: _revokeConsent,
       child: MaterialApp(
-        title: '운전면허 학과시험 1000제',
+        title: '학습',
         debugShowCheckedModeBanner: false,
         locale: _locale,
         themeMode: _themeMode,

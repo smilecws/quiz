@@ -13,11 +13,11 @@ class ExamGuideScreen extends StatelessWidget {
 
   /// 면허시험 일정·접수 (모바일 웹)
   static const String _officialScheduleUrl =
-      'https://www.safedriving.or.kr/rerrest/rerrestScheduleViewM.do?menuCode=MN-PO-1131';
+      'https://www.safedriving.or.kr/drvLicnsExam/selectDrvLicnsExamSchedule.do';
 
   /// 특별교통안전교육 교육장·날짜 선택 (모바일 웹)
   static const String _officialEducationScheduleUrl =
-      'https://www.safedriving.or.kr/eduSeSpecial/eduSeSpecialExmDayLocalNoneM.do';
+      'https://www.safedriving.or.kr/spcTraSafeEdu/selectSpcTraSafeEduGuide.do';
   static const String _officialPreparationGuideUrl =
       'https://www.safedriving.or.kr/guide/rerGuide07View.do?menuCode=MN-PO-1117';
 

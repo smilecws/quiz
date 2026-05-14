@@ -21,10 +21,10 @@ class AppLocalizations {
 
   // ——— 일반 ———
   String get appTitle => _t({
-        'ko': '운전면허 학과시험 1000제',
-        'en': 'Driver\'s License Written Exam 1000',
-        'zh': '驾照学科考试 1000 题',
-        'vi': 'Thi lý thuyết lái xe 1000 câu',
+        'ko': '학습',
+        'en': '학습',
+        'zh': '학습',
+        'vi': '학습',
       });
 
   String get greetHello => _t({
@@ -35,10 +35,10 @@ class AppLocalizations {
       });
 
   String get titleMain => _t({
-        'ko': '운전면허 학과시험',
-        'en': 'Driver\'s License Knowledge Test',
-        'zh': '驾照学科考试',
-        'vi': 'Thi lý thuyết lái xe',
+        'ko': '학습',
+        'en': '학습',
+        'zh': '학습',
+        'vi': '학습',
       });
 
   String get learningProgress => _t({
