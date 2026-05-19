@@ -1,55 +1,27 @@
 rules_version = '2';
 
 // Firestore 보안 규칙.
-//   - 모든 사용자(익명 포함)는 question_stats 를 read 가능.
-//   - write 는 익명 로그인 사용자만, 그리고 카운터를 +1 씩만 증가시키는 경우만 허용.
-//     (위조 카운트 폭증 방지)
+//   - 모든 클라이언트가 question_stats 를 read 가능 (전체 통계 표시용).
+//   - write 는 익명 로그인 사용자에게만 허용.
+//   - 필드는 attempts / correct / option_counts / last_updated_at 4개로 제한.
 //   - delete 는 어떤 경우에도 불허.
+//
+// NOTE: "카운터 +1 증가만 허용" 같은 세밀한 검증은 serverTimestamp 비교와
+//       dotted-path 처리의 미묘함 때문에 안정적으로 표현하기 어려워
+//       MVP 단계에서는 제거했다. 위조 카운트 폭증 방어는 App Check 활성화로
+//       대체할 예정 (Firebase 콘솔 > App Check).
 service cloud.firestore {
   match /databases/{database}/documents {
 
     match /question_stats/{qid} {
       allow read: if true;
 
-      // 신규 문서: attempts/correct = 1 또는 0(틀린 경우), option_counts 각 키가 1, 외 필드 없음.
-      allow create: if
+      allow create, update: if
         request.auth != null
-        && validNewDoc(request.resource.data);
-
-      // 기존 문서: 모든 변경 필드가 정확히 +1 증가, 외 필드 변경 없음.
-      allow update: if
-        request.auth != null
-        && validIncrement(request.resource.data, resource.data);
+        && request.resource.data.keys().hasOnly(
+             ['attempts', 'correct', 'option_counts', 'last_updated_at']);
 
       allow delete: if false;
     }
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // 헬퍼
-  // ─────────────────────────────────────────────────────────────────────────
-
-  function validNewDoc(data) {
-    return
-      data.attempts == 1
-      && (data.correct == 0 || data.correct == 1)
-      && data.option_counts is map
-      && data.last_updated_at == request.time
-      && data.keys().hasOnly(['attempts', 'correct', 'option_counts', 'last_updated_at']);
-  }
-
-  function validIncrement(newData, oldData) {
-    // attempts 는 무조건 +1
-    return
-      newData.attempts == oldData.attempts + 1
-      // correct 는 +0 또는 +1
-      && (newData.correct == oldData.correct || newData.correct == oldData.correct + 1)
-      // 타임스탬프 갱신
-      && newData.last_updated_at == request.time
-      // option_counts 는 map 타입이며 각 키 차이가 0 또는 1 이어야 함은
-      // 규칙으로 키별 검증이 까다로워 일단 map 타입 + 무한 폭증 방지(차이 합 ≤ 보기 수)로 완화.
-      && newData.option_counts is map
-      // 외 필드 추가 금지
-      && newData.keys().hasOnly(['attempts', 'correct', 'option_counts', 'last_updated_at']);
   }
 }
