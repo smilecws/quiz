@@ -1,66 +1,413 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "subcategory_id": "alcohol",
-  "title": { "ko": "음주·약물 운전" },
-  "lead": { "ko": "혈중알코올농도 기준, 처벌 수위, 면허 정지·취소 기준과 측정 거부 처벌" },
-  "key_points": [
+  "title": {
+    "ko": "음주·약물 운전",
+    "en": "Drunk / drug driving",
+    "zh": "酒驾·药驾",
+    "vi": "Lái xe khi say rượu / dùng thuốc"
+  },
+  "lead": {
+    "ko": "혈중알코올농도 기준, 처벌 수위, 면허 정지·취소 기준. 주제를 누르면 카드뉴스가 펼쳐져요.",
+    "en": "BAC thresholds, penalties, license suspension and revocation. Tap a topic to open the card news.",
+    "zh": "血液酒精浓度标准、处罚等级、驾照停吊销标准。点击主题展开卡片新闻。",
+    "vi": "Ngưỡng nồng độ cồn, mức xử phạt, đình chỉ và tước bằng. Nhấn vào chủ đề để mở thẻ tin."
+  },
+  "topics": [
     {
-      "heading": { "ko": "술에 취한 상태의 기준" },
-      "body": {
-        "ko": "혈중알코올농도 0.03퍼센트 이상인 경우 '술에 취한 상태'로 보아 운전이 금지됩니다. 0.03% 미만이라도 '정상적으로 운전하지 못할 우려가 있는 상태'이면 역시 운전 금지 대상입니다."
+      "id": "admin",
+      "label": {
+        "ko": "음주운전 면허 행정처분",
+        "en": "License administrative action",
+        "zh": "酒驾驾照行政处分",
+        "vi": "Xử phạt hành chính bằng lái"
       },
-      "law_refs": ["도로교통법 제44조 제1항", "도로교통법 제44조 제4항"]
+      "desc": {
+        "ko": "면허 정지·취소 기준",
+        "en": "Suspension / revocation criteria",
+        "zh": "停吊销标准",
+        "vi": "Tiêu chí đình chỉ / tước bằng"
+      },
+      "accent": "#22c55e",
+      "slides": [
+        {
+          "type": "content",
+          "tag": { "ko": "STEP 1", "en": "STEP 1", "zh": "STEP 1", "vi": "STEP 1" },
+          "title": {
+            "ko": "면허 정지 100일",
+            "en": "License suspension — 100 days",
+            "zh": "驾照停照 100 天",
+            "vi": "Đình chỉ bằng 100 ngày"
+          },
+          "highlight": {
+            "ko": "0.03 ~ 0.08% 미만",
+            "en": "0.03 ~ under 0.08%",
+            "zh": "0.03 ~ 不足 0.08%",
+            "vi": "0,03 ~ dưới 0,08%"
+          },
+          "body": {
+            "ko": "혈중알코올농도 0.03% 이상 ~ 0.08% 미만인 경우, 운전면허가 100일간 정지됩니다.",
+            "en": "If BAC is 0.03% or more but under 0.08%, the driving license is suspended for 100 days.",
+            "zh": "血液酒精浓度 0.03% 以上、不足 0.08% 时,驾照停照 100 天。",
+            "vi": "Nếu nồng độ cồn trong máu từ 0,03% đến dưới 0,08%, bằng lái bị đình chỉ 100 ngày."
+          },
+          "note": {
+            "ko": "1회 위반 기준이며, 사고 여부에 따라 처분이 더 무거워질 수 있습니다.",
+            "en": "Based on a first offense; harsher action may apply if an accident occurred.",
+            "zh": "以初次违法为准,如有事故处分可能加重。",
+            "vi": "Áp dụng cho lần vi phạm đầu; nếu có tai nạn có thể nặng hơn."
+          }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "STEP 2", "en": "STEP 2", "zh": "STEP 2", "vi": "STEP 2" },
+          "title": {
+            "ko": "면허 취소 + 결격 2년",
+            "en": "License revocation + 2-year ban",
+            "zh": "吊销驾照 + 2 年禁考",
+            "vi": "Tước bằng + cấm thi lại 2 năm"
+          },
+          "highlight": {
+            "ko": "0.08% 이상 / 인사사고",
+            "en": "0.08%+ / injury accident",
+            "zh": "0.08% 以上 / 人身事故",
+            "vi": "0,08%+ / gây thương tích"
+          },
+          "body": {
+            "ko": "혈중알코올농도 0.08% 이상이거나, 음주운전으로 인사사고를 낸 경우 면허가 취소되고 2년간 재취득이 제한됩니다.",
+            "en": "If BAC is 0.08% or higher, or you cause an injury accident while drunk, the license is revoked and reissuance is barred for 2 years.",
+            "zh": "血液酒精浓度 0.08% 以上,或酒驾造成人身事故时,驾照吊销并 2 年内不得重新申领。",
+            "vi": "Nếu nồng độ cồn ≥ 0,08% hoặc gây tai nạn có thương tích khi say, bằng bị tước và cấm cấp lại trong 2 năm."
+          },
+          "note": {
+            "ko": "결격 기간 동안에는 면허 시험에 응시할 수 없습니다.",
+            "en": "You cannot retake the license test during the ban period.",
+            "zh": "禁考期间不得参加驾照考试。",
+            "vi": "Không được thi lại bằng trong thời gian bị cấm."
+          }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "STEP 3", "en": "STEP 3", "zh": "STEP 3", "vi": "STEP 3" },
+          "title": {
+            "ko": "결격 기간이 더 길어져요",
+            "en": "Longer ban for aggravating factors",
+            "zh": "禁考期间进一步延长",
+            "vi": "Thời gian cấm dài hơn nữa"
+          },
+          "highlight": {
+            "ko": "3회 이상 · 측정 거부",
+            "en": "3+ offenses · test refusal",
+            "zh": "3 次以上 · 拒绝检测",
+            "vi": "3 lần trở lên · từ chối kiểm tra"
+          },
+          "body": {
+            "ko": "음주운전 3회 이상, 음주측정 거부, 사망사고 등 가중 사유가 있으면 결격 기간이 최대 5년까지 늘어납니다.",
+            "en": "If aggravating factors apply — three or more drunk-driving offenses, refusal of breath testing, fatal accident — the ban can extend up to 5 years.",
+            "zh": "如有酒驾 3 次以上、拒绝酒测、致死事故等加重情节,禁考期最长延至 5 年。",
+            "vi": "Nếu có tình tiết nặng — tái phạm 3 lần trở lên, từ chối kiểm tra nồng độ cồn, gây chết người — thời gian cấm có thể lên tới 5 năm."
+          },
+          "note": {
+            "ko": "반복 위반일수록 처분이 무거워집니다.",
+            "en": "Repeat offenses bring progressively harsher penalties.",
+            "zh": "反复违规处分会越来越重。",
+            "vi": "Tái phạm càng nhiều, hình phạt càng nặng."
+          }
+        },
+        {
+          "type": "summary",
+          "title": {
+            "ko": "핵심 정리",
+            "en": "Key takeaways",
+            "zh": "核心整理",
+            "vi": "Tóm tắt chính"
+          },
+          "items": [
+            {
+              "label": { "ko": "0.03~0.08% 미만", "en": "0.03 ~ under 0.08%", "zh": "0.03 ~ 不足 0.08%", "vi": "0,03 ~ dưới 0,08%" },
+              "value": { "ko": "면허 정지 100일", "en": "100-day suspension", "zh": "停照 100 天", "vi": "Đình chỉ 100 ngày" }
+            },
+            {
+              "label": { "ko": "0.08% 이상 / 인사사고", "en": "0.08%+ / injury accident", "zh": "0.08% 以上 / 人身事故", "vi": "0,08%+ / gây thương tích" },
+              "value": { "ko": "면허 취소 + 결격 2년", "en": "Revocation + 2-year ban", "zh": "吊销 + 2 年禁考", "vi": "Tước bằng + cấm 2 năm" }
+            },
+            {
+              "label": { "ko": "3회 이상 / 측정 거부", "en": "3+ offenses / refusal", "zh": "3 次以上 / 拒绝", "vi": "3 lần+ / từ chối" },
+              "value": { "ko": "결격 기간 연장 (최대 5년)", "en": "Extended ban (up to 5 yrs)", "zh": "禁考延长 (最长 5 年)", "vi": "Kéo dài cấm (tối đa 5 năm)" }
+            }
+          ],
+          "law_refs": ["도로교통법 제93조", "시행규칙 별표28"]
+        }
+      ]
     },
     {
-      "heading": { "ko": "농도별 형사처벌 구간" },
-      "body": {
-        "ko": "0.03~0.08% 미만: 1년 이하 징역 또는 500만 원 이하 벌금. 0.08~0.2% 미만: 1~2년 징역 또는 500~1,000만 원 벌금. 0.2% 이상: 2~5년 징역 또는 1,000~2,000만 원 벌금. 10년 이내 2회 이상 위반 시 윤창호법에 따라 가중 처벌됩니다."
+      "id": "criminal",
+      "label": {
+        "ko": "음주운전 형사처벌",
+        "en": "Criminal penalties",
+        "zh": "酒驾刑事处罚",
+        "vi": "Hình phạt hình sự"
       },
-      "law_refs": ["도로교통법 제148조의2"]
+      "desc": {
+        "ko": "농도별 징역·벌금",
+        "en": "Prison & fines by BAC",
+        "zh": "按浓度分级的刑罚",
+        "vi": "Tù & phạt tiền theo nồng độ"
+      },
+      "accent": "#f97316",
+      "slides": [
+        {
+          "type": "content",
+          "tag": { "ko": "구간 1", "en": "Tier 1", "zh": "区间 1", "vi": "Mức 1" },
+          "title": {
+            "ko": "1년 이하 징역 / 500만원 이하 벌금",
+            "en": "Up to 1 year prison / fine up to 5M KRW",
+            "zh": "1 年以下徒刑 / 500 万韩元以下罚金",
+            "vi": "Tù tới 1 năm / phạt tới 5 triệu KRW"
+          },
+          "highlight": {
+            "ko": "0.03 ~ 0.08% 미만",
+            "en": "0.03 ~ under 0.08%",
+            "zh": "0.03 ~ 不足 0.08%",
+            "vi": "0,03 ~ dưới 0,08%"
+          },
+          "body": {
+            "ko": "혈중알코올농도 0.03% 이상 ~ 0.08% 미만 구간에 해당하는 형사처벌입니다.",
+            "en": "Criminal penalty for the 0.03 ~ under 0.08% BAC band.",
+            "zh": "适用于血液酒精浓度 0.03 ~ 不足 0.08% 区间的刑事处罚。",
+            "vi": "Hình phạt hình sự áp dụng cho khoảng nồng độ cồn 0,03 ~ dưới 0,08%."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "구간 2", "en": "Tier 2", "zh": "区间 2", "vi": "Mức 2" },
+          "title": {
+            "ko": "1~2년 징역 / 500~1,000만원 벌금",
+            "en": "1–2 years prison / 5–10M KRW fine",
+            "zh": "1~2 年徒刑 / 500~1,000 万韩元罚金",
+            "vi": "1–2 năm tù / 5–10 triệu KRW"
+          },
+          "highlight": {
+            "ko": "0.08 ~ 0.2% 미만",
+            "en": "0.08 ~ under 0.2%",
+            "zh": "0.08 ~ 不足 0.2%",
+            "vi": "0,08 ~ dưới 0,2%"
+          },
+          "body": {
+            "ko": "혈중알코올농도 0.08% 이상 ~ 0.2% 미만 구간에 해당합니다.",
+            "en": "Applies to the 0.08 ~ under 0.2% BAC band.",
+            "zh": "适用于血液酒精浓度 0.08 ~ 不足 0.2% 区间。",
+            "vi": "Áp dụng cho khoảng nồng độ cồn 0,08 ~ dưới 0,2%."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "구간 3", "en": "Tier 3", "zh": "区间 3", "vi": "Mức 3" },
+          "title": {
+            "ko": "2~5년 징역 / 1,000~2,000만원 벌금",
+            "en": "2–5 years prison / 10–20M KRW fine",
+            "zh": "2~5 年徒刑 / 1,000~2,000 万韩元罚金",
+            "vi": "2–5 năm tù / 10–20 triệu KRW"
+          },
+          "highlight": {
+            "ko": "0.2% 이상",
+            "en": "0.2% or higher",
+            "zh": "0.2% 以上",
+            "vi": "0,2% trở lên"
+          },
+          "body": {
+            "ko": "혈중알코올농도 0.2% 이상인, 가장 무거운 처벌 구간입니다.",
+            "en": "The most severe band — BAC of 0.2% or higher.",
+            "zh": "血液酒精浓度 0.2% 以上,处罚最重的区间。",
+            "vi": "Mức nặng nhất — nồng độ cồn từ 0,2% trở lên."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "가중처벌", "en": "Aggravated", "zh": "加重处罚", "vi": "Tăng nặng" },
+          "title": {
+            "ko": "윤창호법 가중처벌",
+            "en": "Repeat-offense aggravation (Yun Chang-ho Act)",
+            "zh": "尹昌镐法加重处罚",
+            "vi": "Tăng nặng theo Luật Yoon Chang-ho"
+          },
+          "highlight": {
+            "ko": "10년 내 2회 이상",
+            "en": "2+ offenses in 10 years",
+            "zh": "10 年内 2 次以上",
+            "vi": "2 lần trong 10 năm"
+          },
+          "body": {
+            "ko": "10년 이내에 2회 이상 음주운전으로 적발되면 윤창호법에 따라 가중 처벌됩니다.",
+            "en": "Two or more drunk-driving offenses within ten years trigger aggravated punishment under the Yun Chang-ho Act.",
+            "zh": "10 年内 2 次以上酒驾,根据尹昌镐法予以加重处罚。",
+            "vi": "Tái phạm 2 lần trở lên trong 10 năm sẽ bị tăng nặng theo Luật Yoon Chang-ho."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "summary",
+          "title": {
+            "ko": "핵심 정리",
+            "en": "Key takeaways",
+            "zh": "核心整理",
+            "vi": "Tóm tắt chính"
+          },
+          "items": [
+            {
+              "label": { "ko": "0.03~0.08% 미만", "en": "0.03 ~ under 0.08%", "zh": "0.03 ~ 不足 0.08%", "vi": "0,03 ~ dưới 0,08%" },
+              "value": { "ko": "1년 이하 / 500만원 이하", "en": "≤1 yr / ≤5M KRW", "zh": "1 年以下 / 500 万以下", "vi": "≤1 năm / ≤5 triệu KRW" }
+            },
+            {
+              "label": { "ko": "0.08~0.2% 미만", "en": "0.08 ~ under 0.2%", "zh": "0.08 ~ 不足 0.2%", "vi": "0,08 ~ dưới 0,2%" },
+              "value": { "ko": "1~2년 / 500~1,000만원", "en": "1–2 yr / 5–10M KRW", "zh": "1~2 年 / 500~1,000 万", "vi": "1–2 năm / 5–10 triệu KRW" }
+            },
+            {
+              "label": { "ko": "0.2% 이상", "en": "0.2% or higher", "zh": "0.2% 以上", "vi": "0,2% trở lên" },
+              "value": { "ko": "2~5년 / 1,000~2,000만원", "en": "2–5 yr / 10–20M KRW", "zh": "2~5 年 / 1,000~2,000 万", "vi": "2–5 năm / 10–20 triệu KRW" }
+            }
+          ],
+          "law_refs": ["도로교통법 제148조의2"]
+        }
+      ]
     },
     {
-      "heading": { "ko": "면허 행정처분" },
-      "body": {
-        "ko": "0.03~0.08% 미만은 면허 정지 100일. 0.08% 이상 또는 음주운전 인사사고는 면허 취소 + 결격 2년. 음주운전 3회 이상, 측정 거부 등은 결격 기간이 더 길어집니다."
+      "id": "law",
+      "label": {
+        "ko": "음주운전 관련 법 조항",
+        "en": "Related law articles",
+        "zh": "酒驾相关法条",
+        "vi": "Điều luật liên quan"
       },
-      "law_refs": ["도로교통법 제93조", "시행규칙 별표28"]
-    },
-    {
-      "heading": { "ko": "음주측정 거부" },
-      "body": {
-        "ko": "경찰공무원의 정당한 음주측정 요구를 거부하면 '0.2% 이상 음주운전'과 동일한 수준(1~5년 징역 또는 500~2,000만 원 벌금)으로 처벌받습니다. 면허도 취소됩니다."
+      "desc": {
+        "ko": "도로교통법 핵심 조문",
+        "en": "Key articles of the Road Traffic Act",
+        "zh": "道路交通法核心条文",
+        "vi": "Điều khoản chính của Luật Giao thông"
       },
-      "law_refs": ["도로교통법 제44조 제2항", "도로교통법 제148조의2 제2항"]
-    },
-    {
-      "heading": { "ko": "약물 운전" },
-      "body": {
-        "ko": "마약·대마·향정신성의약품 복용으로 정상 운전이 어려운 상태에서 운전하면 3년 이하 징역 또는 1,000만 원 이하 벌금에 처해집니다. 인명피해 사고는 종합보험·합의 여부와 무관하게 형사처벌 대상(특례 제외)입니다."
-      },
-      "law_refs": ["도로교통법 제45조", "도로교통법 제148조", "교통사고처리 특례법 제3조"]
-    },
-    {
-      "heading": { "ko": "시동잠금장치" },
-      "body": {
-        "ko": "음주운전 재범자에게는 시동잠금장치(혈중알코올농도를 감지하면 시동이 걸리지 않도록 하는 장치)의 부착이 조건으로 부과될 수 있으며, 장치를 해체·조작하면 면허가 취소됩니다."
-      },
-      "law_refs": ["도로교통법 제50조의3", "도로교통법 제93조"]
-    },
-    {
-      "heading": { "ko": "자전거·개인형 이동장치도 동일 기준" },
-      "body": {
-        "ko": "자전거와 개인형 이동장치(전동킥보드 등)를 음주 상태에서 운전하면 3만 원의 범칙금이 부과되며, 측정 거부 시 10만 원의 범칙금이 부과됩니다."
-      },
-      "law_refs": ["도로교통법 제44조 제1항", "시행령 별표8"]
+      "accent": "#3b82f6",
+      "slides": [
+        {
+          "type": "content",
+          "tag": { "ko": "도로교통법 제44조 제1항", "en": "Road Traffic Act §44(1)", "zh": "道路交通法 第44条第1款", "vi": "Luật GT đường bộ §44(1)" },
+          "title": {
+            "ko": "술 취한 상태에서의 운전 금지",
+            "en": "Prohibition of driving while intoxicated",
+            "zh": "禁止在醉酒状态下驾驶",
+            "vi": "Cấm lái xe khi say"
+          },
+          "highlight": {
+            "ko": "음주운전 금지 원칙",
+            "en": "Core prohibition rule",
+            "zh": "酒驾禁止原则",
+            "vi": "Nguyên tắc cấm cốt lõi"
+          },
+          "body": {
+            "ko": "누구든지 술 취한 상태에서 자동차등을 운전해서는 안 됩니다. 혈중알코올농도 0.03% 이상이 '술 취한 상태'의 기준입니다.",
+            "en": "No one may drive a vehicle while intoxicated. The threshold for 'intoxication' is a BAC of 0.03% or more.",
+            "zh": "任何人不得在醉酒状态下驾驶机动车等。\"醉酒状态\"以血液酒精浓度 0.03% 以上为准。",
+            "vi": "Không ai được lái xe khi say. Ngưỡng \"say\" là nồng độ cồn từ 0,03% trở lên."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "도로교통법 제44조 제4항", "en": "Road Traffic Act §44(4)", "zh": "道路交通法 第44条第4款", "vi": "Luật GT đường bộ §44(4)" },
+          "title": {
+            "ko": "'술 취한 상태'의 기준",
+            "en": "Definition of 'intoxication'",
+            "zh": "\"醉酒状态\"的标准",
+            "vi": "Định nghĩa \"say\""
+          },
+          "highlight": {
+            "ko": "혈중알코올농도 0.03%",
+            "en": "BAC 0.03%",
+            "zh": "血液酒精浓度 0.03%",
+            "vi": "Nồng độ cồn 0,03%"
+          },
+          "body": {
+            "ko": "혈중알코올농도 0.03% 이상인 경우를 '술 취한 상태'로 봅니다. 0.03% 미만이라도 정상적으로 운전이 어려운 상태라면 운전이 금지됩니다.",
+            "en": "BAC of 0.03% or more counts as 'intoxication'. Even below 0.03%, driving is prohibited if normal operation is impaired.",
+            "zh": "血液酒精浓度 0.03% 以上视为\"醉酒状态\"。即使不足 0.03%,若难以正常驾驶仍禁止驾驶。",
+            "vi": "BAC từ 0,03% trở lên được xem là \"say\". Dưới 0,03% mà không lái xe bình thường được vẫn bị cấm."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "도로교통법 제148조의2", "en": "Road Traffic Act §148-2", "zh": "道路交通法 第148条之2", "vi": "Luật GT đường bộ §148-2" },
+          "title": {
+            "ko": "벌칙 (형사처벌)",
+            "en": "Penalties (criminal)",
+            "zh": "罚则 (刑事处罚)",
+            "vi": "Hình phạt (hình sự)"
+          },
+          "highlight": {
+            "ko": "형사처벌의 근거",
+            "en": "Basis for criminal penalties",
+            "zh": "刑事处罚的依据",
+            "vi": "Cơ sở hình phạt hình sự"
+          },
+          "body": {
+            "ko": "음주운전의 농도별 형사처벌 기준과 반복 위반 시 가중처벌(윤창호법)을 규정하는 조항입니다.",
+            "en": "Sets out criminal penalties by BAC band and the aggravated punishment for repeat offenses (Yun Chang-ho Act).",
+            "zh": "规定按浓度分级的刑事处罚标准,以及反复违规时的加重处罚(尹昌镐法)。",
+            "vi": "Quy định hình phạt theo từng mức nồng độ cồn và tăng nặng khi tái phạm (Luật Yoon Chang-ho)."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "content",
+          "tag": { "ko": "도로교통법 제93조", "en": "Road Traffic Act §93", "zh": "道路交通法 第93条", "vi": "Luật GT đường bộ §93" },
+          "title": {
+            "ko": "운전면허의 취소·정지",
+            "en": "License revocation / suspension",
+            "zh": "驾照吊销·停照",
+            "vi": "Tước / đình chỉ bằng lái"
+          },
+          "highlight": {
+            "ko": "행정처분의 근거",
+            "en": "Basis for administrative action",
+            "zh": "行政处分的依据",
+            "vi": "Cơ sở xử lý hành chính"
+          },
+          "body": {
+            "ko": "음주운전 시 면허의 취소 또는 정지 등 행정처분의 근거가 되는 조항입니다. 세부 기준은 시행규칙 별표28에 규정됩니다.",
+            "en": "The basis for administrative actions — license revocation or suspension — for drunk driving. Detailed criteria are in Enforcement Rule Annex 28.",
+            "zh": "酒驾时驾照吊销或停照等行政处分的依据。详细标准见施行规则附表 28。",
+            "vi": "Cơ sở cho việc tước hoặc đình chỉ bằng do lái xe khi say. Chi tiết tại Phụ lục 28 của Quy chế thi hành."
+          },
+          "note": { "ko": "", "en": "", "zh": "", "vi": "" }
+        },
+        {
+          "type": "summary",
+          "title": {
+            "ko": "핵심 정리",
+            "en": "Key takeaways",
+            "zh": "核心整理",
+            "vi": "Tóm tắt chính"
+          },
+          "items": [
+            {
+              "label": { "ko": "제44조", "en": "§44", "zh": "第44条", "vi": "§44" },
+              "value": { "ko": "음주운전 금지 · 취한 상태 기준", "en": "Prohibition & definition", "zh": "酒驾禁止 · 醉酒标准", "vi": "Cấm & định nghĩa say" }
+            },
+            {
+              "label": { "ko": "제148조의2", "en": "§148-2", "zh": "第148条之2", "vi": "§148-2" },
+              "value": { "ko": "형사처벌 (벌칙)", "en": "Criminal penalties", "zh": "刑事处罚 (罚则)", "vi": "Hình phạt hình sự" }
+            },
+            {
+              "label": { "ko": "제93조", "en": "§93", "zh": "第93条", "vi": "§93" },
+              "value": { "ko": "면허 행정처분 (취소·정지)", "en": "License action (rev. / susp.)", "zh": "驾照行政处分 (吊销·停照)", "vi": "Xử lý bằng (tước / đình chỉ)" }
+            }
+          ],
+          "law_refs": ["도로교통법", "도로교통법 시행규칙"]
+        }
+      ]
     }
-  ],
-  "numbers": [
-    { "label": { "ko": "술에 취한 상태 기준" }, "value": { "ko": "혈중알코올 0.03% 이상" } },
-    { "label": { "ko": "면허정지 범위" }, "value": { "ko": "0.03% ~ 0.08% 미만" } },
-    { "label": { "ko": "면허취소 기준" }, "value": { "ko": "0.08% 이상 또는 인명피해" } },
-    { "label": { "ko": "0.2% 이상 형량" }, "value": { "ko": "2~5년 징역 또는 1천~2천만 원" } },
-    { "label": { "ko": "측정거부 형량" }, "value": { "ko": "1~5년 징역 또는 500~2천만 원" } },
-    { "label": { "ko": "자전거 음주 범칙금" }, "value": { "ko": "3만 원" } }
   ],
   "example_question_ids": [37, 68, 131, 150, 553]
 }
