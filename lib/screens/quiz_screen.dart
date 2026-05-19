@@ -13,6 +13,7 @@ import '../services/favorite_questions_service.dart';
 import '../services/global_answer_stats_service.dart';
 import '../services/mock_exam_history_service.dart';
 import '../services/question_service.dart';
+import '../services/user_answer_log_service.dart';
 import '../services/user_answer_stats_service.dart';
 import '../services/wrong_note_service.dart';
 import '../theme/app_theme_colors.dart';
@@ -61,6 +62,8 @@ class _QuizScreenState extends State<QuizScreen> {
   int _remainingSeconds = _timeLimit.inSeconds;
   Set<int> _favoriteIds = {};
   bool _finishing = false;
+  /// 세션 시작 시각(문제 로드 완료 직후). 풀이 이력 로깅에 사용.
+  DateTime? _sessionStartedAt;
   VideoPlayerController? _videoController;
   Future<void>? _videoInit;
 
@@ -221,6 +224,7 @@ class _QuizScreenState extends State<QuizScreen> {
       return;
     }
     await _prepareVideoForQuestion(_q);
+    _sessionStartedAt = DateTime.now();
     if (widget.showTimerAndScore) {
       _startTimer();
     }
@@ -386,6 +390,11 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
       UserAnswerStatsService.applySessionResults(allResults),
       GlobalAnswerStatsService.applySessionResults(allResults),
+      UserAnswerLogService.saveSession(
+        allResults,
+        licenseKind: widget.mockExamLicenseKind,
+        startedAt: _sessionStartedAt,
+      ),
     ]);
 
     if (!mounted) return;

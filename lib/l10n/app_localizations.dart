@@ -1117,33 +1117,6 @@ class AppLocalizations {
         ),
       ];
 
-  String get consentThirdPartyTitle => _t({
-        'ko': '개인정보 제3자 제공 내역',
-      });
-
-  List<({String label, String value})> get consentThirdPartyRows => [
-        (
-          label: _t({'ko': '제공받는 기관'}),
-          value: _t({'ko': 'Google LLC (Google Forms / Google Sheets 호스팅)'}),
-        ),
-        (
-          label: _t({'ko': '제공 목적'}),
-          value: _t({'ko': '동의 기록 보관'}),
-        ),
-        (
-          label: _t({'ko': '제공 항목'}),
-          value: _t({'ko': '이름, 동의 일자, 플랫폼'}),
-        ),
-        (
-          label: _t({'ko': '제공 근거'}),
-          value: _t({'ko': '정보주체의 동의'}),
-        ),
-        (
-          label: _t({'ko': '보유·이용기간'}),
-          value: _t({'ko': '앱 운영자가 시트에서 삭제하기 전까지'}),
-        ),
-      ];
-
   String get consentRightToRefuse => _t({
         'ko':
             '동의를 거부할 권리가 있으며, 거부 시 앱을 사용할 수 없습니다.',
@@ -1160,10 +1133,10 @@ class AppLocalizations {
       });
 
   String get consentNameHint => _t({
-        'ko': '시트에 기록될 이름을 입력하세요',
-        'en': 'Enter the name to record',
-        'zh': '请输入要记录的姓名',
-        'vi': 'Nhập tên sẽ được ghi lại',
+        'ko': '나를 식별할 이름(닉네임)을 입력하세요',
+        'en': 'Enter a name (nickname) to identify you',
+        'zh': '请输入用于识别您的姓名(昵称)',
+        'vi': 'Nhập tên (biệt danh) để nhận diện bạn',
       });
 
   String get consentNameRequired => _t({
@@ -1182,10 +1155,6 @@ class AppLocalizations {
 
   String get consentCollectionAgreeCheckbox => _t({
         'ko': '[필수] 개인정보 수집·이용에 동의합니다.',
-      });
-
-  String get consentThirdPartyAgreeCheckbox => _t({
-        'ko': '[필수] 개인정보 제3자 제공(한국도로교통공단)에 동의합니다.',
       });
 
   String get consentGlobalStatsAgreeCheckbox => _t({

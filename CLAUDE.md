@@ -22,7 +22,8 @@
 - 외부 URL 을 `url_launcher` 로 열기 전 반드시 `utils/safe_external_url.dart` 의 검증을 거친다 (https + 허용 호스트만).
 - 소카테고리 매핑(`assets/question_subcategory.json`) 은 `tool/classify_subcategory.dart` 로만 재생성한다. 수동 편집 금지. 규칙은 `lib/services/subcategory_classifier.dart` 에 두고 CLI·테스트·런타임 모두 거기서 참조한다.
 - 학습 카드(`assets/study/<tag>.json`) 는 사람이 직접 작성한다. `tool/extract_study_seeds.dart` 가 만든 `assets/study/_seeds/` 는 작성 보조용 중간 산출물이며 git ignore 처리. 카드 스키마 변경 시 `lib/models/study_card.dart` 와 `lib/screens/study_card_screen.dart` 를 함께 갱신한다.
-- CRITICAL: 익명 글로벌 통계의 모든 Firestore I/O 는 `lib/services/global_answer_stats_service.dart` 만 한다. 스크린·다른 서비스에서 `FirebaseFirestore.instance` 를 직접 호출 금지. 동의 거부·미지원 플랫폼은 같은 서비스 내부에서 no-op 처리되므로 호출부 가드 불필요. 데이터 모델은 `question_stats/{questionId}` 문서의 `attempts` / `correct` / `option_counts` (Map) / `last_updated_at` 4 필드 고정이며, 보안 규칙(`firestore.rules`) 이 카운터 +1 증가만 허용한다 — 스키마 변경 시 규칙도 같이 갱신해 재배포한다.
+- CRITICAL: 익명 글로벌 통계의 모든 Firestore I/O 는 `lib/services/global_answer_stats_service.dart` 만 한다. 스크린·다른 서비스에서 `FirebaseFirestore.instance` 를 직접 호출 금지. 동의 거부·미지원 플랫폼은 같은 서비스 내부에서 no-op 처리되므로 호출부 가드 불필요. 데이터 모델은 `question_stats/{questionId}` 문서의 `attempts` / `correct` / `option_counts` (Map) / `last_updated_at` 필드이며, 보안 규칙(`firestore.rules`) 은 현재 익명 로그인 사용자의 write 만 허용한다(카운터 +1 검증은 dotted-path 처리 문제로 제거됨, App Check 도입 시 보완 예정). 스키마 변경 시 규칙도 같이 갱신해 재배포한다.
+- CRITICAL: 사용자별 풀이 이력(`user_answers/{uid}/sessions/{auto_id}`) 의 모든 Firestore I/O 는 `lib/services/user_answer_log_service.dart` 만 한다. 운영자(=프로젝트 소유자)가 Firebase 콘솔에서 uid 단위로 직접 조회하는 용도이며, 클라이언트 read 는 보안 규칙으로 차단되어 있다. 동의 시 입력받은 이름은 익명 사용자의 `displayName` 에 세팅되어 콘솔에서 식별자로 사용된다.
 
 ## 개발 프로세스
 - 새 스크린을 추가할 때는 `MaterialPageRoute` 로 `Navigator.push` 하는 패턴을 따른다 (라우트 테이블 / go_router 미도입).

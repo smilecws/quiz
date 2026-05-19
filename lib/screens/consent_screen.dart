@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
-import '../services/consent_log_service.dart';
 import '../services/consent_service.dart';
+import '../services/global_answer_stats_service.dart';
 import '../services/global_stats_consent_service.dart';
 import '../theme/app_theme_colors.dart';
 
@@ -24,7 +25,6 @@ class _ConsentScreenState extends State<ConsentScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   bool _collectionAgreed = false;
-  bool _thirdPartyAgreed = false;
   // 선택 항목 — 기본 ON. 끄면 익명 학습 통계가 서버로 전송되지 않는다.
   bool _globalStatsAgreed = true;
   bool _submitting = false;
@@ -37,7 +37,7 @@ class _ConsentScreenState extends State<ConsentScreen> {
 
   Future<void> _handleAgree() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    if (!_collectionAgreed || !_thirdPartyAgreed) return;
+    if (!_collectionAgreed) return;
 
     setState(() => _submitting = true);
     final name = _nameController.text.trim();
@@ -50,15 +50,24 @@ class _ConsentScreenState extends State<ConsentScreen> {
     // 로컬 저장이 우선 — 네트워크 실패해도 동의 자체는 저장.
     await ConsentService.save(record);
     await GlobalStatsConsentService.save(_globalStatsAgreed);
-    // Google Form 전송은 fire-and-forget. 실패해도 게이트는 통과.
-    // ignore: discarded_futures
-    ConsentLogService.submitConsent(
-      name: name,
-      grantedAtUtc: record.grantedAt,
-    );
+    // 입력받은 이름을 Firebase 익명 사용자의 displayName 에 세팅 (silent).
+    await _setDisplayNameSilently(name);
 
     if (!mounted) return;
     widget.onGranted(record);
+  }
+
+  /// 미지원 플랫폼·로그인 미완료·네트워크 실패는 모두 silent 처리.
+  /// displayName 세팅 실패가 동의 게이트 진입을 막아서는 안 된다.
+  Future<void> _setDisplayNameSilently(String name) async {
+    if (!GlobalAnswerStatsService.isSupported) return;
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+      await user.updateDisplayName(name);
+    } catch (e) {
+      debugPrint('updateDisplayName failed: $e');
+    }
   }
 
   Future<void> _handleDecline() async {
@@ -90,7 +99,6 @@ class _ConsentScreenState extends State<ConsentScreen> {
     final colors = context.appColors;
     final l10n = AppLocalizations.of(context);
     final canSubmit = _collectionAgreed &&
-        _thirdPartyAgreed &&
         _nameController.text.trim().isNotEmpty &&
         !_submitting;
 
@@ -118,11 +126,6 @@ class _ConsentScreenState extends State<ConsentScreen> {
                   _PrivacyTableSection(
                     title: l10n.consentCollectionTitle,
                     rows: l10n.consentCollectionRows,
-                  ),
-                  const SizedBox(height: 16),
-                  _PrivacyTableSection(
-                    title: l10n.consentThirdPartyTitle,
-                    rows: l10n.consentThirdPartyRows,
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -164,20 +167,6 @@ class _ConsentScreenState extends State<ConsentScreen> {
                             setState(() => _collectionAgreed = v ?? false),
                     title: Text(
                       l10n.consentCollectionAgreeCheckbox,
-                      style: TextStyle(color: colors.textPrimary),
-                    ),
-                    activeColor: colors.primary,
-                    contentPadding: EdgeInsets.zero,
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                  CheckboxListTile(
-                    value: _thirdPartyAgreed,
-                    onChanged: _submitting
-                        ? null
-                        : (v) =>
-                            setState(() => _thirdPartyAgreed = v ?? false),
-                    title: Text(
-                      l10n.consentThirdPartyAgreeCheckbox,
                       style: TextStyle(color: colors.textPrimary),
                     ),
                     activeColor: colors.primary,

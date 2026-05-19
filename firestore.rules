@@ -24,5 +24,13 @@ service cloud.firestore {
 
       allow delete: if false;
     }
+
+    // 사용자별 풀이 이력 — 운영자가 Firebase 콘솔에서만 조회.
+    // 클라이언트는 자기 uid 의 세션만 create 가능. read/update/delete 모두 차단.
+    match /user_answers/{uid}/sessions/{sid} {
+      allow read: if false;
+      allow create: if request.auth != null && request.auth.uid == uid;
+      allow update, delete: if false;
+    }
   }
 }
