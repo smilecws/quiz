@@ -16,10 +16,11 @@ service cloud.firestore {
     match /question_stats/{qid} {
       allow read: if true;
 
-      allow create, update: if
-        request.auth != null
-        && request.resource.data.keys().hasOnly(
-             ['attempts', 'correct', 'option_counts', 'last_updated_at']);
+      // 익명 로그인 사용자만 write 가능.
+      // 필드 화이트리스트 검증은 dotted-path 처리(option_counts.0 등) 때문에
+      // request.resource.data.keys() 로 정확히 잡기 어려워 제거. 위조 카운트
+      // 폭증 방어는 App Check 활성화로 대체할 예정.
+      allow create, update: if request.auth != null;
 
       allow delete: if false;
     }
