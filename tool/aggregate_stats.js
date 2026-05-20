@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // tool/aggregate_stats.js
-// GitHub Actions cron 에서 실행. Firestore question_stats / user_answers 를
+// GitHub Actions cron 에서 실행. Firestore user_answers 세션 로그를
 // 집계해 aggregates.json, full_report.json, report.md 를 생성한다.
 //
 // 사용법:
@@ -33,16 +33,37 @@ async function loadSubcategoryMap() {
 // ── Firestore 데이터 수집 ────────────────────────────────────────────────────
 
 async function fetchQuestionStats() {
-  const snap = await db.collection('question_stats').get();
+  const usersSnap = await db.collection('user_answers').get();
   const stats = {};
-  for (const doc of snap.docs) {
-    const d = doc.data();
-    stats[doc.id] = {
-      attempts: d.attempts ?? 0,
-      correct: d.correct ?? 0,
-      option_counts: d.option_counts ?? {},
-    };
+
+  for (const userDoc of usersSnap.docs) {
+    const sessionsSnap = await userDoc.ref.collection('sessions').get();
+    for (const sessionDoc of sessionsSnap.docs) {
+      const data = sessionDoc.data();
+      const items = data.items;
+      if (!Array.isArray(items)) continue;
+
+      for (const item of items) {
+        const qId = String(item.q);
+        if (!stats[qId]) {
+          stats[qId] = { attempts: 0, correct: 0, option_counts: {} };
+        }
+        stats[qId].attempts += 1;
+        if (item.correct === true) {
+          stats[qId].correct += 1;
+        }
+        const sel = item.sel;
+        if (Array.isArray(sel)) {
+          for (const idx of sel) {
+            const key = String(idx);
+            stats[qId].option_counts[key] =
+              (stats[qId].option_counts[key] ?? 0) + 1;
+          }
+        }
+      }
+    }
   }
+
   return stats;
 }
 
@@ -116,6 +137,7 @@ function buildAggregatesJson(stats, subcatMap, updatedAt) {
     updated_at: updatedAt,
     hardest_top10: buildHardestList(stats, 10),
     subcategory: buildSubcategoryAggregates(stats, subcatMap),
+    all_questions: buildAllQuestions(stats),
   };
 }
 
@@ -157,7 +179,7 @@ function buildReportMd(fullReport) {
 // ── main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('Fetching question_stats...');
+  console.log('Fetching user_answers sessions...');
   const [stats, subcatMap, userCounts] = await Promise.all([
     fetchQuestionStats(),
     loadSubcategoryMap(),

@@ -2,9 +2,29 @@
   "project": "quiz_app",
   "phase": "p0-2-write-merge",
   "steps": [
-    { "step": 0, "name": "aggregate-script-rewrite", "status": "pending" },
-    { "step": 1, "name": "client-write-removal", "status": "pending" },
-    { "step": 2, "name": "firestore-rules", "status": "pending" },
-    { "step": 3, "name": "docs-update", "status": "pending" }
-  ]
+    {
+      "step": 0,
+      "name": "aggregate-script-rewrite",
+      "status": "completed",
+      "started_at": "2026-05-20T16:54:01+0900",
+      "completed_at": "2026-05-20T17:10:00+0900",
+      "summary": "aggregate_stats.js 집계 소스를 question_stats → user_answers 세션 로그로 전환, aggregates.json에 all_questions 필드 추가"
+    },
+    {
+      "step": 1,
+      "name": "client-write-removal",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "name": "firestore-rules",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "name": "docs-update",
+      "status": "pending"
+    }
+  ],
+  "created_at": "2026-05-20T16:54:01+0900"
 }
