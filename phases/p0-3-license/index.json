@@ -2,7 +2,18 @@
   "project": "quiz_app",
   "phase": "p0-3-license",
   "steps": [
-    { "step": 0, "name": "license-files", "status": "pending" },
-    { "step": 1, "name": "readme-update", "status": "pending" }
-  ]
+    {
+      "step": 0,
+      "name": "license-files",
+      "status": "completed",
+      "started_at": "2026-05-20T10:57:19+0900",
+      "summary": "LICENSE (MIT, Copyright 2026 josh) + LICENSE_DATA.md (공단 자료 라이선스 분리 명시) 생성"
+    },
+    {
+      "step": 1,
+      "name": "readme-update",
+      "status": "pending"
+    }
+  ],
+  "created_at": "2026-05-20T10:57:19+0900"
 }
