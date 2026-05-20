@@ -7,7 +7,6 @@ import '../services/attempted_questions_service.dart';
 import '../services/global_answer_stats_service.dart';
 import '../services/mock_exam_history_service.dart';
 import '../services/question_service.dart';
-import '../services/question_subcategory_service.dart';
 import '../services/user_answer_stats_service.dart';
 import '../services/wrong_note_service.dart';
 import '../theme/app_theme_colors.dart';
@@ -29,12 +28,10 @@ class _StatsScreenState extends State<StatsScreen> {
   int _wrongCount = 0;
   int _attemptedCount = 0;
 
-  // 글로벌 통계 관련
-  Map<int, GlobalQuestionStat> _globalStats = const {};
+  // 글로벌 통계 관련 (사전 집계)
+  GlobalAggregateStats _aggregate = GlobalAggregateStats.empty;
   Map<int, Question> _questionsById = const {};
-  Map<int, String> _subcategoryMap = const {};
   bool _globalLoadFailed = false;
-  bool get _globalSupported => GlobalAnswerStatsService.isSupported;
 
   @override
   void initState() {
@@ -49,29 +46,22 @@ class _StatsScreenState extends State<StatsScreen> {
       UserAnswerStatsService.getHardestQuestions(n: 10, minAttempts: 2),
       WrongNoteService.loadWrongIds(),
       AttemptedQuestionsService.loadAttemptedIds(),
-      _globalSupported
-          ? GlobalAnswerStatsService.loadAllStats(forceRefresh: forceRefresh)
-          : Future<Map<int, GlobalQuestionStat>>.value(const {}),
-      _globalSupported
-          ? QuestionService.loadAllQuestionsById()
-          : Future<Map<int, Question>>.value(const {}),
-      _globalSupported
-          ? QuestionSubcategoryService.loadMap()
-          : Future<Map<int, String>>.value(const {}),
+      GlobalAnswerStatsService.loadAggregateStats(forceRefresh: forceRefresh),
+      QuestionService.loadAllQuestionsById(),
     ]);
 
     if (!mounted) return;
-    final global = results[5] as Map<int, GlobalQuestionStat>;
+    final agg = results[5] as GlobalAggregateStats;
     setState(() {
       _overall = results[0] as OverallStats;
       _mockHistory = results[1] as List<MockExamHistoryEntry>;
       _hardestQuestions = results[2] as List<AnswerQuestionStat>;
       _wrongCount = (results[3] as Set<int>).length;
       _attemptedCount = (results[4] as Set<int>).length;
-      _globalStats = global;
+      _aggregate = agg;
       _questionsById = results[6] as Map<int, Question>;
-      _subcategoryMap = results[7] as Map<int, String>;
-      _globalLoadFailed = _globalSupported && global.isEmpty;
+      _globalLoadFailed =
+          agg.hardestTop10.isEmpty && agg.subcategory.isEmpty;
       _loading = false;
     });
   }
@@ -145,13 +135,24 @@ class _StatsScreenState extends State<StatsScreen> {
   // 글로벌(전체 사용자) 통계 섹션
   // ───────────────────────────────────────────────────────────────────────
 
-  List<Widget> _buildGlobalSections(AppLocalizations l10n) {
-    if (!_globalSupported) {
-      return [
-        const SizedBox(height: 20),
-        _GlobalUnsupportedCard(message: l10n.statsGlobalUnavailable),
-      ];
+  String _formatUpdatedAgo(AppLocalizations l10n) {
+    final ts = _aggregate.updatedAt;
+    if (ts == null) return '';
+    final diff = DateTime.now().difference(ts);
+    final String ago;
+    if (diff.inDays > 0) {
+      ago = l10n.statsGlobalUpdatedDaysAgo(diff.inDays);
+    } else if (diff.inHours > 0) {
+      ago = l10n.statsGlobalUpdatedHoursAgo(diff.inHours);
+    } else if (diff.inMinutes > 0) {
+      ago = l10n.statsGlobalUpdatedMinutesAgo(diff.inMinutes);
+    } else {
+      ago = l10n.statsGlobalUpdatedJustNow;
     }
+    return l10n.statsGlobalUpdatedAgo(ago);
+  }
+
+  List<Widget> _buildGlobalSections(AppLocalizations l10n) {
     if (_globalLoadFailed) {
       return [
         const SizedBox(height: 20),
@@ -159,62 +160,37 @@ class _StatsScreenState extends State<StatsScreen> {
       ];
     }
 
-    final globalHardest = _globalStats.values
-        .where((s) => s.attempts >= 5 && s.wrongCount > 0)
-        .toList()
-      ..sort((a, b) => a.accuracyRate.compareTo(b.accuracyRate));
-    final globalTop = globalHardest.take(10).toList();
-
-    final subcategoryAggregates = _aggregateBySubcategory();
+    final hardest = _aggregate.hardestTop10;
+    final subcats = _aggregate.subcategory;
+    final updatedText = _formatUpdatedAgo(l10n);
 
     return [
-      if (globalTop.isNotEmpty) ...[
+      if (hardest.isNotEmpty) ...[
         const SizedBox(height: 20),
-        _SectionHeader(title: l10n.statsGlobalHardestTopN(globalTop.length)),
+        _SectionHeader(title: l10n.statsGlobalHardestTopN(hardest.length)),
         const SizedBox(height: 8),
         _GlobalHardestQuestionsList(
           l10n: l10n,
-          stats: globalTop,
+          stats: hardest,
           onTapQuestion: _openDetail,
         ),
       ],
       const SizedBox(height: 20),
       _SectionHeader(title: l10n.statsGlobalSubcategoryTitle),
       const SizedBox(height: 8),
-      if (subcategoryAggregates.isEmpty)
+      if (subcats.isEmpty)
         _GlobalUnsupportedCard(message: l10n.statsGlobalSubcategoryEmpty)
       else
         _GlobalSubcategoryAccuracyList(
           l10n: l10n,
-          aggregates: subcategoryAggregates,
+          aggregates: subcats,
         ),
+      if (updatedText.isNotEmpty) ...[
+        const SizedBox(height: 8),
+        _GlobalUpdatedAtLabel(text: updatedText),
+      ],
     ];
   }
-
-  /// 글로벌 stats × subcategory_map join → 태그별 (attempts, correct) 합.
-  /// 표본 합 30 미만은 제외(노이즈).
-  List<_SubcatAgg> _aggregateBySubcategory() {
-    final byTag = <String, _SubcatAgg>{};
-    _globalStats.forEach((qid, stat) {
-      final tag = _subcategoryMap[qid];
-      if (tag == null) return;
-      final cur = byTag.putIfAbsent(tag, () => _SubcatAgg(tag: tag));
-      cur.attempts += stat.attempts;
-      cur.correct += stat.correct;
-    });
-    final list = byTag.values.where((a) => a.attempts >= 30).toList();
-    list.sort((a, b) => a.accuracyRate.compareTo(b.accuracyRate));
-    return list;
-  }
-}
-
-class _SubcatAgg {
-  _SubcatAgg({required this.tag});
-  final String tag;
-  int attempts = 0;
-  int correct = 0;
-  double get accuracyRate => attempts > 0 ? correct / attempts : 0;
-  int get wrongCount => attempts - correct;
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -639,7 +615,7 @@ class _GlobalHardestQuestionsList extends StatelessWidget {
   });
 
   final AppLocalizations l10n;
-  final List<GlobalQuestionStat> stats;
+  final List<AggregateHardestEntry> stats;
   final void Function(int questionId) onTapQuestion;
 
   @override
@@ -663,7 +639,7 @@ class _GlobalHardestQuestionsList extends StatelessWidget {
         ),
         itemBuilder: (context, i) {
           final s = stats[i];
-          final wrongRate = ((1 - s.accuracyRate) * 100).toStringAsFixed(0);
+          final wrongRate = (s.wrongRate * 100).toStringAsFixed(0);
           return InkWell(
             onTap: () => onTapQuestion(s.questionId),
             child: Padding(
@@ -725,7 +701,7 @@ class _GlobalHardestQuestionsList extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      _AccuracyBar(rate: s.accuracyRate),
+                      _AccuracyBar(rate: 1 - s.wrongRate),
                     ],
                   ),
                 ],
@@ -749,7 +725,7 @@ class _GlobalSubcategoryAccuracyList extends StatelessWidget {
   });
 
   final AppLocalizations l10n;
-  final List<_SubcatAgg> aggregates;
+  final List<SubcategoryAggregate> aggregates;
 
   @override
   Widget build(BuildContext context) {
@@ -777,7 +753,7 @@ class _SubcategoryRow extends StatelessWidget {
   const _SubcategoryRow({required this.l10n, required this.agg});
 
   final AppLocalizations l10n;
-  final _SubcatAgg agg;
+  final SubcategoryAggregate agg;
 
   @override
   Widget build(BuildContext context) {
@@ -855,6 +831,25 @@ class _GlobalUnsupportedCard extends StatelessWidget {
             height: 1.5,
             color: ac.textSecondary,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GlobalUpdatedAtLabel extends StatelessWidget {
+  const _GlobalUpdatedAtLabel({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 11,
+          color: context.appColors.textSecondary,
         ),
       ),
     );

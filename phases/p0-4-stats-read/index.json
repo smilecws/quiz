@@ -21,7 +21,10 @@
     {
       "step": 2,
       "name": "client-cache-fetch",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-05-20T12:38:25+0900",
+      "summary": "글로벌 통계 읽기를 Firestore 1000문서 → GitHub raw aggregates.json HTTP fetch로 전환. SharedPreferences 1시간 TTL 영구 캐시 + 네트워크 실패 시 만료 캐시 폴백. stats_screen에서 사전집계 hardest_top10·subcategory 직접 표시, 클라이언트 재집계 로직 제거, 최근 업데이트 타임스탬프 표시",
+      "completed_at": "2026-05-20T12:50:00+0900"
     },
     {
       "step": 3,

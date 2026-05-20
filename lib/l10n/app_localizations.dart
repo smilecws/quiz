@@ -1013,6 +1013,49 @@ class AppLocalizations {
         'vi': 'Không kết nối được máy chủ thống kê',
       });
 
+  String statsGlobalUpdatedAgo(String ago) {
+    return _t({
+      'ko': '최근 업데이트: {ago}',
+      'en': 'Last updated: {ago}',
+      'zh': '最近更新: {ago}',
+      'vi': 'Cập nhật gần nhất: {ago}',
+    }).replaceAll('{ago}', ago);
+  }
+
+  String statsGlobalUpdatedHoursAgo(int h) {
+    return _t({
+      'ko': '{h}시간 전',
+      'en': '{h}h ago',
+      'zh': '{h}小时前',
+      'vi': '{h} giờ trước',
+    }).replaceAll('{h}', '$h');
+  }
+
+  String statsGlobalUpdatedMinutesAgo(int m) {
+    return _t({
+      'ko': '{m}분 전',
+      'en': '{m}m ago',
+      'zh': '{m}分钟前',
+      'vi': '{m} phút trước',
+    }).replaceAll('{m}', '$m');
+  }
+
+  String get statsGlobalUpdatedJustNow => _t({
+        'ko': '방금 전',
+        'en': 'just now',
+        'zh': '刚刚',
+        'vi': 'vừa xong',
+      });
+
+  String statsGlobalUpdatedDaysAgo(int d) {
+    return _t({
+      'ko': '{d}일 전',
+      'en': '{d}d ago',
+      'zh': '{d}天前',
+      'vi': '{d} ngày trước',
+    }).replaceAll('{d}', '$d');
+  }
+
   // ——— 문항 상세 (내 vs 전체) ———
 
   String get qdetailTitle => _t({
