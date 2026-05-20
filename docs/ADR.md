@@ -60,12 +60,12 @@
 **이유**: Firebase 무료 티어(Spark)로 운영 비용 0. 익명 인증 UID 기반 보안 규칙으로 write 를 제어하고, 운영자는 Firebase 콘솔에서 직접 조회한다. 클라이언트 read 는 보안 규칙으로 차단해 비용을 억제한다.
 **트레이드오프**: Firestore 문서 1,000개를 클라이언트에서 직접 읽으면 무료 한도를 빠르게 소진 — ADR-013 의 외부 집계로 해결. App Check 미도입 상태라 write 검증이 약함(카운터 +1 검증은 dotted-path 문제로 제거됨).
 
-### ADR-013: 글로벌 통계 읽기를 GitHub Actions 외부 집계로 전환
-**결정**: 클라이언트가 Firestore 의 `question_stats` 1,000문서를 직접 읽는 대신, GitHub Actions cron(4시간 주기)이 `tool/aggregate_stats.js` 로 서버사이드 집계해 `aggregates.json` 을 별도 `data-aggregates` 브랜치에 커밋한다. 클라이언트는 GitHub raw URL 로 HTTP fetch 하고, SharedPreferences 에 1시간 TTL 로 캐시한다.
-**이유**: Firestore 무료 티어의 일일 read 한도(50,000)를 사용자 수 증가 시 빠르게 소진. 사전 집계로 클라이언트 read 를 0 으로 줄이고, GitHub raw URL 은 CDN 이라 추가 비용 없음.
-**트레이드오프**: 통계 신선도가 최대 4시간 지연된다. GitHub Actions Secrets 에 Firebase 서비스 계정 키 등록이 필요. `data-aggregates` 브랜치를 별도로 사용하는 이유는 (1) Flutter 웹 service worker 가 `main` 브랜치의 파일을 공격적으로 캐싱해 집계 갱신이 반영되지 않는 문제 회피, (2) 자동 생성 파일로 `main` 커밋 이력을 오염시키지 않기 위함.
-
 ### ADR-012: 학습 카드를 에셋 JSON 으로 관리
 **결정**: 소카테고리별 핵심 개념·수치·법령 출처를 `assets/study/<subcategoryId>.json` 파일에 저장하고 `StudyCardService` 가 로드한다. 콘텐츠는 사람이 직접 작성; `tool/extract_study_seeds.dart` 는 초안 seed 만 생성.
 **이유**: 문제 은행과 동일하게 오프라인·번들 접근 방식을 유지. 별도 CMS 없이 파일 편집만으로 콘텐츠 추가 가능. LocalizedText(`{ko, en, zh, vi}`) 맵으로 다국어 지원.
 **트레이드오프**: 콘텐츠 업데이트마다 앱 재배포 필요. 카드 스키마 변경 시 `StudyCard` 모델과 `StudyCardScreen` 을 함께 갱신해야 함.
+
+### ADR-013: 글로벌 통계 읽기를 GitHub Actions 외부 집계로 전환
+**결정**: 클라이언트가 Firestore 의 `question_stats` 1,000문서를 직접 읽는 대신, GitHub Actions cron(4시간 주기)이 `tool/aggregate_stats.js` 로 서버사이드 집계해 `aggregates.json` 을 별도 `data-aggregates` 브랜치에 커밋한다. 클라이언트는 GitHub raw URL 로 HTTP fetch 하고, SharedPreferences 에 1시간 TTL 로 캐시한다.
+**이유**: Firestore 무료 티어의 일일 read 한도(50,000)를 사용자 수 증가 시 빠르게 소진. 사전 집계로 클라이언트 read 를 0 으로 줄이고, GitHub raw URL 은 CDN 이라 추가 비용 없음.
+**트레이드오프**: 통계 신선도가 최대 4시간 지연된다. GitHub Actions Secrets 에 Firebase 서비스 계정 키 등록이 필요. `data-aggregates` 브랜치를 별도로 사용하는 이유는 (1) Flutter 웹 service worker 가 `main` 브랜치의 파일을 공격적으로 캐싱해 집계 갱신이 반영되지 않는 문제 회피, (2) 자동 생성 파일로 `main` 커밋 이력을 오염시키지 않기 위함.

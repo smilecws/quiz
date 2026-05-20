@@ -63,9 +63,8 @@ assets/
 ├── driving_disqualification_merged.json  # 실격 기준 (기능시험 + 도로주행)
 ├── question_subcategory.json          # 문제 ID → 소카테고리 ID 매핑 (tool/classify_subcategory.dart 재생성)
 ├── study/<subcategoryId>.json         # 소카테고리별 학습 카드 (사람이 직접 작성)
-├── images/*.png                       # 문제 본문/해설 이미지
+├── images/*.{png,jpeg}                # 문제 본문/해설 이미지
 ├── questions_videos/*.mp4             # 동영상 문제
-├── images/                            # 기타 앱 내 이미지 에셋
 └── app_icon.png / quiz_icon.png / license_icon.png
 
 tool/
