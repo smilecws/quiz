@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($qa = \"c:\\\\Users\\\\smile\\\\Desktop\\\\quiz_app\"; if \\(Test-Path \"$qa\\\\tmpharness_framework\"\\) { Remove-Item -Recurse -Force \"$qa\\\\tmpharness_framework\" }; New-Item -ItemType Directory -Force -Path \"$qa\\\\scripts\" | Out-Null; New-Item -ItemType Directory -Force -Path \"$qa\\\\.claude\\\\commands\" | Out-Null; New-Item -ItemType Directory -Force -Path \"$qa\\\\phases\" | Out-Null; Copy-Item C:\\\\tmp\\\\harness_framework\\\\scripts\\\\execute.py \"$qa\\\\scripts\\\\\"; Copy-Item C:\\\\tmp\\\\harness_framework\\\\scripts\\\\check_dangerous_command.py \"$qa\\\\scripts\\\\\"; Copy-Item C:\\\\tmp\\\\harness_framework\\\\.claude\\\\commands\\\\harness.md \"$qa\\\\.claude\\\\commands\\\\\"; Copy-Item C:\\\\tmp\\\\harness_framework\\\\.claude\\\\commands\\\\review.md \"$qa\\\\.claude\\\\commands\\\\\"; \"=== Result ===\"; Get-ChildItem \"$qa\\\\scripts\",\"$qa\\\\.claude\\\\commands\",\"$qa\\\\phases\" -Force | Select-Object FullName, Length | Format-Table -AutoSize)",
+      "PowerShell(python --version)",
+      "PowerShell(python c:\\\\Users\\\\smile\\\\Desktop\\\\quiz_app\\\\scripts\\\\execute.py status)",
+      "PowerShell(\"=== Python version ===\")",
+      "PowerShell(\"=== execute.py status ===\")",
+      "Bash(git -C \"c:\\\\Users\\\\smile\\\\Desktop\\\\quiz_app\" status --short)",
+      "Bash(git -C \"c:\\\\Users\\\\smile\\\\Desktop\\\\quiz_app\" log -5 --oneline)",
+      "Bash(git -C \"c:\\\\Users\\\\smile\\\\Desktop\\\\quiz_app\" check-ignore .claude/commands/harness.md .claude/commands/review.md scripts/execute.py phases/index.json)",
+      "PowerShell($env:PYTHONUTF8 = \"1\"; python c:\\\\Users\\\\smile\\\\Desktop\\\\quiz_app\\\\scripts\\\\execute.py validate p0-3-license)",
+      "Bash(PYTHONUTF8=1 python scripts/execute.py p0-3-license)"
+    ]
+  }
+}

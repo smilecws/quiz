@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>운전 지식 학습 플랫폼 — 발표자료</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F0FDF4;
+    --surface: #FFFFFF;
+    --sub: #ECFDF5;
+    --primary: #22C55E;
+    --primary-dark: #16A34A;
+    --primary-deep: #15803D;
+    --chip-bg: #DCFCE7;
+    --border: #D1FAE5;
+    --text: #1E293B;
+    --text-sub: #64748B;
+    --warn-bg: #FEE2E2;
+    --warn: #B91C1C;
+    --code-bg: #0C1210;
+    --code-text: #ECFDF5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 56px 80px 96px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+    transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+    overflow-y: auto;
+  }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .35s ease, transform .35s ease, visibility 0s;
+  }
+  .slide h1 {
+    font-size: 44px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .slide h2 {
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 24px;
+    letter-spacing: -0.3px;
+  }
+  .slide h3 {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--primary-dark);
+    margin: 18px 0 10px;
+  }
+  .slide p, .slide li {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .slide ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .slide ul li {
+    position: relative;
+    padding: 6px 0 6px 22px;
+  }
+  .slide ul li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 17px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .card.filled {
+    background: var(--primary);
+    color: #FFFFFF;
+    border-color: var(--primary);
+  }
+  .card.filled h3, .card.filled p, .card.filled li { color: #FFFFFF; }
+  .card.filled h3 { color: rgba(255,255,255,0.95); }
+  .card.warn {
+    background: var(--warn-bg);
+    border-color: #FECACA;
+  }
+  .card.warn h3 { color: var(--warn); }
+  .card.sub {
+    background: var(--sub);
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card.filled .card-title { color: #FFFFFF; }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    color: var(--primary-deep);
+    font-size: 12px;
+    font-weight: 400;
+    margin-right: 6px;
+  }
+  pre, code {
+    font-family: 'JetBrains Mono', Menlo, Consolas, monospace;
+  }
+  code.inline {
+    background: var(--chip-bg);
+    color: var(--primary-deep);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .nav {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 16px;
+    box-shadow: 0 8px 24px rgba(20, 83, 45, 0.08);
+    z-index: 50;
+  }
+  .nav button {
+    background: transparent;
+    border: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--primary-dark);
+    font-size: 18px;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav button:hover { background: var(--chip-bg); }
+  .nav .counter {
+    font-size: 13px;
+    color: var(--text-sub);
+    min-width: 56px;
+    text-align: center;
+  }
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--primary);
+    transition: width .3s ease;
+    z-index: 60;
+  }
+  .cover {
+    align-items: flex-start;
+    justify-content: center;
+    background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+    position: relative;
+  }
+  .cover .eyebrow { font-size: 14px; }
+  .cover h1 { font-size: 60px; line-height: 1.15; max-width: 760px; }
+  .cover .lead {
+    font-size: 20px;
+    color: var(--text-sub);
+    margin-top: 16px;
+    max-width: 720px;
+  }
+  .cover .meta {
+    margin-top: 36px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .cover .hero-img {
+    position: absolute;
+    right: 80px;
+    bottom: 80px;
+    height: 520px;
+    width: auto;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 48px rgba(20, 83, 45, 0.18);
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+    align-items: center;
+  }
+  .kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .footer-hint {
+    position: fixed;
+    bottom: 28px;
+    right: 32px;
+    font-size: 12px;
+    color: var(--text-sub);
+    z-index: 50;
+  }
+  .footer-hint .kbd { margin: 0 2px; }
+
+  /* 인라인 스타일 대체 유틸 */
+  .spacer { margin-top: auto; }
+  .grid-3 { margin-top: 16px; }
+  .two-col .screens { margin: 0; }
+  .thanks {
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 18px;
+  }
+
+  /* 폰 스크린샷 표시용 */
+  .screens {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 18px 0;
+    flex-wrap: wrap;
+  }
+  .screens.tight { gap: 12px; }
+  .screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .screen img {
+    height: 380px;
+    width: auto;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 28px rgba(20, 83, 45, 0.10);
+    background: #FFFFFF;
+  }
+  .screens.lg .screen img { height: 460px; }
+  .screens.sm .screen img { height: 320px; }
+  .screen .caption {
+    font-size: 12px;
+    color: var(--text-sub);
+    text-align: center;
+  }
+
+  /* 큰 인용구 */
+  .pull-quote {
+    margin: auto 0;
+    text-align: center;
+    font-size: 36px;
+    line-height: 1.5;
+    color: var(--text);
+    letter-spacing: -0.3px;
+    max-width: 1000px;
+    align-self: center;
+  }
+  .pull-quote em {
+    font-style: normal;
+    color: var(--primary-deep);
+  }
+
+  /* 마무리 한 줄 강조 */
+  .closing-line {
+    margin-top: 18px;
+    padding: 14px 20px;
+    background: var(--chip-bg);
+    color: var(--primary-deep);
+    border-radius: 12px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  /* 로드맵 ladder (현재 → 다음 단계 → 확장) */
+  .ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ladder .card { padding: 14px 18px; }
+  .ladder .card ul { margin-top: 4px; }
+  .ladder .card ul li { padding: 3px 0 3px 22px; font-size: 15px; }
+  .ladder .card-title { font-size: 15px; }
+  .new-chip {
+    background: #FFFFFF;
+    color: var(--primary-deep);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 1px;
+    font-weight: 400;
+  }
+
+  /* SRL 다이어그램 */
+  .srl-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+    font-size: 22px;
+    color: var(--primary-deep);
+  }
+  .srl-flow .step {
+    background: var(--surface);
+    border: 2px solid var(--primary);
+    border-radius: 14px;
+    padding: 14px 24px;
+  }
+  .srl-flow .arrow { color: var(--primary); font-size: 28px; }
+
+  @media (max-width: 1100px) {
+    .screen img { height: 300px; }
+    .screens.lg .screen img { height: 360px; }
+    .cover .hero-img { display: none; }
+  }
+  @media (max-width: 900px) {
+    .slide { padding: 40px 28px 96px; }
+    .slide h1 { font-size: 32px; }
+    .slide h2 { font-size: 24px; }
+    .grid { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 40px; }
+    .pull-quote { font-size: 24px; }
+    .srl-flow { flex-direction: column; }
+    .srl-flow .arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <!-- 1: 표지 -->
+  <section class="slide cover active">
+    <div class="spacer"></div>
+    <span class="eyebrow">SELF-DIRECTED LEARNING · DRIVING KNOWLEDGE</span>
+    <h1>자기주도적 학습으로 완성하는<br>운전 지식 학습 플랫폼</h1>
+    <p class="lead">운전자가 알아야 할 핵심 지식을 자기조절학습 사이클 안에 닫아낸 멀티플랫폼 학습 앱.</p>
+    <div class="meta">
+      <span class="badge">Flutter · Dart 3</span>
+      <span class="badge">Android · iOS · Web · Windows · macOS</span>
+      <span class="badge">ko · en · zh · vi</span>
+    </div>
+    <div class="spacer"></div>
+    <img class="hero-img" src="test/golden/goldens/home_ko_light.png" alt="앱 홈 화면">
+  </section>
+
+  <!-- 2: 한 줄 요약 -->
+  <section class="slide">
+    <span class="eyebrow">OVERVIEW</span>
+    <h1>한 줄 요약</h1>
+    <p class="pull-quote">
+      운전자가 알아야 할 핵심 지식을<br>
+      <em>자기조절학습 사이클</em> 안에 닫아낸<br>
+      멀티플랫폼 학습 앱
+    </p>
+    <div class="screens">
+      <div class="screen">
+        <img src="test/golden/goldens/landing_ko_light.png" alt="랜딩 화면">
+        <div class="caption">랜딩 — 동의 게이트</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/home_ko_light.png" alt="홈 화면">
+        <div class="caption">홈 — 학습 카드 통합</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3: 왜 자기주도적 학습인가 -->
+  <section class="slide">
+    <span class="eyebrow">WHY</span>
+    <h1>왜 "자기주도적 학습" 인가</h1>
+    <div class="two-col">
+      <div>
+        <ul>
+          <li>운전 지식은 한 번 익히고 끝나는 게 아니라 <b>평생 활용되는 안전 지식</b></li>
+          <li>학습자 다양성 확대 — 외국인 운전자, 고령자, 면허 재취득자 → 획일적 교재로는 한계</li>
+          <li>학습자가 <b>자기 약점·속도·범위를 직접 통제</b>할 수 있어야 학습이 지속됨</li>
+        </ul>
+      </div>
+      <div class="screens lg">
+        <div class="screen">
+          <img src="test/golden/goldens/home_en_light.png" alt="영어 UI">
+          <div class="caption">학습자 다양성 → 다국어 지원</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4: SRL 3단계 프레임 -->
+  <section class="slide">
+    <span class="eyebrow">FRAMEWORK</span>
+    <h1>Zimmerman 자기조절학습(SRL) 3단계</h1>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-title">계획 · Forethought</div>
+        <p>무엇을, 어떻게 학습할지 학습자가 직접 결정</p>
+      </div>
+      <div class="card sub">
+        <div class="card-title">수행 · Performance</div>
+        <p>개념 → 가이드 → 연습 → 실전을 한 흐름으로 학습</p>
+      </div>
+      <div class="card filled">
+        <div class="card-title">성찰 · Self-reflection</div>
+        <p>본인의 학습 곡선을 점검하고 다음 단계로 교정</p>
+      </div>
+    </div>
+    <div class="srl-flow">
+      <span class="step">계획</span>
+      <span class="arrow">→</span>
+      <span class="step">수행</span>
+      <span class="arrow">→</span>
+      <span class="step">성찰</span>
+      <span class="arrow">↺</span>
+    </div>
+    <div class="closing-line">→ 우리 앱은 이 3단계를 <b>한 앱 안에서 닫힌 사이클</b>로 제공</div>
+  </section>
+
+  <!-- 5: 계획 (Forethought) -->
+  <section class="slide">
+    <span class="eyebrow">STAGE 1 · FORETHOUGHT</span>
+    <h1>계획 — 학습자가 범위를 고른다</h1>
+    <ul>
+      <li><b>학습하기</b> — 10개 소카테고리(주류 / 어린이보호구역 / 긴급상황 등) 중 약한 영역 선택</li>
+      <li><b>문제 풀기</b> — 4가지 모드(전체 / 미풀이 / 즐겨찾기 / 오답) 학습자가 직접 결정</li>
+      <li><b>즐겨찾기</b> — 본인 판단으로 중요한 항목을 직접 큐레이션</li>
+    </ul>
+    <div class="screens">
+      <div class="screen">
+        <img src="test/golden/goldens/subcategory_sheet_ko_light.png" alt="소카테고리 선택">
+        <div class="caption">10개 소카테고리 선택</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/practice_sheet_ko_light.png" alt="연습 모드 선택">
+        <div class="caption">4가지 연습 모드</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/mock_license_sheet_ko_light.png" alt="면허 종류 선택">
+        <div class="caption">면허 종류 선택</div>
+      </div>
+    </div>
+    <div class="closing-line">"주어지는" 학습이 아니라 <b>"고르는"</b> 학습</div>
+  </section>
+
+  <!-- 6: 수행 (Performance) -->
+  <section class="slide">
+    <span class="eyebrow">STAGE 2 · PERFORMANCE</span>
+    <h1>수행 — 지식 → 적용</h1>
+    <ul>
+      <li><b>학습하기</b> — 카테고리별 핵심 정리(개념·수치)</li>
+      <li><b>학습 카드</b> — 가이드 + 대표 사례 연결</li>
+      <li><b>문제 풀기</b> — 즉시 적용</li>
+      <li><b>모의고사</b> — 면허 종류별 기준 점수로 실전 시뮬레이션</li>
+    </ul>
+    <div class="screens sm">
+      <div class="screen">
+        <img src="test/golden/goldens/study_index_ko_light.png" alt="학습 인덱스">
+        <div class="caption">학습 인덱스</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/study_card_child_zone_ko_light.png" alt="학습 카드">
+        <div class="caption">학습 카드</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/quiz_practice_single_ko_light.png" alt="문제 풀이">
+        <div class="caption">문제 풀이</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/quiz_mock_ko_light.png" alt="모의고사">
+        <div class="caption">모의고사</div>
+      </div>
+    </div>
+    <div class="closing-line">개념 → 가이드 → 연습 → 실전이 <b>하나의 흐름으로 이어짐</b></div>
+  </section>
+
+  <!-- 7: 성찰 (Self-reflection) -->
+  <section class="slide">
+    <span class="eyebrow">STAGE 3 · SELF-REFLECTION</span>
+    <h1>성찰 — 메타인지 지원</h1>
+    <ul>
+      <li><b>오답노트</b> — 정답 시 자동 제거 → "내가 아직 모르는 것" 만 남김</li>
+      <li><b>통계</b> — 누적 정답률 / 어려운 항목 TOP 10 / 모의고사 이력 누적 관리</li>
+      <li><b>진행률</b> — 본인의 학습 진척도 시각화</li>
+    </ul>
+    <div class="screens sm">
+      <div class="screen">
+        <img src="test/golden/goldens/quiz_practice_answered_ko_light.png" alt="정오답 피드백">
+        <div class="caption">즉시 정오답 피드백</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/stats_ko_light.png" alt="누적 통계">
+        <div class="caption">누적 통계 + 어려운 항목 TOP 10</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/mock_history_ko_light.png" alt="모의고사 이력">
+        <div class="caption">모의고사 이력</div>
+      </div>
+      <div class="screen">
+        <img src="test/golden/goldens/result_mock_pass_ko_light.png" alt="결과 분석">
+        <div class="caption">결과 분석</div>
+      </div>
+    </div>
+    <div class="closing-line">학습자가 본인의 <b>학습 곡선을 직접 본다</b></div>
+  </section>
+
+  <!-- 8: 접근성 -->
+  <section class="slide">
+    <span class="eyebrow">ACCESSIBILITY</span>
+    <h1>접근성 — 학습을 지속시키는 기반</h1>
+    <div class="two-col">
+      <div>
+        <ul>
+          <li><b>4개 언어</b>(한·영·중·베) — 외국인 운전자도 본인 언어로</li>
+          <li><b>다크모드</b> + <b>멀티 플랫폼</b>(Android / iOS / Web / Windows / macOS) — 언제 어디서든 짧게라도</li>
+          <li><b>단일 Flutter 코드베이스</b> — 5개 플랫폼 동시 운영</li>
+        </ul>
+      </div>
+      <div class="screens lg">
+        <div class="screen">
+          <img src="test/golden/goldens/home_ko_light.png" alt="한국어 UI">
+          <div class="caption">한국어 UI</div>
+        </div>
+        <div class="screen">
+          <img src="test/golden/goldens/home_en_light.png" alt="영어 UI">
+          <div class="caption">영어 UI</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9: 확장 가능성 -->
+  <section class="slide">
+    <span class="eyebrow">SCALABILITY · ROADMAP</span>
+    <h1>학습 데이터 = 자산</h1>
+    <div class="two-col">
+      <div class="ladder">
+        <div class="card sub">
+          <div class="card-title">현재 — "어려운 항목 TOP 10" 누적 데이터</div>
+          <ul>
+            <li>학습자들이 <b>어디서 막히는가</b>에 대한 직접 신호</li>
+            <li>콘텐츠 개선 우선순위의 기반</li>
+          </ul>
+        </div>
+        <div class="card filled">
+          <div class="card-title">
+            <span class="new-chip">NEW</span>
+            다음 단계 — 약점 유형 집중 학습
+          </div>
+          <ul>
+            <li><b>카테고리·소카테고리 단위 오답률</b>을 통계로 관리</li>
+            <li>약점 유형을 곧바로 <b>집중 학습 모드</b>로 진입</li>
+            <li>SRL 사이클이 <b>닫힌 루프</b>로 완성 (성찰 → 다음 계획)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">확장 — 다른 운전 교육 영역</div>
+          <ul>
+            <li>학습 카드 스키마 분리 → 안전운전 교육, 사업용 보수교육 등</li>
+          </ul>
+        </div>
+      </div>
+      <div class="screens lg">
+        <div class="screen">
+          <img src="test/golden/goldens/stats_ko_light.png" alt="어려운 항목 TOP 10">
+          <div class="caption">현재 통계 화면 → 약점 유형 학습 진입점으로 진화</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10: 마무리 -->
+  <section class="slide cover">
+    <div class="spacer"></div>
+    <span class="eyebrow">CLOSING · Q&amp;A</span>
+    <h1>계획 · 수행 · 성찰<br>학습자가 스스로 돌리는<br>자기주도 학습 플랫폼</h1>
+    <div class="srl-flow">
+      <span class="step">계획</span>
+      <span class="arrow">→</span>
+      <span class="step">수행</span>
+      <span class="arrow">→</span>
+      <span class="step">성찰</span>
+      <span class="arrow">↺</span>
+    </div>
+    <div class="spacer"></div>
+    <p class="thanks">감사합니다.</p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button type="button" id="prev" aria-label="이전">‹</button>
+  <span class="counter"><span id="cur">1</span> / <span id="total">1</span></span>
+  <button type="button" id="next" aria-label="다음">›</button>
+</div>
+
+<div class="footer-hint">
+  <span class="kbd">←</span> <span class="kbd">→</span> 이동 · <span class="kbd">Home</span> 처음 · <span class="kbd">End</span> 마지막
+</div>
+
+<script>
+  (function () {
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const total = slides.length;
+    const cur = document.getElementById('cur');
+    const tot = document.getElementById('total');
+    const progress = document.getElementById('progress');
+    let idx = 0;
+    tot.textContent = total;
+
+    function render() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      cur.textContent = idx + 1;
+      progress.style.width = `${((idx + 1) / total) * 100}%`;
+      const active = slides[idx];
+      if (active) active.scrollTop = 0;
+      history.replaceState(null, '', `#${idx + 1}`);
+    }
+
+    function go(n) {
+      idx = Math.max(0, Math.min(total - 1, n));
+      render();
+    }
+
+    document.getElementById('prev').addEventListener('click', () => go(idx - 1));
+    document.getElementById('next').addEventListener('click', () => go(idx + 1));
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'PageDown':
+        case ' ':
+          e.preventDefault(); go(idx + 1); break;
+        case 'ArrowLeft':
+        case 'PageUp':
+          e.preventDefault(); go(idx - 1); break;
+        case 'Home':
+          e.preventDefault(); go(0); break;
+        case 'End':
+          e.preventDefault(); go(total - 1); break;
+      }
+    });
+
+    let touchStartX = null;
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      if (touchStartX == null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 50) go(dx < 0 ? idx + 1 : idx - 1);
+      touchStartX = null;
+    });
+
+    const initial = parseInt((location.hash || '#1').slice(1), 10);
+    if (!isNaN(initial) && initial >= 1 && initial <= total) idx = initial - 1;
+    render();
+  })();
+</script>
+</body>
+</html>
