@@ -87,17 +87,33 @@ git push origin main
 **현재 상태**
 - 세션 종료 시: `question_stats/{qid}` × 40 + `user_answers/{uid}/sessions/{auto_id}` × 1 = 41 write
 - Spark 일일 한도 20,000 → **하루 활동 사용자 488명에서 한도 도달**
-- 월 5,000명 시나리오에서 일일 활동 500명 가정하면 한도 초과
 
-**옵션 A: Blaze 전환 (권장)**
-- [ ] Firebase 콘솔에서 결제 계정 연결
-- [ ] 월 예산 알림 $5/$10 설정
-- 예상 비용: 5,000명/월 × 41 write = 205,000 write → 약 $0.37/월
-- 코드 변경 불필요
+**옵션 C: write 통합 — `question_stats` 직접 write 제거 ⭐ 권장 (P0-4와 시너지)**
 
-**옵션 B: Spark 유지 + write 절감**
-- [ ] `lib/services/global_answer_stats_service.dart:61-99`에서 샘플링 게이트 추가 (`Random().nextDouble() < 0.3`)
-- 정확도는 떨어지지만 한도 내 운영 가능
+P0-4 에서 read 를 외부 집계로 풀었듯, write 도 같은 발상으로 푼다.
+
+핵심: `user_answers/{uid}/sessions/{sid}` 문서에 이미 세션의 모든 답안(`items: [{q, sel, correct}]`)이 들어 있다. 즉 `user_answers` 가 원천 데이터이고 `question_stats` 는 거기서 계산되는 파생물이다. **클라이언트가 `question_stats` 에 직접 write 할 필요가 없다.**
+
+- 클라이언트: `user_answers` 에 세션당 1 write 만 (`question_stats` 40 write 제거)
+- `question_stats` 집계: GitHub Actions 의 `aggregate_stats.js` 가 `question_stats` 대신 `user_answers` 의 세션 로그를 읽어 수행
+
+| 지표 | 현재 | 통합 후 |
+|------|------|---------|
+| 세션당 클라이언트 write | 41 | **1** |
+| Spark 한도(20,000/일) 감당 | ~488명 | **~20,000 세션/일** |
+
+**조치**
+- [ ] `lib/services/global_answer_stats_service.dart` 의 `applySessionResults` 에서 `question_stats` batch write 제거 (`user_answers` 기록은 `user_answer_log_service.dart` 가 이미 담당)
+- [ ] `tool/aggregate_stats.js` 의 집계 소스를 `question_stats` → `user_answers` 의 전체 `sessions` 로 전환. 각 세션 `items` 를 순회해 문제별 `attempts`/`correct`/`option_counts` 를 계산
+- [ ] `firestore.rules` 에서 `question_stats` 의 클라이언트 write 권한 제거
+- [ ] 주의: `aggregate_stats.js` 가 `user_answers` 의 모든 `sessions` 를 read → GitHub Actions read 비용 증가. 사용자가 많아지면 cron 간격을 4시간 → 8시간으로 조정
+
+**옵션 A: Blaze 전환** (대안)
+- write 비용 자체는 미미하다: 5,000명/월 × 41 write ≈ 205,000 write/월 → 약 $0.37/월. 막히는 건 비용이 아니라 Spark 의 일일 한도다.
+- P0-4(read) 적용 후라면 Blaze 로 전환해도 실제 청구액은 거의 0 — 옵션 C 없이 Blaze 만으로도 운영은 가능하다.
+
+**옵션 B: Spark 유지 + 샘플링** (옵션 C 로 대체 권장)
+- `applySessionResults` 에 샘플링 게이트를 둬 `question_stats` write 를 일부만 수행. 통계 정확도가 떨어진다. 옵션 C 가 정확도 손실 없이 더 우수하다.
 
 ### 🔴 P0-3. 저작권/라이선스 정비
 
