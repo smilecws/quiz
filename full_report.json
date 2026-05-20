@@ -1,7 +1,243 @@
 {
-  "updated_at": "2026-05-20T07:41:59Z",
+  "updated_at": "2026-05-20T07:45:08Z",
   "total_users": 0,
   "total_sessions": 0,
   "hardest_top20": [],
-  "all_questions": {}
+  "all_questions": {
+    "56": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "58": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "88": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "102": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "103": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "168": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "176": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "195": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "210": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "238": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "249": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "252": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "262": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "270": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "325": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "328": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "333": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "340": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "342": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "375": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "450": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "460": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "523": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "542": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "586": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "607": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "608": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "630": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "647": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "652": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "656": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "663": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "667": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "669": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "692": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "708": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "732": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "750": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "759": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "779": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "807": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "869": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "884": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "934": {
+      "attempts": 2,
+      "correct": 0,
+      "wrong_rate": 1
+    },
+    "939": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "945": {
+      "attempts": 1,
+      "correct": 1,
+      "wrong_rate": 0
+    },
+    "965": {
+      "attempts": 1,
+      "correct": 0,
+      "wrong_rate": 1
+    }
+  }
 }
