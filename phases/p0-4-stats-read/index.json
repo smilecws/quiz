@@ -2,9 +2,28 @@
   "project": "quiz_app",
   "phase": "p0-4-stats-read",
   "steps": [
-    { "step": 0, "name": "aggregate-script", "status": "pending" },
-    { "step": 1, "name": "github-actions-workflow", "status": "pending" },
-    { "step": 2, "name": "client-cache-fetch", "status": "pending" },
-    { "step": 3, "name": "docs-update", "status": "pending" }
-  ]
+    {
+      "step": 0,
+      "name": "aggregate-script",
+      "status": "completed",
+      "started_at": "2026-05-20T12:34:18+0900",
+      "summary": "tool/package.json + tool/aggregate_stats.js 생성. firebase-admin으로 question_stats·user_answers 집계 → aggregates.json, full_report.json, report.md 출력"
+    },
+    {
+      "step": 1,
+      "name": "github-actions-workflow",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "name": "client-cache-fetch",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "name": "docs-update",
+      "status": "pending"
+    }
+  ],
+  "created_at": "2026-05-20T12:34:18+0900"
 }
