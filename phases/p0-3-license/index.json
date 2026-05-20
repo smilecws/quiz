@@ -7,7 +7,8 @@
       "name": "license-files",
       "status": "completed",
       "started_at": "2026-05-20T10:57:19+0900",
-      "summary": "LICENSE (MIT, Copyright 2026 josh) + LICENSE_DATA.md (공단 자료 라이선스 분리 명시) 생성"
+      "summary": "LICENSE (MIT, Copyright 2026 josh) + LICENSE_DATA.md (공단 자료 라이선스 분리 명시) 생성",
+      "completed_at": "2026-05-20T10:59:06+0900"
     },
     {
       "step": 1,
