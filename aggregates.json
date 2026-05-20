@@ -1,18 +1,5 @@
 {
-  "updated_at": "2026-05-20T04:32:27Z",
+  "updated_at": "2026-05-20T07:41:59Z",
   "hardest_top10": [],
-  "subcategory": {
-    "general": {
-      "attempts": 37,
-      "correct": 3
-    },
-    "speed_lane": {
-      "attempts": 42,
-      "correct": 4
-    },
-    "sign_situation": {
-      "attempts": 91,
-      "correct": 4
-    }
-  }
+  "subcategory": {}
 }
