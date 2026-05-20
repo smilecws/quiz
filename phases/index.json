@@ -12,7 +12,8 @@
     },
     {
       "dir": "p0-2-write-merge",
-      "status": "pending"
+      "status": "completed",
+      "completed_at": "2026-05-20T17:07:17+0900"
     }
   ]
 }
