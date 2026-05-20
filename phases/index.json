@@ -1,3 +1,5 @@
 {
-  "phases": []
+  "phases": [
+    { "dir": "p0-3-license", "status": "pending" }
+  ]
 }

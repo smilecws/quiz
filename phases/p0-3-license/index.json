@@ -1,0 +1,8 @@
+{
+  "project": "quiz_app",
+  "phase": "p0-3-license",
+  "steps": [
+    { "step": 0, "name": "license-files", "status": "pending" },
+    { "step": 1, "name": "readme-update", "status": "pending" }
+  ]
+}
