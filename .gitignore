@@ -54,3 +54,12 @@ app.*.map.json
 .firebase/
 firebase-debug.log
 firestore-debug.log
+
+# 운영자 로컬 전용 (개인정보 — 절대 commit 금지)
+# Firebase 서비스 계정 키 (Admin SDK 용)
+**/serviceAccount*.json
+**/*-firebase-adminsdk-*.json
+# tool/list_users.js 산출물 (사용자 이름 포함)
+tool/users_private.md
+# tool/ Node 의존성
+tool/node_modules/
