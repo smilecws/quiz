@@ -31,7 +31,7 @@
       "name": "docs-update",
       "status": "completed",
       "started_at": "2026-05-20T17:04:22+0900",
-      "completed_at": "2026-05-20T17:10:00+0900",
+      "completed_at": "2026-05-20T17:07:10+0900",
       "summary": "ARCHITECTURE.md/ADR.md/CLAUDE.md에서 question_stats 폐기 반영, user_answers 단일 write + 서버사이드 집계 구조로 문서 갱신"
     }
   ],
