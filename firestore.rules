@@ -1,29 +1,10 @@
 rules_version = '2';
 
 // Firestore 보안 규칙.
-//   - 모든 클라이언트가 question_stats 를 read 가능 (전체 통계 표시용).
-//   - write 는 익명 로그인 사용자에게만 허용.
-//   - 필드는 attempts / correct / option_counts / last_updated_at 4개로 제한.
-//   - delete 는 어떤 경우에도 불허.
-//
-// NOTE: "카운터 +1 증가만 허용" 같은 세밀한 검증은 serverTimestamp 비교와
-//       dotted-path 처리의 미묘함 때문에 안정적으로 표현하기 어려워
-//       MVP 단계에서는 제거했다. 위조 카운트 폭증 방어는 App Check 활성화로
-//       대체할 예정 (Firebase 콘솔 > App Check).
+//   - 글로벌 통계 집계는 GitHub Actions 서버사이드(aggregate_stats.js)가 서비스 계정으로 수행.
+//   - user_answers: 클라이언트가 세션 로그를 create. 운영자가 콘솔에서 조회.
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    match /question_stats/{qid} {
-      allow read: if true;
-
-      // 익명 로그인 사용자만 write 가능.
-      // 필드 화이트리스트 검증은 dotted-path 처리(option_counts.0 등) 때문에
-      // request.resource.data.keys() 로 정확히 잡기 어려워 제거. 위조 카운트
-      // 폭증 방어는 App Check 활성화로 대체할 예정.
-      allow create, update: if request.auth != null;
-
-      allow delete: if false;
-    }
 
     // 사용자별 풀이 이력 — 운영자가 Firebase 콘솔에서만 조회.
     // 클라이언트는 자기 uid 의 세션만 create 가능. read/update/delete 모두 차단.

@@ -21,7 +21,10 @@
     {
       "step": 2,
       "name": "firestore-rules",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-05-20T17:02:36+0900",
+      "completed_at": "2026-05-20T17:10:00+0900",
+      "summary": "firestore.rules에서 question_stats match 블록 제거, user_answers 블록 유지"
     },
     {
       "step": 3,
