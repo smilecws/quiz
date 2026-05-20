@@ -1,13 +1,14 @@
 ﻿# GitHub Pages에 Flutter Web 배포
 # 저장소 설정 → Pages → Source: GitHub Actions
+#
+# 수동 배포 전용. main 에 push 해도 자동 배포되지 않는다.
+# 배포하려면:
+#  - GitHub > Actions 탭 > 이 워크플로우 선택 > "Run workflow"
+#  - 또는 터미널: gh workflow run deploy_github_pages.yml
 
 name: Deploy Flutter Web to GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
-      - master
   workflow_dispatch:
 
 permissions:
