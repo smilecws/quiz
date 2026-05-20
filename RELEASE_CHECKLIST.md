@@ -29,13 +29,32 @@ https://console.firebase.google.com/project/quiz-ace9a/authentication/users
 - 크롬: 자물쇠 아이콘 → "사이트 정보" → "쿠키 및 사이트 데이터" → 삭제
 - 또는 시크릿창으로 새로 진입
 
-## 4. 최신 코드 배포
+## 4. 배포 자동화 복구 + 최신 코드 배포
 
-```powershell
-git push origin main
+테스트 단계에서 두 워크플로를 수동 실행 전용으로 바꿔뒀다 (PR #5). 실제 사용자 공개 시 아래를 처리한다.
+
+### 4-1. aggregate_stats.yml — 4시간 cron 복구 (필수)
+
+`.github/workflows/aggregate_stats.yml` 의 `on:` 블록에서 `schedule` 2줄 주석을 해제한다:
+
+```yaml
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
 ```
 
-- `main` 푸시 → `.github/workflows/deploy_github_pages.yml` 자동 실행 → 약 2-3분 후 https://smilecws.github.io/quiz/ 에 반영.
+복구하지 않으면 통계 집계(`aggregates.json`)가 자동 갱신되지 않아 통계 화면이 옛 데이터에 멈춘다.
+
+### 4-2. deploy_github_pages.yml — push 자동 배포 (운영 방식에 따라 선택)
+
+현재 `push` 트리거가 제거돼 수동 배포만 가능하다. `main` push 시 자동 배포를 원하면 `on:` 에 push 트리거를 복구한다. 수동 배포를 유지해도 무방.
+
+### 4-3. 코드 배포
+
+- 수동 배포: GitHub Actions 탭 → "Deploy Flutter Web to GitHub Pages" → "Run workflow". 또는 `gh workflow run deploy_github_pages.yml`.
+- (push 트리거를 복구했다면) `git push origin main` 으로 자동 배포.
+- 약 2-3분 후 https://smilecws.github.io/quiz/ 에 반영.
 - Firestore 보안 규칙(`firestore.rules`)을 수정했다면 별도로:
 
   ```powershell
@@ -87,17 +106,33 @@ git push origin main
 **현재 상태**
 - 세션 종료 시: `question_stats/{qid}` × 40 + `user_answers/{uid}/sessions/{auto_id}` × 1 = 41 write
 - Spark 일일 한도 20,000 → **하루 활동 사용자 488명에서 한도 도달**
-- 월 5,000명 시나리오에서 일일 활동 500명 가정하면 한도 초과
 
-**옵션 A: Blaze 전환 (권장)**
-- [ ] Firebase 콘솔에서 결제 계정 연결
-- [ ] 월 예산 알림 $5/$10 설정
-- 예상 비용: 5,000명/월 × 41 write = 205,000 write → 약 $0.37/월
-- 코드 변경 불필요
+**옵션 C: write 통합 — `question_stats` 직접 write 제거 ⭐ 권장 (P0-4와 시너지)**
 
-**옵션 B: Spark 유지 + write 절감**
-- [ ] `lib/services/global_answer_stats_service.dart:61-99`에서 샘플링 게이트 추가 (`Random().nextDouble() < 0.3`)
-- 정확도는 떨어지지만 한도 내 운영 가능
+P0-4 에서 read 를 외부 집계로 풀었듯, write 도 같은 발상으로 푼다.
+
+핵심: `user_answers/{uid}/sessions/{sid}` 문서에 이미 세션의 모든 답안(`items: [{q, sel, correct}]`)이 들어 있다. 즉 `user_answers` 가 원천 데이터이고 `question_stats` 는 거기서 계산되는 파생물이다. **클라이언트가 `question_stats` 에 직접 write 할 필요가 없다.**
+
+- 클라이언트: `user_answers` 에 세션당 1 write 만 (`question_stats` 40 write 제거)
+- `question_stats` 집계: GitHub Actions 의 `aggregate_stats.js` 가 `question_stats` 대신 `user_answers` 의 세션 로그를 읽어 수행
+
+| 지표 | 현재 | 통합 후 |
+|------|------|---------|
+| 세션당 클라이언트 write | 41 | **1** |
+| Spark 한도(20,000/일) 감당 | ~488명 | **~20,000 세션/일** |
+
+**조치**
+- [ ] `lib/services/global_answer_stats_service.dart` 의 `applySessionResults` 에서 `question_stats` batch write 제거 (`user_answers` 기록은 `user_answer_log_service.dart` 가 이미 담당)
+- [ ] `tool/aggregate_stats.js` 의 집계 소스를 `question_stats` → `user_answers` 의 전체 `sessions` 로 전환. 각 세션 `items` 를 순회해 문제별 `attempts`/`correct`/`option_counts` 를 계산
+- [ ] `firestore.rules` 에서 `question_stats` 의 클라이언트 write 권한 제거
+- [ ] 주의: `aggregate_stats.js` 가 `user_answers` 의 모든 `sessions` 를 read → GitHub Actions read 비용 증가. 사용자가 많아지면 cron 간격을 4시간 → 8시간으로 조정
+
+**옵션 A: Blaze 전환** (대안)
+- write 비용 자체는 미미하다: 5,000명/월 × 41 write ≈ 205,000 write/월 → 약 $0.37/월. 막히는 건 비용이 아니라 Spark 의 일일 한도다.
+- P0-4(read) 적용 후라면 Blaze 로 전환해도 실제 청구액은 거의 0 — 옵션 C 없이 Blaze 만으로도 운영은 가능하다.
+
+**옵션 B: Spark 유지 + 샘플링** (옵션 C 로 대체 권장)
+- `applySessionResults` 에 샘플링 게이트를 둬 `question_stats` write 를 일부만 수행. 통계 정확도가 떨어진다. 옵션 C 가 정확도 손실 없이 더 우수하다.
 
 ### 🔴 P0-3. 저작권/라이선스 정비
 
