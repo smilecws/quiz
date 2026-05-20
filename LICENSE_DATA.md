@@ -18,7 +18,7 @@
 | 문제 1,000제 (영어) | `assets/questions_eng.json` |
 | 문제 1,000제 (중국어) | `assets/questions_chi.json` |
 | 문제 1,000제 (베트남어) | `assets/questions_vi.json` |
-| 문제 관련 이미지 | `assets/questions_images/` |
+| 문제 관련 이미지 | `assets/images/` |
 | 동영상 문제 | `assets/questions_videos/` |
 | 운전면허 실격사항 데이터 | `assets/driving_disqualification_merged.json` |
 

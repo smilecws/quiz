@@ -111,8 +111,8 @@ git push origin main
 **조치**
 - [x] ~~한국도로교통공단에 학과시험 자료 재배포 가능 여부 문의~~ → 사용 허락 받음 (2026-05-20)
 - [ ] 공단 허락 내역(허락 일자·범위·담당부서/근거)을 `LICENSE_DATA.md`에 기록 — 추후 저작권 문의 대응 근거
-- [ ] `LICENSE` 추가 (코드: MIT 또는 Apache-2.0)
-- [ ] `README.md` 갱신: 프로젝트 소개, 데이터 출처(공단 허락 명시), 라이선스 분리 명시
+- [x] `LICENSE` 추가 (MIT, Copyright 2026 josh)
+- [x] `README.md` 갱신: 프로젝트 소개, 데이터 출처(공단 허락 명시), 라이선스 분리 명시
 - [ ] `assets/question_*.json` 루트에 `_source`, `_license` 필드 추가
 
 ### 🔴 P0-4. Firestore read 한도 대응 (통계 화면 진입당 1,000 read)
