@@ -73,11 +73,15 @@ class AllQuestionAggregate {
   final int correct;
   final double wrongRate;
 
+  /// 보기별 선택 횟수. key = 0-based 인덱스.
+  final Map<int, int> optionCounts;
+
   const AllQuestionAggregate({
     required this.questionId,
     required this.attempts,
     required this.correct,
     required this.wrongRate,
+    this.optionCounts = const {},
   });
 }
 
@@ -140,11 +144,20 @@ class GlobalAggregateStats {
         if (val is! Map) return;
         final id = int.tryParse(key.toString());
         if (id == null) return;
+        final rawCounts = val['option_counts'];
+        final optionCounts = <int, int>{};
+        if (rawCounts is Map) {
+          rawCounts.forEach((k, v) {
+            final idx = int.tryParse(k.toString());
+            if (idx != null && v is num) optionCounts[idx] = v.toInt();
+          });
+        }
         allQs[id] = AllQuestionAggregate(
           questionId: id,
           attempts: (val['attempts'] as num?)?.toInt() ?? 0,
           correct: (val['correct'] as num?)?.toInt() ?? 0,
           wrongRate: (val['wrong_rate'] as num?)?.toDouble() ?? 0,
+          optionCounts: optionCounts,
         );
       });
     }
@@ -302,7 +315,7 @@ class GlobalAnswerStatsService {
       questionId: questionId,
       attempts: entry.attempts,
       correct: entry.correct,
-      optionCounts: const {},
+      optionCounts: entry.optionCounts,
     );
   }
 

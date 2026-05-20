@@ -125,6 +125,7 @@ function buildAllQuestions(stats) {
       attempts: s.attempts,
       correct: s.correct,
       wrong_rate: computeWrongRate(s.attempts, s.correct),
+      option_counts: s.option_counts,
     };
   }
   return result;
