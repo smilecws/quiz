@@ -13,7 +13,10 @@
     {
       "step": 1,
       "name": "readme-update",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-05-20T10:59:07+0900",
+      "summary": "README.md 전면 재작성: 프로젝트 소개·기능·플랫폼·기술 스택·빌드 방법·데이터 출처·라이선스(LICENSE, LICENSE_DATA.md 링크) 포함",
+      "completed_at": "2026-05-20T11:05:00+0900"
     }
   ],
   "created_at": "2026-05-20T10:57:19+0900"
