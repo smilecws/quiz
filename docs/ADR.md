@@ -50,15 +50,20 @@
 **이유**: 공개 데모 URL 이 필요하지만 인증/서버 로직이 없어 정적 호스팅으로 충분. 비용 0, 파이프라인 단순.
 **트레이드오프**: base href 제약, 빌드 산출물 크기, WMV 미지원. 인증/결제를 붙이면 이전 필요.
 
-### ADR-010: PIPA 동의 게이트 + Google Sign-In
-**결정**: 앱 첫 실행 시 Google 로그인 + 이름 입력 + 개인정보 수집·이용 동의를 모두 받아야 진입을 허용한다. 동의 기록은 로컬(`SharedPreferences`)에 저장하고, 게이트 통과 여부는 기록 유무로 판별(silent sign-in 결과와 무관).
-**이유**: 접속 로그(ADR-011)를 Google Sheets 에 기록하려면 사용자 식별자와 동의가 필요. PIPA 요건(목적·항목·보존기간·거부 권리 고지) 준수. silent sign-in 결과로 게이트를 잠그면 third-party cookie 차단이나 세션 만료 시마다 동의 화면이 반복돼 UX 가 손상.
-**트레이드오프**: 데스크톱(Windows/macOS/Linux) 은 `google_sign_in` 미지원이라 게이트를 우회 — 데스크톱에서는 접속 로그도 수집 안 됨. 동의 버전이 올라가면 기존 사용자가 재동의 필요.
+### ADR-010: PIPA 동의 게이트 + Firebase 익명 인증
+**결정**: 앱 첫 실행 시 이름 입력 + 개인정보 수집·이용 동의를 받아야 진입을 허용한다. 인증은 Firebase Anonymous Auth 를 사용하며, 동의 기록은 로컬(`SharedPreferences`)에 저장한다. 게이트 통과 여부는 동의 기록 유무로 판별한다.
+**이유**: 글로벌 통계(ADR-011)를 Firestore 에 기록하려면 인증된 사용자가 필요. 익명 인증은 사용자 마찰 없이 UID 를 발급하고 Firestore 보안 규칙에서 write 권한을 제어할 수 있다. PIPA 요건(목적·항목·보존기간·거부 권리 고지) 준수.
+**트레이드오프**: 데스크톱(Windows/macOS/Linux)은 Firebase 미지원이라 통계 수집이 비활성화된다. 동의 버전이 올라가면 기존 사용자가 재동의 필요.
 
-### ADR-011: Apps Script Web App 으로 접속 로그 기록
-**결정**: 동의 완료 및 앱 실행 이벤트를 Google Apps Script Web App 에 HTTP POST 로 전송한다. 클라이언트는 Google ID Token 을 매 요청마다 발급해 함께 전송하고, Apps Script 는 Google 공개키로 토큰을 검증한다. 전송 실패 시 로컬 큐(`access_log_pending_v1`)에 쌓아 다음 실행 시 재전송.
-**이유**: 별도 서버 없이 Google Sheets 에 로그를 쌓을 수 있어 운영 비용 0. ID Token 검증으로 위조된 행 삽입 방지. UI 를 차단하지 않는 fire-and-forget 설계.
-**트레이드오프**: Apps Script 실행 할당량(일 6분) 초과 시 전송 실패. 로그가 Google Sheets 한 곳에만 쌓여 분석 도구 연결이 번거로움. 장기적으로 사용자 규모가 커지면 전용 백엔드로 이전 필요.
+### ADR-011: Firestore 로 글로벌 통계·풀이 이력 기록
+**결정**: 문항별 글로벌 통계(`question_stats/{questionId}`)와 사용자별 풀이 이력(`user_answers/{uid}/sessions/{auto_id}`)을 Cloud Firestore 에 기록한다. 쓰기는 `GlobalAnswerStatsService` 와 `UserAnswerLogService` 만 담당한다.
+**이유**: Firebase 무료 티어(Spark)로 운영 비용 0. 익명 인증 UID 기반 보안 규칙으로 write 를 제어하고, 운영자는 Firebase 콘솔에서 직접 조회한다. 클라이언트 read 는 보안 규칙으로 차단해 비용을 억제한다.
+**트레이드오프**: Firestore 문서 1,000개를 클라이언트에서 직접 읽으면 무료 한도를 빠르게 소진 — ADR-013 의 외부 집계로 해결. App Check 미도입 상태라 write 검증이 약함(카운터 +1 검증은 dotted-path 문제로 제거됨).
+
+### ADR-013: 글로벌 통계 읽기를 GitHub Actions 외부 집계로 전환
+**결정**: 클라이언트가 Firestore 의 `question_stats` 1,000문서를 직접 읽는 대신, GitHub Actions cron(4시간 주기)이 `tool/aggregate_stats.js` 로 서버사이드 집계해 `aggregates.json` 을 별도 `data-aggregates` 브랜치에 커밋한다. 클라이언트는 GitHub raw URL 로 HTTP fetch 하고, SharedPreferences 에 1시간 TTL 로 캐시한다.
+**이유**: Firestore 무료 티어의 일일 read 한도(50,000)를 사용자 수 증가 시 빠르게 소진. 사전 집계로 클라이언트 read 를 0 으로 줄이고, GitHub raw URL 은 CDN 이라 추가 비용 없음.
+**트레이드오프**: 통계 신선도가 최대 4시간 지연된다. GitHub Actions Secrets 에 Firebase 서비스 계정 키 등록이 필요. `data-aggregates` 브랜치를 별도로 사용하는 이유는 (1) Flutter 웹 service worker 가 `main` 브랜치의 파일을 공격적으로 캐싱해 집계 갱신이 반영되지 않는 문제 회피, (2) 자동 생성 파일로 `main` 커밋 이력을 오염시키지 않기 위함.
 
 ### ADR-012: 학습 카드를 에셋 JSON 으로 관리
 **결정**: 소카테고리별 핵심 개념·수치·법령 출처를 `assets/study/<subcategoryId>.json` 파일에 저장하고 `StudyCardService` 가 로드한다. 콘텐츠는 사람이 직접 작성; `tool/extract_study_seeds.dart` 는 초안 seed 만 생성.

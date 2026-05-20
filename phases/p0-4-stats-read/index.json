@@ -29,7 +29,10 @@
     {
       "step": 3,
       "name": "docs-update",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-05-20T12:48:01+0900",
+      "summary": "ARCHITECTURE.md: services/screens 목록 실제 파일과 동기화, Firebase 익명인증 부팅 흐름 반영, P0-4 외부집계 데이터 흐름 추가, 자산 경로 정정. ADR.md: ADR-010/011을 Firebase 구조로 갱신, ADR-013(GitHub Actions 외부집계) 추가",
+      "completed_at": "2026-05-20T13:05:00+0900"
     }
   ],
   "created_at": "2026-05-20T12:34:18+0900"
