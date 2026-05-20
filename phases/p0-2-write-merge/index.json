@@ -1,0 +1,10 @@
+{
+  "project": "quiz_app",
+  "phase": "p0-2-write-merge",
+  "steps": [
+    { "step": 0, "name": "aggregate-script-rewrite", "status": "pending" },
+    { "step": 1, "name": "client-write-removal", "status": "pending" },
+    { "step": 2, "name": "firestore-rules", "status": "pending" },
+    { "step": 3, "name": "docs-update", "status": "pending" }
+  ]
+}
